@@ -1,4 +1,4 @@
-// API Server for AI Tutor - Google Gemini (Fixed)
+// API Server for AI Tutor - Google Gemini (Working Version)
 import express from 'express';
 import cors from 'cors';
 import { GoogleGenerativeAI } from '@google/generative-ai';
@@ -84,15 +84,16 @@ app.post('/api/tutor', async (req, res) => {
     // Use Gemini if available
     if (genAI) {
         try {
-            // Use the correct model name - gemini-1.5-flash (faster and free)
-            const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+            // Use the correct model - gemini-2.5-flash (stable version from the list)
+            const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
             
             const systemPrompt = `You are a friendly, patient AI tutor. Help students learn ${subject || 'any subject'}.
                                   Use simple language, give examples, and be encouraging.
                                   Break down complex topics step by step.
                                   Use emojis occasionally to keep it friendly.
-                                  Keep explanations clear and concise.
-                                  If the student is struggling, offer hints.`;
+                                  Keep explanations clear and concise (under 150 words).
+                                  If the student is struggling, offer hints.
+                                  Format with bullet points or numbered steps when helpful.`;
             
             let context = '';
             if (conversationHistory && conversationHistory.length > 0) {
@@ -129,7 +130,7 @@ app.post('/api/tutor', async (req, res) => {
     }
 });
 
-// Fallback responses (no API key or error)
+// Fallback responses
 function getFallbackResponse(message, subject) {
     const lowerMsg = message.toLowerCase();
     
@@ -151,7 +152,7 @@ function getFallbackResponse(message, subject) {
         }
     }
     
-    return `I'm your AI Tutor! I can help with ${subject || 'any subject'}. Ask me about math, science, history, or languages! Try: "What is photosynthesis?" or "Explain the Pythagorean theorem"`;
+    return `I'm your AI Tutor! I can help with ${subject || 'any subject'}. Ask me about math, science, history, or languages!`;
 }
 
 // ==================== EMAIL SUBSCRIPTION ====================
@@ -310,7 +311,7 @@ app.get('/api/health', (req, res) => {
     res.json({ 
         status: 'healthy',
         geminiAvailable: !!genAI,
-        model: 'gemini-1.5-flash',
+        model: 'gemini-2.5-flash',
         verifiedEmails: verifiedEmails.size,
         pendingVerifications: pendingVerifications.size,
         timestamp: new Date().toISOString() 
