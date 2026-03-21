@@ -1,7 +1,7 @@
-// API Server for Universal AI Tutor with Email Verification
+// API Server for AI Tutor - Powered by Google Gemini (Free!)
 import express from 'express';
 import cors from 'cors';
-import fetch from 'node-fetch';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 import crypto from 'crypto';
 import fs from 'fs';
 import path from 'path';
@@ -16,7 +16,16 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
-const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
+// Initialize Google Gemini
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+let genAI = null;
+
+if (GEMINI_API_KEY) {
+    genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
+    console.log('✅ Google Gemini initialized');
+} else {
+    console.log('⚠️ No Gemini API key found. Using fallback mode.');
+}
 
 // Email verification storage
 const pendingVerifications = new Map();
@@ -35,7 +44,7 @@ try {
                 verifiedEmails.set(item.email, item);
             }
         });
-        console.log(`Loaded ${verifiedEmails.size} verified emails`);
+        console.log(`📧 Loaded ${verifiedEmails.size} verified emails`);
     }
 } catch(e) {
     console.log('No existing verified emails file');
@@ -70,66 +79,61 @@ app.post('/api/tutor', async (req, res) => {
         }
     }
     
-    if (!OPENAI_API_KEY) {
-        return res.status(500).json({ 
-            reply: "⚠️ AI tutor is being set up. Please try again in a few minutes." 
-        });
-    }
-    
-    try {
-        const systemPrompt = `You are a friendly, patient AI tutor. Help students learn ${subject || 'any subject'}.
-                              Use simple language, give examples, and be encouraging.
-                              Break down complex topics step by step.
-                              Use emojis occasionally to keep it friendly.
-                              Keep explanations clear and concise.`;
-        
-        const messages = [
-            { role: 'system', content: systemPrompt },
-            ...(conversationHistory || []).slice(-10).map(msg => ({
-                role: msg.role,
-                content: msg.content
-            })),
-            { role: 'user', content: message }
-        ];
-        
-        const response = await fetch('https://api.openai.com/v1/chat/completions', {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${OPENAI_API_KEY}`,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                model: 'gpt-3.5-turbo',
-                messages: messages,
-                temperature: 0.7,
-                max_tokens: 600
-            })
-        });
-        
-        const data = await response.json();
-        
-        if (data.error) {
-            console.error('OpenAI error:', data.error);
-            return res.status(500).json({ error: data.error.message });
-        }
-        
-        const reply = data.choices[0].message.content;
-        
-        // Deduct session
-        if (email && verifiedEmails.has(email)) {
-            const userData = verifiedEmails.get(email);
-            if (!userData.premium && userData.remainingSessions > 0) {
-                userData.remainingSessions--;
-                verifiedEmails.set(email, userData);
-                saveVerifiedEmails();
+    // Use Gemini if available, otherwise fallback
+    if (genAI) {
+        try {
+            const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
+            
+            const systemPrompt = `You are a friendly, patient AI tutor. Help students learn ${subject || 'any subject'}.
+                                  Use simple language, give examples, and be encouraging.
+                                  Break down complex topics step by step.
+                                  Use emojis occasionally to keep it friendly.
+                                  Keep explanations clear and concise (under 200 words).
+                                  If the student is struggling, offer hints.
+                                  Format your response with bullet points or numbered steps when helpful.`;
+            
+            let context = '';
+            if (conversationHistory && conversationHistory.length > 0) {
+                const recentMessages = conversationHistory.slice(-4);
+                context = recentMessages.map(msg => `${msg.role === 'user' ? 'Student' : 'Tutor'}: ${msg.content}`).join('\n') + '\n';
             }
+            
+            const prompt = `${systemPrompt}\n\n${context}Student: ${message}\n\nTutor:`;
+            
+            const result = await model.generateContent(prompt);
+            const reply = result.response.text();
+            
+            // Deduct session
+            if (email && verifiedEmails.has(email)) {
+                const userData = verifiedEmails.get(email);
+                if (!userData.premium && userData.remainingSessions > 0) {
+                    userData.remainingSessions--;
+                    verifiedEmails.set(email, userData);
+                    saveVerifiedEmails();
+                }
+            }
+            
+            res.json({ reply });
+            
+        } catch (error) {
+            console.error('Gemini error:', error);
+            res.status(500).json({ error: 'AI tutor temporarily unavailable. Please try again.' });
         }
+    } else {
+        // Fallback responses (no API key)
+        const fallbackResponses = {
+            'math': "I can help with math! What specific topic? Algebra, calculus, geometry, or statistics?",
+            'physics': "Physics is fascinating! Are you studying mechanics, thermodynamics, or quantum physics?",
+            'chemistry': "Chemistry is all around us! Need help with organic chemistry, reactions, or the periodic table?",
+            'biology': "Biology is the study of life. What topic interests you - cells, genetics, or anatomy?",
+            'history': "History helps us understand today. Which period are you studying?",
+            'default': "I'm your AI Tutor! I can help with math, science, history, languages, and more. What would you like to learn?"
+        };
+        
+        const subjectKey = (subject || '').toLowerCase();
+        const reply = fallbackResponses[subjectKey] || fallbackResponses.default;
         
         res.json({ reply });
-        
-    } catch (error) {
-        console.error('Server error:', error);
-        res.status(500).json({ error: 'AI tutor temporarily unavailable' });
     }
 });
 
@@ -167,7 +171,7 @@ app.post('/api/subscribe', async (req, res) => {
     
     res.json({ 
         success: true, 
-        message: 'Verification email sent!',
+        message: 'Verification link created!',
         debugUrl: verifyUrl
     });
 });
@@ -178,11 +182,50 @@ app.get('/api/verify-email', (req, res) => {
     
     if (!token) {
         return res.send(`
-            <html><body style="font-family:sans-serif;text-align:center;padding:50px;background:linear-gradient(135deg,#667eea,#764ba2);color:white;">
-                <h1>❌ Invalid Link</h1>
-                <p>The verification link is missing.</p>
-                <a href="https://innocent200509.github.io/Universal-AI-Tutor/" style="color:white;">Back to AI Tutor</a>
-            </body></html>
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <title>Email Verification</title>
+                <style>
+                    body {
+                        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                        text-align: center;
+                        padding: 50px;
+                        background: linear-gradient(135deg, #667eea, #764ba2);
+                        color: white;
+                        min-height: 100vh;
+                        margin: 0;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                    }
+                    .container {
+                        max-width: 500px;
+                        background: rgba(255,255,255,0.15);
+                        padding: 40px;
+                        border-radius: 24px;
+                    }
+                    h1 { font-size: 2rem; margin-bottom: 1rem; }
+                    .btn {
+                        display: inline-block;
+                        background: white;
+                        color: #6366f1;
+                        padding: 12px 24px;
+                        border-radius: 8px;
+                        text-decoration: none;
+                        margin-top: 20px;
+                        font-weight: bold;
+                    }
+                </style>
+            </head>
+            <body>
+                <div class="container">
+                    <h1>❌ Invalid Link</h1>
+                    <p>The verification link is missing.</p>
+                    <a href="https://innocent200509.github.io/Universal-AI-Tutor/" class="btn">Back to AI Tutor</a>
+                </div>
+            </body>
+            </html>
         `);
     }
     
@@ -190,22 +233,100 @@ app.get('/api/verify-email', (req, res) => {
     
     if (!verification) {
         return res.send(`
-            <html><body style="font-family:sans-serif;text-align:center;padding:50px;background:linear-gradient(135deg,#667eea,#764ba2);color:white;">
-                <h1>❌ Invalid or Expired Link</h1>
-                <p>This verification link is invalid or has expired.</p>
-                <a href="https://innocent200509.github.io/Universal-AI-Tutor/" style="color:white;">Subscribe Again</a>
-            </body></html>
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <title>Email Verification</title>
+                <style>
+                    body {
+                        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                        text-align: center;
+                        padding: 50px;
+                        background: linear-gradient(135deg, #667eea, #764ba2);
+                        color: white;
+                        min-height: 100vh;
+                        margin: 0;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                    }
+                    .container {
+                        max-width: 500px;
+                        background: rgba(255,255,255,0.15);
+                        padding: 40px;
+                        border-radius: 24px;
+                    }
+                    h1 { font-size: 2rem; margin-bottom: 1rem; }
+                    .btn {
+                        display: inline-block;
+                        background: white;
+                        color: #6366f1;
+                        padding: 12px 24px;
+                        border-radius: 8px;
+                        text-decoration: none;
+                        margin-top: 20px;
+                        font-weight: bold;
+                    }
+                </style>
+            </head>
+            <body>
+                <div class="container">
+                    <h1>❌ Invalid or Expired Link</h1>
+                    <p>This verification link is invalid or has expired.</p>
+                    <a href="https://innocent200509.github.io/Universal-AI-Tutor/" class="btn">Subscribe Again</a>
+                </div>
+            </body>
+            </html>
         `);
     }
     
     if (Date.now() > verification.expiresAt) {
         pendingVerifications.delete(token);
         return res.send(`
-            <html><body style="font-family:sans-serif;text-align:center;padding:50px;background:linear-gradient(135deg,#667eea,#764ba2);color:white;">
-                <h1>⏰ Link Expired</h1>
-                <p>The verification link expired after 24 hours.</p>
-                <a href="https://innocent200509.github.io/Universal-AI-Tutor/" style="color:white;">Subscribe Again</a>
-            </body></html>
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <title>Email Verification</title>
+                <style>
+                    body {
+                        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                        text-align: center;
+                        padding: 50px;
+                        background: linear-gradient(135deg, #667eea, #764ba2);
+                        color: white;
+                        min-height: 100vh;
+                        margin: 0;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                    }
+                    .container {
+                        max-width: 500px;
+                        background: rgba(255,255,255,0.15);
+                        padding: 40px;
+                        border-radius: 24px;
+                    }
+                    h1 { font-size: 2rem; margin-bottom: 1rem; }
+                    .btn {
+                        display: inline-block;
+                        background: white;
+                        color: #6366f1;
+                        padding: 12px 24px;
+                        border-radius: 8px;
+                        text-decoration: none;
+                        margin-top: 20px;
+                        font-weight: bold;
+                    }
+                </style>
+            </head>
+            <body>
+                <div class="container">
+                    <h1>⏰ Link Expired</h1>
+                    <p>The verification link expired after 24 hours.</p>
+                    <a href="https://innocent200509.github.io/Universal-AI-Tutor/" class="btn">Subscribe Again</a>
+                </div>
+            </body>
+            </html>
         `);
     }
     
@@ -225,10 +346,10 @@ app.get('/api/verify-email', (req, res) => {
         <!DOCTYPE html>
         <html>
         <head>
-            <title>Email Verified!</title>
+            <title>Email Verified! - AI Tutor</title>
             <style>
                 body {
-                    font-family: sans-serif;
+                    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
                     text-align: center;
                     padding: 50px;
                     background: linear-gradient(135deg, #667eea, #764ba2);
@@ -244,8 +365,14 @@ app.get('/api/verify-email', (req, res) => {
                     background: rgba(255,255,255,0.15);
                     padding: 40px;
                     border-radius: 24px;
+                    animation: fadeIn 0.5s ease;
                 }
-                h1 { font-size: 3rem; margin-bottom: 1rem; }
+                @keyframes fadeIn {
+                    from { opacity: 0; transform: translateY(20px); }
+                    to { opacity: 1; transform: translateY(0); }
+                }
+                h1 { font-size: 2.5rem; margin-bottom: 1rem; }
+                .checkmark { font-size: 4rem; margin-bottom: 1rem; }
                 .btn {
                     display: inline-block;
                     background: #10b981;
@@ -255,16 +382,22 @@ app.get('/api/verify-email', (req, res) => {
                     text-decoration: none;
                     margin-top: 20px;
                     font-weight: bold;
+                    transition: transform 0.2s;
                 }
-                .btn:hover { background: #059669; }
+                .btn:hover {
+                    transform: scale(1.05);
+                    background: #059669;
+                }
             </style>
         </head>
         <body>
             <div class="container">
-                <h1>✅ Email Verified!</h1>
+                <div class="checkmark">✅</div>
+                <h1>Email Verified!</h1>
                 <p>Thank you for confirming your email address!</p>
                 <p>Your account has been credited with <strong>10 free AI tutoring sessions</strong>.</p>
                 <a href="https://innocent200509.github.io/Universal-AI-Tutor/" class="btn">Start Learning Now →</a>
+                <p style="margin-top: 20px; font-size: 12px; opacity: 0.8;">Get help with any subject - math, science, history, languages, and more!</p>
             </div>
         </body>
         </html>
@@ -295,7 +428,8 @@ app.post('/api/check-verified', (req, res) => {
 // ==================== HEALTH CHECK ====================
 app.get('/api/health', (req, res) => {
     res.json({ 
-        status: 'healthy', 
+        status: 'healthy',
+        geminiAvailable: !!genAI,
         verifiedEmails: verifiedEmails.size,
         pendingVerifications: pendingVerifications.size,
         timestamp: new Date().toISOString() 
@@ -304,5 +438,6 @@ app.get('/api/health', (req, res) => {
 
 app.listen(PORT, () => {
     console.log(`🤖 AI Tutor API running on port ${PORT}`);
-    console.log(`✅ ${verifiedEmails.size} verified emails`);
+    console.log(`📧 ${verifiedEmails.size} verified emails`);
+    console.log(`🤖 Gemini: ${genAI ? 'ACTIVE' : 'INACTIVE (fallback mode)'}`);
 });
