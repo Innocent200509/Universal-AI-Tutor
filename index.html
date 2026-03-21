@@ -1,0 +1,1266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Tutor - Your Personal AI Learning Assistant</title>
+    
+    <!-- Stripe for payments -->
+    <script src="https://js.stripe.com/v3/"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #ec4899;
+            --accent: #06b6d4;
+            --dark: #0f172a;
+            --light: #f8fafc;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --glass: rgba(255, 255, 255, 0.1);
+            --gold: #ffd700;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: var(--light);
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .bg-animation span {
+            position: absolute;
+            display: block;
+            width: 20px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            animation: float 25s linear infinite;
+            bottom: -150px;
+            border-radius: 50%;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-1000px) rotate(720deg); opacity: 0; }
+        }
+
+        /* Premium Badge */
+        .premium-badge {
+            background: linear-gradient(135deg, var(--gold), #ffed4e);
+            color: #000;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.75rem;
+            font-weight: bold;
+            margin-left: 0.5rem;
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            padding: 2.5rem;
+            border-radius: 1.5rem;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            border: 2px solid var(--primary);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+            animation: slideUp 0.3s ease;
+            position: relative;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .price-tag {
+            font-size: 3rem;
+            font-weight: bold;
+            color: var(--gold);
+            margin: 1rem 0;
+        }
+
+        .feature-list {
+            text-align: left;
+            margin: 1.5rem 0;
+            list-style: none;
+        }
+
+        .feature-list li {
+            padding: 0.5rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .feature-list li::before {
+            content: "✓";
+            color: var(--success);
+            font-weight: bold;
+        }
+
+        /* Buy Me a Coffee Button */
+        .bmc-button {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: #ffdd00;
+            color: #000;
+            padding: 0.75rem 1.5rem;
+            border-radius: 2rem;
+            text-decoration: none;
+            font-weight: bold;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: transform 0.3s;
+        }
+
+        .bmc-button:hover {
+            transform: scale(1.05);
+        }
+
+        /* Email Capture */
+        .email-capture {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            padding: 2rem;
+            border-radius: 1rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .email-input {
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            border: none;
+            width: 250px;
+            margin-right: 0.5rem;
+            font-size: 1rem;
+        }
+
+        /* Premium Button */
+        .upgrade-btn {
+            background: linear-gradient(135deg, var(--gold), #ffed4e);
+            color: #000;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 2rem;
+            cursor: pointer;
+            font-weight: bold;
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            z-index: 999;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        /* Navigation */
+        nav {
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid var(--glass);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            color: var(--light);
+            text-decoration: none;
+            transition: color 0.3s;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 4rem 0;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+        }
+
+        .stats-bar {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            background: var(--glass);
+            padding: 1rem 2rem;
+            border-radius: 1rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--accent);
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            opacity: 0.8;
+        }
+
+        /* Subject Grid */
+        .subjects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin: 3rem 0;
+        }
+
+        .subject-card {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .subject-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .subject-card:hover::before {
+            left: 100%;
+        }
+
+        .subject-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border-color: var(--primary);
+        }
+
+        .subject-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .subject-title {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .subject-desc {
+            opacity: 0.8;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        /* Chat Interface */
+        .chat-section {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border-radius: 2rem;
+            padding: 2rem;
+            margin: 2rem 0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: none;
+        }
+
+        .chat-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .chat-container {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 1rem;
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 1.5rem;
+            overflow-y: auto;
+            max-height: 500px;
+            min-height: 400px;
+        }
+
+        .message {
+            margin-bottom: 1rem;
+            display: flex;
+            animation: messageSlide 0.3s ease;
+        }
+
+        @keyframes messageSlide {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message.user {
+            justify-content: flex-end;
+        }
+
+        .message.assistant {
+            justify-content: flex-start;
+        }
+
+        .message-content {
+            max-width: 80%;
+            padding: 1rem;
+            border-radius: 1rem;
+            word-wrap: break-word;
+            white-space: pre-wrap;
+        }
+
+        .message.user .message-content {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border-bottom-right-radius: 0.25rem;
+        }
+
+        .message.assistant .message-content {
+            background: rgba(255, 255, 255, 0.1);
+            border-bottom-left-radius: 0.25rem;
+        }
+
+        .chat-input-area {
+            display: flex;
+            gap: 1rem;
+            padding: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .chat-input {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            resize: none;
+            font-family: inherit;
+        }
+
+        .chat-input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .btn {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-gold {
+            background: linear-gradient(135deg, var(--gold), #ffed4e);
+            color: #000;
+        }
+
+        .subject-selector {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 1rem;
+        }
+
+        .subject-chip {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .subject-chip:hover {
+            background: var(--primary);
+        }
+
+        .subject-chip.active {
+            background: var(--primary);
+            box-shadow: 0 0 10px rgba(99, 102, 241, 0.5);
+        }
+
+        .loader {
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-left-color: var(--accent);
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .typing-indicator {
+            display: flex;
+            gap: 0.25rem;
+            padding: 0.5rem;
+        }
+
+        .typing-indicator span {
+            width: 8px;
+            height: 8px;
+            background: white;
+            border-radius: 50%;
+            animation: typing 1.4s infinite;
+        }
+
+        .typing-indicator span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing-indicator span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes typing {
+            0%, 60%, 100% {
+                transform: translateY(0);
+                opacity: 0.4;
+            }
+            30% {
+                transform: translateY(-10px);
+                opacity: 1;
+            }
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            opacity: 0.7;
+        }
+
+        .close-btn:hover {
+            opacity: 1;
+        }
+
+        .streak-badge {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            padding: 1rem;
+            border-radius: 1rem;
+            box-shadow: 0 10px 25px rgba(245, 158, 11, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: bold;
+            animation: pulse 2s infinite;
+            z-index: 100;
+        }
+
+        .history-sidebar {
+            position: fixed;
+            left: -300px;
+            top: 0;
+            width: 300px;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            transition: left 0.3s ease;
+            z-index: 1001;
+            padding: 2rem 1rem;
+            overflow-y: auto;
+        }
+
+        .history-sidebar.open {
+            left: 0;
+        }
+
+        .history-toggle {
+            position: fixed;
+            left: 20px;
+            top: 100px;
+            background: var(--glass);
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            cursor: pointer;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2rem; }
+            .nav-links { display: none; }
+            .subjects-grid { grid-template-columns: 1fr; }
+            .chat-section { padding: 1rem; }
+            .message-content { max-width: 90%; }
+            .upgrade-btn { top: 80px; right: 10px; padding: 0.5rem 1rem; font-size: 0.875rem; }
+            .bmc-button { bottom: 10px; left: 10px; padding: 0.5rem 1rem; }
+            .streak-badge { top: 80px; right: 10px; padding: 0.5rem 0.75rem; }
+            .history-toggle { top: 80px; left: 10px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="bg-animation">
+        <span style="left:10%; animation-delay:0s;"></span>
+        <span style="left:20%; animation-delay:2s;"></span>
+        <span style="left:35%; animation-delay:4s;"></span>
+        <span style="left:50%; animation-delay:0s;"></span>
+        <span style="left:65%; animation-delay:2s;"></span>
+        <span style="left:80%; animation-delay:4s;"></span>
+        <span style="left:90%; animation-delay:0s;"></span>
+    </div>
+
+    <!-- Premium Upgrade Button -->
+    <button class="upgrade-btn" onclick="showPremiumModal()">
+        ⭐ Upgrade to Pro - $9.99/mo
+    </button>
+
+    <!-- Streak Badge -->
+    <div class="streak-badge" id="streakBadge">
+        <span>🔥</span>
+        <span id="streakCount">0</span>
+        <span>day streak</span>
+    </div>
+
+    <!-- History Toggle -->
+    <div class="history-toggle" onclick="toggleHistory()">
+        📜 History
+    </div>
+
+    <!-- History Sidebar -->
+    <div class="history-sidebar" id="historySidebar">
+        <button class="close-btn" onclick="toggleHistory()" style="position: absolute; top: 0.5rem; right: 0.5rem;">×</button>
+        <h3>📚 Conversation History</h3>
+        <div id="historyList"></div>
+        <button class="btn btn-secondary" onclick="clearHistory()" style="margin-top: 1rem; width: 100%;">Clear History</button>
+    </div>
+
+    <!-- Buy Me a Coffee -->
+    <a href="https://www.buymeacoffee.com/YOUR_USERNAME" target="_blank" class="bmc-button">
+        <span>☕</span>
+        <span>Support the project</span>
+    </a>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo">
+                <span>🤖</span>
+                <span>AI Tutor</span>
+            </div>
+            <ul class="nav-links">
+                <li><a onclick="showSection('home')">Home</a></li>
+                <li><a onclick="showSection('chat')">Chat</a></li>
+                <li><a onclick="showSection('subjects')">Subjects</a></li>
+                <li><a onclick="showSection('resources')">Resources</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Hero Section -->
+        <section id="home" class="hero">
+            <h1>🤖 Your Personal AI Tutor</h1>
+            <p>Learn anything, anytime. Get instant, personalized help in any subject.</p>
+            
+            <div class="stats-bar">
+                <div class="stat-item">
+                    <div class="stat-value" id="totalQuestions">0</div>
+                    <div class="stat-label">Questions Asked</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="streakDisplay">0</div>
+                    <div class="stat-label">Day Streak</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="subjectsMastered">0</div>
+                    <div class="stat-label">Subjects Explored</div>
+                </div>
+            </div>
+            
+            <div style="margin-top: 2rem;">
+                <button class="btn" onclick="showSection('chat')" style="font-size: 1.25rem; padding: 1rem 2rem;">
+                    Start Learning Now →
+                </button>
+            </div>
+        </section>
+
+        <!-- Email Capture -->
+        <div class="email-capture" id="emailCapture">
+            <h3>🎁 Get 10 Free AI Tutoring Sessions!</h3>
+            <p>Join 5,000+ students learning with AI Tutor</p>
+            <form id="emailForm" onsubmit="captureEmail(event)">
+                <input type="email" id="userEmail" class="email-input" placeholder="Enter your email" required>
+                <button type="submit" class="btn">Get Free Access →</button>
+            </form>
+            <p style="font-size:0.875rem;opacity:0.8;margin-top:0.5rem;">🔒 No spam. Unsubscribe anytime.</p>
+        </div>
+
+        <!-- Subjects Grid -->
+        <section id="subjects" class="subjects-grid" style="display: none;">
+            <div class="subject-card" onclick="startChat('Mathematics')">
+                <div class="subject-icon">📐</div>
+                <h3 class="subject-title">Mathematics</h3>
+                <p class="subject-desc">Algebra, Calculus, Geometry, Statistics, Trigonometry</p>
+            </div>
+            <div class="subject-card" onclick="startChat('Physics')">
+                <div class="subject-icon">⚛️</div>
+                <h3 class="subject-title">Physics</h3>
+                <p class="subject-desc">Mechanics, Thermodynamics, Quantum Physics, Electricity</p>
+            </div>
+            <div class="subject-card" onclick="startChat('Chemistry')">
+                <div class="subject-icon">🧪</div>
+                <h3 class="subject-title">Chemistry</h3>
+                <p class="subject-desc">Organic Chemistry, Biochemistry, Periodic Table, Reactions</p>
+            </div>
+            <div class="subject-card" onclick="startChat('Biology')">
+                <div class="subject-icon">🧬</div>
+                <h3 class="subject-title">Biology</h3>
+                <p class="subject-desc">Cell Biology, Genetics, Human Anatomy, Ecology</p>
+            </div>
+            <div class="subject-card" onclick="startChat('Computer Science')">
+                <div class="subject-icon">💻</div>
+                <h3 class="subject-title">Computer Science</h3>
+                <p class="subject-desc">Programming, Algorithms, Data Structures, AI, Web Dev</p>
+            </div>
+            <div class="subject-card" onclick="startChat('History')">
+                <div class="subject-icon">📜</div>
+                <h3 class="subject-title">History</h3>
+                <p class="subject-desc">World History, US History, Ancient Civilizations</p>
+            </div>
+            <div class="subject-card" onclick="startChat('Literature')">
+                <div class="subject-icon">📚</div>
+                <h3 class="subject-title">Literature</h3>
+                <p class="subject-desc">Poetry, Novels, Literary Analysis, Writing</p>
+            </div>
+            <div class="subject-card" onclick="startChat('Economics')">
+                <div class="subject-icon">📊</div>
+                <h3 class="subject-title">Economics</h3>
+                <p class="subject-desc">Microeconomics, Macroeconomics, Finance, Markets</p>
+            </div>
+            <div class="subject-card" onclick="startChat('Psychology')">
+                <div class="subject-icon">🧠</div>
+                <h3 class="subject-title">Psychology</h3>
+                <p class="subject-desc">Cognitive Psychology, Behavioral Science, Neuroscience</p>
+            </div>
+            <div class="subject-card" onclick="startChat('Languages')">
+                <div class="subject-icon">🌍</div>
+                <h3 class="subject-title">Languages</h3>
+                <p class="subject-desc">Spanish, French, Mandarin, English, Grammar</p>
+            </div>
+        </section>
+
+        <!-- Chat Section -->
+        <section id="chat" class="chat-section">
+            <div class="subject-selector" id="subjectSelector">
+                <div class="subject-chip active" data-subject="General" onclick="changeSubject('General')">💬 General</div>
+                <div class="subject-chip" data-subject="Mathematics" onclick="changeSubject('Mathematics')">📐 Math</div>
+                <div class="subject-chip" data-subject="Physics" onclick="changeSubject('Physics')">⚛️ Physics</div>
+                <div class="subject-chip" data-subject="Chemistry" onclick="changeSubject('Chemistry')">🧪 Chemistry</div>
+                <div class="subject-chip" data-subject="Biology" onclick="changeSubject('Biology')">🧬 Biology</div>
+                <div class="subject-chip" data-subject="Computer Science" onclick="changeSubject('Computer Science')">💻 CS</div>
+                <div class="subject-chip" data-subject="History" onclick="changeSubject('History')">📜 History</div>
+                <div class="subject-chip" data-subject="Literature" onclick="changeSubject('Literature')">📚 Lit</div>
+                <div class="subject-chip" data-subject="Economics" onclick="changeSubject('Economics')">📊 Econ</div>
+                <div class="subject-chip" data-subject="Psychology" onclick="changeSubject('Psychology')">🧠 Psych</div>
+                <div class="subject-chip" data-subject="Languages" onclick="changeSubject('Languages')">🌍 Languages</div>
+            </div>
+            
+            <div class="chat-container">
+                <div class="chat-messages" id="chatMessages">
+                    <div class="message assistant">
+                        <div class="message-content">
+                            👋 Hi! I'm your AI Tutor. I can help you with any subject - math, science, history, languages, and more!<br><br>
+                            What would you like to learn today?
+                        </div>
+                    </div>
+                </div>
+                <div class="chat-input-area">
+                    <textarea class="chat-input" id="chatInput" placeholder="Ask me anything... (e.g., 'Explain quantum physics', 'Help me with calculus', 'What is the French Revolution?')" rows="2" onkeypress="if(event.key==='Enter' && !event.shiftKey){event.preventDefault();sendMessage();}"></textarea>
+                    <button class="btn" onclick="sendMessage()">Send →</button>
+                </div>
+            </div>
+            <div style="margin-top: 1rem; text-align: center;">
+                <button class="btn btn-secondary" onclick="clearChat()">Clear Chat</button>
+                <button class="btn btn-secondary" onclick="showSection('home')">Back to Home</button>
+            </div>
+        </section>
+
+        <!-- Resources Section -->
+        <section id="resources" class="chat-section">
+            <h2>📚 Learning Resources</h2>
+            <div style="display: grid; gap: 1.5rem; margin: 2rem 0;">
+                <div class="subject-card" style="cursor: default;">
+                    <div class="subject-icon">🎓</div>
+                    <h3>Study Tips</h3>
+                    <p>Ask me for personalized study strategies, memorization techniques, and exam prep advice.</p>
+                </div>
+                <div class="subject-card" style="cursor: default;">
+                    <div class="subject-icon">📝</div>
+                    <h3>Essay Help</h3>
+                    <p>Get help with essay structure, thesis statements, and writing feedback.</p>
+                </div>
+                <div class="subject-card" style="cursor: default;">
+                    <div class="subject-icon">💡</div>
+                    <h3>Concept Explanations</h3>
+                    <p>I can explain complex topics in simple terms with examples and analogies.</p>
+                </div>
+            </div>
+            <button class="btn btn-secondary" onclick="showSection('home')">Back to Home</button>
+        </section>
+    </div>
+
+    <script>
+        // ==================== CONFIGURATION ====================
+        const BACKEND_URL = 'https://YOUR-BACKEND-URL.onrender.com';
+        const STRIPE_PUBLISHABLE_KEY = 'pk_test_YOUR_PUBLISHABLE_KEY';
+        
+        let stripe;
+        if (typeof Stripe !== 'undefined') {
+            stripe = Stripe(STRIPE_PUBLISHABLE_KEY);
+        }
+        
+        // ==================== STATE MANAGEMENT ====================
+        let currentSubject = 'General';
+        let chatHistory = [];
+        let isPremium = localStorage.getItem('aiTutorPremium') === 'true';
+        let streak = parseInt(localStorage.getItem('aiTutorStreak')) || 0;
+        let totalQuestions = parseInt(localStorage.getItem('totalQuestions')) || 0;
+        let subjectsUsed = JSON.parse(localStorage.getItem('subjectsUsed')) || [];
+        
+        // Load saved chat history
+        function loadChatHistory() {
+            const saved = localStorage.getItem('chatHistory');
+            if (saved) {
+                try {
+                    const parsed = JSON.parse(saved);
+                    if (Array.isArray(parsed) && parsed.length > 0) {
+                        chatHistory = parsed;
+                        renderMessages();
+                    }
+                } catch(e) {}
+            }
+        }
+        
+        function saveChatHistory() {
+            localStorage.setItem('chatHistory', JSON.stringify(chatHistory));
+            updateHistoryList();
+        }
+        
+        function renderMessages() {
+            const container = document.getElementById('chatMessages');
+            if (!container) return;
+            
+            container.innerHTML = '';
+            chatHistory.forEach(msg => {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${msg.role}`;
+                messageDiv.innerHTML = `<div class="message-content">${msg.content.replace(/\n/g, '<br>')}</div>`;
+                container.appendChild(messageDiv);
+            });
+            container.scrollTop = container.scrollHeight;
+        }
+        
+        function updateHistoryList() {
+            const historyList = document.getElementById('historyList');
+            if (!historyList) return;
+            
+            if (chatHistory.length === 0) {
+                historyList.innerHTML = '<p style="opacity:0.7;">No conversations yet. Start learning!</p>';
+                return;
+            }
+            
+            // Group by date
+            const grouped = {};
+            chatHistory.forEach((msg, index) => {
+                if (msg.role === 'user') {
+                    const date = new Date(msg.timestamp || Date.now()).toLocaleDateString();
+                    if (!grouped[date]) grouped[date] = [];
+                    grouped[date].push({ content: msg.content.substring(0, 50), index });
+                }
+            });
+            
+            historyList.innerHTML = Object.entries(grouped).map(([date, items]) => `
+                <div style="margin-bottom: 1rem;">
+                    <div style="font-size: 0.75rem; opacity: 0.7; margin-bottom: 0.5rem;">${date}</div>
+                    ${items.map(item => `
+                        <div class="subject-chip" style="display: block; margin-bottom: 0.5rem; font-size: 0.875rem;" onclick="scrollToMessage(${item.index})">
+                            ${item.content}...
+                        </div>
+                    `).join('')}
+                </div>
+            `).join('');
+        }
+        
+        function scrollToMessage(index) {
+            // This is a placeholder - you can implement full message scrolling
+            alert('Click on a message in chat to view full conversation');
+        }
+        
+        function clearChat() {
+            if (confirm('Clear all chat history?')) {
+                chatHistory = [];
+                saveChatHistory();
+                renderMessages();
+                // Add welcome message
+                addMessage('assistant', '👋 Hi! I\'m your AI Tutor. What would you like to learn today?');
+            }
+        }
+        
+        function clearHistory() {
+            if (confirm('Clear all conversation history?')) {
+                chatHistory = [];
+                saveChatHistory();
+                renderMessages();
+                addMessage('assistant', '✨ History cleared! Ready to learn something new?');
+            }
+        }
+        
+        function toggleHistory() {
+            const sidebar = document.getElementById('historySidebar');
+            sidebar.classList.toggle('open');
+        }
+        
+        // ==================== AI TUTOR FUNCTION ====================
+        async function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            
+            if (!message) return;
+            
+            // Check free tier limit
+            if (!isPremium && totalQuestions >= 10) {
+                alert("You've reached your free limit! Upgrade to Pro for unlimited AI tutoring.");
+                showPremiumModal();
+                return;
+            }
+            
+            // Add user message
+            addMessage('user', message);
+            input.value = '';
+            
+            // Show typing indicator
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'message assistant';
+            typingDiv.id = 'typingIndicator';
+            typingDiv.innerHTML = `
+                <div class="message-content">
+                    <div class="typing-indicator">
+                        <span></span><span></span><span></span>
+                    </div>
+                </div>
+            `;
+            document.getElementById('chatMessages').appendChild(typingDiv);
+            document.getElementById('chatMessages').scrollTop = document.getElementById('chatMessages').scrollHeight;
+            
+            try {
+                const response = await fetch(`${BACKEND_URL}/api/tutor`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        message: message,
+                        subject: currentSubject,
+                        conversationHistory: chatHistory.slice(-10).map(m => ({
+                            role: m.role,
+                            content: m.content
+                        }))
+                    })
+                });
+                
+                const data = await response.json();
+                
+                // Remove typing indicator
+                document.getElementById('typingIndicator')?.remove();
+                
+                if (data.reply) {
+                    addMessage('assistant', data.reply);
+                    totalQuestions++;
+                    localStorage.setItem('totalQuestions', totalQuestions);
+                    updateStats();
+                } else if (data.error) {
+                    addMessage('assistant', `⚠️ ${data.error}`);
+                }
+            } catch (error) {
+                document.getElementById('typingIndicator')?.remove();
+                addMessage('assistant', '⚠️ Network error. Please check your connection and try again.');
+            }
+        }
+        
+        function addMessage(role, content) {
+            const message = {
+                role: role,
+                content: content,
+                timestamp: Date.now(),
+                subject: currentSubject
+            };
+            chatHistory.push(message);
+            saveChatHistory();
+            renderMessages();
+        }
+        
+        function changeSubject(subject) {
+            currentSubject = subject;
+            
+            // Update UI
+            document.querySelectorAll('.subject-chip').forEach(chip => {
+                chip.classList.remove('active');
+                if (chip.dataset.subject === subject) {
+                    chip.classList.add('active');
+                }
+            });
+            
+            // Add system message
+            addMessage('assistant', `📚 I'll help you with ${subject}. What would you like to learn?`);
+            
+            // Track subject usage
+            if (!subjectsUsed.includes(subject)) {
+                subjectsUsed.push(subject);
+                localStorage.setItem('subjectsUsed', JSON.stringify(subjectsUsed));
+                updateStats();
+            }
+        }
+        
+        function startChat(subject) {
+            currentSubject = subject;
+            changeSubject(subject);
+            showSection('chat');
+        }
+        
+        // ==================== PREMIUM FEATURES ====================
+        function showPremiumModal() {
+            const modal = document.createElement('div');
+            modal.className = 'modal-overlay';
+            modal.innerHTML = `
+                <div class="modal-content">
+                    <button class="close-btn" onclick="this.closest('.modal-overlay').remove()">×</button>
+                    <div style="font-size:3rem;margin-bottom:1rem;">🚀</div>
+                    <h2>Upgrade to AI Tutor Pro</h2>
+                    <p>Unlimited learning, any subject, anytime</p>
+                    
+                    <div class="price-tag">$9.99<span style="font-size:1rem;color:#888;">/month</span></div>
+                    
+                    <ul class="feature-list">
+                        <li>✅ Unlimited questions - no daily limits</li>
+                        <li>✅ All subjects - 15+ subjects included</li>
+                        <li>✅ In-depth explanations with examples</li>
+                        <li>✅ Save and export conversations</li>
+                        <li>✅ Priority response times</li>
+                        <li>✅ Cancel anytime</li>
+                    </ul>
+                    
+                    <button onclick="startCheckout()" class="btn btn-gold" style="width:100%;padding:1rem;font-size:1.1rem;">
+                        Start 7-Day Free Trial
+                    </button>
+                    
+                    <p style="margin-top:1rem;font-size:0.875rem;opacity:0.7;">
+                        🔒 Secure payment. No commitment.
+                    </p>
+                </div>
+            `;
+            document.body.appendChild(modal);
+        }
+        
+        async function startCheckout() {
+            if (stripe) {
+                try {
+                    const response = await fetch(`${BACKEND_URL}/api/create-checkout`, {
+                        method: 'POST'
+                    });
+                    const { url } = await response.json();
+                    if (url) {
+                        window.location.href = url;
+                    } else {
+                        activatePremiumDemo();
+                    }
+                } catch (error) {
+                    activatePremiumDemo();
+                }
+            } else {
+                activatePremiumDemo();
+            }
+        }
+        
+        function activatePremiumDemo() {
+            localStorage.setItem('aiTutorPremium', 'true');
+            isPremium = true;
+            alert('🎉 Premium activated! You now have unlimited access to all subjects.');
+            document.querySelector('.modal-overlay')?.remove();
+            document.querySelector('.upgrade-btn')?.remove();
+            updateStats();
+        }
+        
+        // ==================== UI FUNCTIONS ====================
+        function showSection(section) {
+            document.getElementById('home').style.display = 'none';
+            document.getElementById('subjects').style.display = 'none';
+            document.getElementById('chat').classList.remove('active');
+            document.getElementById('resources').classList.remove('active');
+            document.getElementById('chat').style.display = 'none';
+            document.getElementById('resources').style.display = 'none';
+            
+            if (section === 'home') {
+                document.getElementById('home').style.display = 'block';
+                document.getElementById('subjects').style.display = 'grid';
+            } else if (section === 'chat') {
+                document.getElementById('chat').style.display = 'block';
+                setTimeout(() => document.getElementById('chat').classList.add('active'), 10);
+                document.getElementById('chatInput').focus();
+            } else if (section === 'subjects') {
+                document.getElementById('subjects').style.display = 'grid';
+                document.getElementById('home').style.display = 'block';
+            } else if (section === 'resources') {
+                document.getElementById('resources').style.display = 'block';
+                setTimeout(() => document.getElementById('resources').classList.add('active'), 10);
+            }
+            
+            window.scrollTo(0, 0);
+        }
+        
+        function updateStats() {
+            document.getElementById('totalQuestions').textContent = totalQuestions;
+            document.getElementById('streakDisplay').textContent = streak;
+            document.getElementById('streakCount').textContent = streak;
+            document.getElementById('subjectsMastered').textContent = subjectsUsed.length;
+        }
+        
+        // Update streak daily
+        function updateStreak() {
+            const lastActive = localStorage.getItem('lastActive');
+            const today = new Date().toDateString();
+            
+            if (lastActive !== today) {
+                const yesterday = new Date();
+                yesterday.setDate(yesterday.getDate() - 1);
+                
+                if (lastActive === yesterday.toDateString()) {
+                    streak++;
+                } else if (lastActive !== today) {
+                    streak = 1;
+                }
+                
+                localStorage.setItem('aiTutorStreak', streak);
+                localStorage.setItem('lastActive', today);
+                updateStats();
+            }
+        }
+        
+        // ==================== EMAIL CAPTURE ====================
+        async function captureEmail(event) {
+            event.preventDefault();
+            const email = document.getElementById('userEmail').value;
+            
+            if (!email) return;
+            
+            localStorage.setItem('userEmail', email);
+            localStorage.setItem('emailCaptured', 'true');
+            
+            try {
+                await fetch(`${BACKEND_URL}/api/subscribe`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, source: 'ai-tutor' })
+                });
+            } catch (error) {
+                console.log('Email saved locally');
+            }
+            
+            document.getElementById('emailCapture').style.display = 'none';
+            alert('🎉 Thanks for subscribing! Check your inbox for 10 free tutoring sessions.');
+        }
+        
+        // ==================== INITIALIZATION ====================
+        document.addEventListener('DOMContentLoaded', () => {
+            updateStats();
+            updateStreak();
+            loadChatHistory();
+            
+            // Check if email already captured
+            if (localStorage.getItem('emailCaptured')) {
+                document.getElementById('emailCapture').style.display = 'none';
+            }
+            
+            // Show email popup after 30 seconds
+            if (!localStorage.getItem('emailCaptured')) {
+                setTimeout(() => {
+                    if (Math.random() > 0.7) {
+                        const modal = document.createElement('div');
+                        modal.className = 'modal-overlay';
+                        modal.innerHTML = `
+                            <div class="modal-content">
+                                <button class="close-btn" onclick="this.closest('.modal-overlay').remove()">×</button>
+                                <div style="font-size:3rem;margin-bottom:1rem;">🎁</div>
+                                <h2>10 Free Tutoring Sessions!</h2>
+                                <p>Get started with 10 free questions in any subject</p>
+                                <form onsubmit="captureEmail(event); this.closest('.modal-overlay').remove();">
+                                    <input type="email" id="popupEmail" class="email-input" placeholder="your@email.com" required style="width:100%;margin:1rem 0;">
+                                    <button type="submit" class="btn" style="width:100%;">Claim Free Sessions</button>
+                                </form>
+                            </div>
+                        `;
+                        document.body.appendChild(modal);
+                    }
+                }, 30000);
+            }
+        });
+    </script>
+</body>
+</html>
