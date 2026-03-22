@@ -598,7 +598,7 @@
                     <div class="stat-label">Questions Asked</div>
                 </div>
                 <div class="stat-item">
-                    <div class="stat-value" id="sessionsLeft">10</div>
+                    <div class="stat-value" id="sessionsLeft">0</div>
                     <div class="stat-label">Free Sessions Left</div>
                 </div>
                 <div class="stat-item">
@@ -679,7 +679,74 @@
         let userEmail = localStorage.getItem('userEmail') || '';
         let remainingSessions = parseInt(localStorage.getItem('remainingSessions')) || 0;
         let emailVerified = localStorage.getItem('emailVerified') === 'true';
-        
+
+        // ==================== PAYPAL INTEGRATION ====================
+        async function startPayPalCheckout() {
+            const email = localStorage.getItem('userEmail') || document.getElementById('userEmail')?.value;
+            
+            if (!email) {
+                alert('Please enter your email first to upgrade to Pro.');
+                document.getElementById('emailCapture')?.scrollIntoView({ behavior: 'smooth' });
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${BACKEND_URL}/api/create-paypal-order`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: email })
+                });
+                
+                const data = await response.json();
+                
+                if (data.id) {
+                    const paypalUrl = `https://www.sandbox.paypal.com/checkoutnow?token=${data.id}`;
+                    window.location.href = paypalUrl;
+                } else {
+                    alert('Failed to create payment. Please try again.');
+                }
+            } catch (error) {
+                console.error('PayPal error:', error);
+                alert('Network error. Please try again.');
+            }
+        }
+
+        async function checkPayPalReturn() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const orderId = urlParams.get('token');
+            const payerId = urlParams.get('PayerID');
+            
+            if (orderId && payerId) {
+                const email = localStorage.getItem('userEmail');
+                
+                if (email) {
+                    try {
+                        const response = await fetch(`${BACKEND_URL}/api/capture-paypal-order`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ orderID: orderId, email: email })
+                        });
+                        
+                        const data = await response.json();
+                        
+                        if (data.success) {
+                            alert('🎉 Payment successful! You now have unlimited access to AI Tutor Pro!');
+                            localStorage.setItem('aiTutorPremium', 'true');
+                            isPremium = true;
+                            remainingSessions = Infinity;
+                            localStorage.setItem('remainingSessions', 'unlimited');
+                            updateStats();
+                            // Remove upgrade button
+                            document.querySelector('.upgrade-btn')?.remove();
+                            window.location.href = '/';
+                        }
+                    } catch (error) {
+                        console.error('Capture error:', error);
+                    }
+                }
+            }
+        }
+
         // ==================== EMAIL VERIFICATION FUNCTIONS ====================
         async function subscribeWithVerification(event) {
             event.preventDefault();
@@ -712,7 +779,6 @@
                     localStorage.setItem('pendingEmail', email);
                     
                     if (data.debugUrl) {
-                        // For testing - show the verification link directly
                         showEmailStatus(
                             `✅ Verification link created! <a href="${data.debugUrl}" target="_blank" style="color: white; text-decoration: underline;">Click here to verify</a> (Testing mode)`, 
                             'success'
@@ -734,6 +800,7 @@
                         localStorage.setItem('emailVerified', 'true');
                         remainingSessions = 10;
                         localStorage.setItem('remainingSessions', 10);
+                        emailVerified = true;
                         updateStats();
                     } else {
                         showEmailStatus(data.error || 'Failed to send verification. Please try again.', 'error');
@@ -787,17 +854,21 @@
                     userEmail = email;
                     remainingSessions = data.remainingSessions || 10;
                     emailVerified = true;
+                    isPremium = data.isPremium || false;
+                    
+                    if (isPremium) {
+                        localStorage.setItem('aiTutorPremium', 'true');
+                        document.querySelector('.upgrade-btn')?.remove();
+                    }
                     
                     document.getElementById('emailCapture').style.display = 'none';
                     updateStats();
-                    
-                    console.log('✅ Email verified! You have', remainingSessions, 'free sessions left');
                 }
             } catch(e) {
                 console.log('Email check failed:', e);
             }
         }
-        
+
         // ==================== AI TUTOR FUNCTIONS ====================
         function loadChatHistory() {
             const saved = localStorage.getItem('chatHistory');
@@ -840,13 +911,11 @@
             const message = input.value.trim();
             if (!message) return;
             
-            // Check if email is verified
             if (!emailVerified && !isPremium) {
                 alert('Please verify your email first to start learning! Check your inbox for the verification link.');
                 return;
             }
             
-            // Check free sessions
             if (!isPremium && remainingSessions <= 0) {
                 alert("You've used all your free sessions! Upgrade to Pro for unlimited access.");
                 showPremiumModal();
@@ -883,7 +952,6 @@
                     totalQuestions++;
                     localStorage.setItem('totalQuestions', totalQuestions);
                     
-                    // Update remaining sessions if not premium
                     if (!isPremium && remainingSessions > 0) {
                         remainingSessions--;
                         localStorage.setItem('remainingSessions', remainingSessions);
@@ -925,7 +993,8 @@
         
         function startChat(subject) {
             if (!emailVerified && !isPremium) {
-                alert('Please verify your email first to start learning! Check your inbox for the verification link.');
+                alert('Please verify your email first to start learning!');
+                showSection('home');
                 return;
             }
             currentSubject = subject;
@@ -950,21 +1019,15 @@
                         <li>✅ Priority response times</li>
                         <li>✅ Cancel anytime</li>
                     </ul>
-                    <button onclick="activatePremiumDemo()" class="btn btn-gold" style="width:100%;">Start Free Trial</button>
+                    <button onclick="startPayPalCheckout()" class="btn btn-gold" style="width:100%;padding:1rem;font-size:1.1rem;">
+                        💳 Pay with PayPal - $9.99/month
+                    </button>
+                    <p style="margin-top:1rem;font-size:0.875rem;opacity:0.7;">
+                        🔒 Secure payment via PayPal. Cancel anytime.
+                    </p>
                 </div>
             `;
             document.body.appendChild(modal);
-        }
-        
-        function activatePremiumDemo() {
-            localStorage.setItem('aiTutorPremium', 'true');
-            isPremium = true;
-            remainingSessions = Infinity;
-            localStorage.setItem('remainingSessions', 'unlimited');
-            alert('🎉 Premium activated! You now have unlimited access to all subjects.');
-            document.querySelector('.modal-overlay')?.remove();
-            document.querySelector('.upgrade-btn')?.remove();
-            updateStats();
         }
         
         // ==================== UI FUNCTIONS ====================
@@ -998,16 +1061,12 @@
             document.getElementById('streakDisplay').textContent = streak;
             document.getElementById('streakCount').textContent = streak;
             
-            if (!isPremium && remainingSessions !== undefined) {
-                const sessionDisplay = remainingSessions === Infinity ? '∞' : remainingSessions;
-                document.getElementById('sessionsLeft').textContent = sessionDisplay;
-                if (document.getElementById('sessionsLeft').parentElement) {
-                    document.getElementById('sessionsLeft').parentElement.style.display = 'block';
-                }
+            if (!isPremium && remainingSessions !== undefined && remainingSessions !== Infinity) {
+                document.getElementById('sessionsLeft').textContent = remainingSessions;
             } else if (isPremium) {
                 document.getElementById('sessionsLeft').textContent = '∞';
             } else {
-                document.getElementById('sessionsLeft').parentElement.style.display = 'none';
+                document.getElementById('sessionsLeft').textContent = '0';
             }
         }
         
@@ -1027,67 +1086,20 @@
         
         // ==================== INITIALIZATION ====================
         document.addEventListener('DOMContentLoaded', async () => {
+            await checkEmailVerification();
             updateStats();
             updateStreak();
             loadChatHistory();
+            checkPayPalReturn();
             
-            // Check email verification
-            await checkEmailVerification();
-            
-            // Hide email capture if already verified
             if (emailVerified || localStorage.getItem('emailVerified') === 'true') {
                 document.getElementById('emailCapture').style.display = 'none';
             }
             
-            // Show email popup after 30 seconds if not verified
-            if (!emailVerified && !localStorage.getItem('emailCaptured')) {
-                setTimeout(() => {
-                    if (Math.random() > 0.6 && !emailVerified) {
-                        const modal = document.createElement('div');
-                        modal.className = 'modal-overlay';
-                        modal.innerHTML = `
-                            <div class="modal-content">
-                                <button class="close-btn" onclick="this.closest('.modal-overlay').remove()">×</button>
-                                <div style="font-size:3rem;margin-bottom:1rem;">🎁</div>
-                                <h2>10 Free Tutoring Sessions!</h2>
-                                <p>Get started with 10 free questions in any subject</p>
-                                <input type="email" id="popupEmail" class="email-input" placeholder="your@email.com" style="width:100%;margin:1rem 0;">
-                                <button onclick="subscribeFromPopup()" class="btn" style="width:100%;">Claim Free Sessions</button>
-                            </div>
-                        `;
-                        document.body.appendChild(modal);
-                    }
-                }, 30000);
+            if (isPremium) {
+                document.querySelector('.upgrade-btn')?.remove();
             }
         });
-        
-        async function subscribeFromPopup() {
-            const email = document.getElementById('popupEmail').value;
-            if (!email || !email.includes('@')) {
-                alert('Please enter a valid email');
-                return;
-            }
-            
-            try {
-                const response = await fetch(`${BACKEND_URL}/api/subscribe`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email, source: 'popup' })
-                });
-                
-                const data = await response.json();
-                
-                if (response.ok) {
-                    localStorage.setItem('pendingEmail', email);
-                    alert('Verification email sent! Check your inbox and click the link.');
-                    document.querySelector('.modal-overlay')?.remove();
-                } else {
-                    alert(data.error || 'Something went wrong');
-                }
-            } catch(e) {
-                alert('Network error. Please try again.');
-            }
-        }
     </script>
 </body>
 </html>
