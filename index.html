@@ -2,8 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Tutor Pro - Learn Anything</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#6366f1">
+    <title>AI Tutor Pro - Smart Learning Assistant</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
@@ -15,11 +16,13 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
 
         :root {
             --primary: #6366f1;
             --primary-dark: #4f46e5;
+            --primary-light: #818cf8;
             --secondary: #ec4899;
             --accent: #06b6d4;
             --dark: #0f172a;
@@ -28,7 +31,11 @@
             --warning: #f59e0b;
             --danger: #ef4444;
             --glass: rgba(255, 255, 255, 0.1);
+            --glass-dark: rgba(0, 0, 0, 0.3);
             --gold: #ffd700;
+            --border-radius: 1rem;
+            --border-radius-lg: 1.5rem;
+            --border-radius-sm: 0.75rem;
         }
 
         body {
@@ -37,8 +44,18 @@
             min-height: 100vh;
             color: var(--light);
             overflow-x: hidden;
+            font-size: 16px;
+            line-height: 1.5;
         }
 
+        /* Responsive Typography */
+        @media (max-width: 768px) {
+            body {
+                font-size: 14px;
+            }
+        }
+
+        /* Animated Background - Optimized for performance */
         .bg-animation {
             position: fixed;
             top: 0;
@@ -79,6 +96,7 @@
             100% { transform: translateY(-1000px) rotate(720deg); opacity: 0; }
         }
 
+        /* Responsive Modal */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -91,18 +109,28 @@
             align-items: center;
             justify-content: center;
             backdrop-filter: blur(10px);
+            padding: 1rem;
         }
 
         .modal-content {
             background: linear-gradient(135deg, #1e293b, #0f172a);
-            padding: 2.5rem;
-            border-radius: 2rem;
+            padding: 2rem;
+            border-radius: var(--border-radius-lg);
             max-width: 500px;
-            width: 90%;
+            width: 100%;
             text-align: center;
             border: 2px solid var(--primary);
             position: relative;
             animation: slideUp 0.3s ease;
+        }
+
+        @media (max-width: 480px) {
+            .modal-content {
+                padding: 1.5rem;
+            }
+            .price-tag {
+                font-size: 2rem;
+            }
         }
 
         @keyframes slideUp {
@@ -136,24 +164,34 @@
             font-weight: bold;
         }
 
+        /* Premium Button - Responsive */
         .upgrade-btn {
             background: linear-gradient(135deg, var(--gold), #ffed4e);
             color: #000;
             border: none;
-            padding: 0.75rem 1.5rem;
+            padding: 0.6rem 1.2rem;
             border-radius: 2rem;
             cursor: pointer;
             font-weight: bold;
             position: fixed;
-            top: 100px;
-            right: 20px;
+            top: 1rem;
+            right: 1rem;
             z-index: 999;
             box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
             animation: pulse 2s infinite;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
-        .upgrade-btn:hover {
-            transform: scale(1.05);
+        @media (max-width: 768px) {
+            .upgrade-btn {
+                top: 0.75rem;
+                right: 0.75rem;
+                padding: 0.5rem 1rem;
+                font-size: 0.8rem;
+            }
         }
 
         @keyframes pulse {
@@ -161,10 +199,11 @@
             50% { box-shadow: 0 4px 25px rgba(255, 215, 0, 0.8); }
         }
 
+        /* Navigation - Responsive */
         nav {
             background: rgba(15, 23, 42, 0.8);
             backdrop-filter: blur(10px);
-            padding: 1rem 2rem;
+            padding: 0.8rem 1.5rem;
             position: sticky;
             top: 0;
             z-index: 1000;
@@ -177,13 +216,12 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            flex-wrap: wrap;
             gap: 1rem;
         }
 
         .logo {
-            font-size: 1.8rem;
-            font-weight: 800;
+            font-size: 1.3rem;
+            font-weight: 700;
             background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
             -webkit-background-clip: text;
             background-clip: text;
@@ -191,11 +229,21 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            white-space: nowrap;
+        }
+
+        @media (max-width: 480px) {
+            .logo {
+                font-size: 1rem;
+            }
+            .logo i {
+                font-size: 1.2rem;
+            }
         }
 
         .nav-links {
             display: flex;
-            gap: 2rem;
+            gap: 1rem;
             list-style: none;
             flex-wrap: wrap;
         }
@@ -206,8 +254,27 @@
             transition: all 0.3s;
             font-weight: 500;
             cursor: pointer;
-            padding: 0.5rem 1rem;
+            padding: 0.4rem 0.8rem;
             border-radius: 0.5rem;
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
+
+        @media (max-width: 640px) {
+            .nav-links a {
+                padding: 0.3rem 0.6rem;
+                font-size: 0.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-links {
+                gap: 0.5rem;
+            }
+            .nav-links a {
+                padding: 0.2rem 0.4rem;
+                font-size: 0.7rem;
+            }
         }
 
         .nav-links a:hover {
@@ -218,13 +285,26 @@
         .container {
             max-width: 1400px;
             margin: 0 auto;
-            padding: 2rem;
+            padding: 1.5rem;
         }
 
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+        }
+
+        /* Hero Section - Responsive */
         .hero {
             text-align: center;
-            padding: 4rem 0;
+            padding: 3rem 1rem;
             animation: fadeInUp 0.8s ease-out;
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                padding: 2rem 1rem;
+            }
         }
 
         @keyframes fadeInUp {
@@ -233,7 +313,7 @@
         }
 
         .hero h1 {
-            font-size: 4rem;
+            font-size: clamp(2rem, 5vw, 4rem);
             margin-bottom: 1rem;
             background: linear-gradient(135deg, #fff, var(--primary), var(--secondary));
             -webkit-background-clip: text;
@@ -242,56 +322,68 @@
         }
 
         .hero p {
-            font-size: 1.25rem;
+            font-size: clamp(1rem, 3vw, 1.25rem);
             opacity: 0.9;
             margin-bottom: 2rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
+        /* Stats Bar - Responsive Grid */
         .stats-bar {
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 1rem;
             margin-top: 2rem;
-            flex-wrap: wrap;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .stat-item {
             background: var(--glass);
-            padding: 1.5rem 2rem;
-            border-radius: 1.5rem;
+            padding: 1rem;
+            border-radius: var(--border-radius);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             transition: transform 0.3s;
-            min-width: 150px;
+            text-align: center;
         }
 
         .stat-item:hover {
-            transform: translateY(-5px);
+            transform: translateY(-3px);
             border-color: var(--primary);
         }
 
         .stat-value {
-            font-size: 2.5rem;
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
             font-weight: bold;
             color: var(--accent);
         }
 
         .stat-label {
-            font-size: 0.875rem;
+            font-size: 0.75rem;
             opacity: 0.8;
-            margin-top: 0.5rem;
+            margin-top: 0.25rem;
         }
 
+        /* Upload Section - Responsive */
         .upload-section {
             background: var(--glass);
             backdrop-filter: blur(10px);
-            border-radius: 2rem;
-            padding: 2rem;
-            margin: 2rem 0;
+            border-radius: var(--border-radius-lg);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
             border: 2px dashed rgba(255, 255, 255, 0.3);
-            text-align: center;
             transition: all 0.3s;
             display: none;
+        }
+
+        @media (max-width: 768px) {
+            .upload-section {
+                padding: 1rem;
+            }
         }
 
         .upload-section.active {
@@ -299,21 +391,30 @@
             animation: fadeIn 0.5s ease;
         }
 
+        /* Upload Tabs - Responsive */
         .upload-tabs {
             display: flex;
-            gap: 1rem;
+            gap: 0.8rem;
             justify-content: center;
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
             flex-wrap: wrap;
         }
 
         .upload-tab {
             background: rgba(255, 255, 255, 0.1);
-            padding: 0.8rem 1.5rem;
+            padding: 0.6rem 1.2rem;
             border-radius: 2rem;
             cursor: pointer;
             transition: all 0.3s;
             font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 480px) {
+            .upload-tab {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.8rem;
+            }
         }
 
         .upload-tab:hover {
@@ -325,32 +426,26 @@
             box-shadow: 0 0 15px rgba(99, 102, 241, 0.5);
         }
 
+        /* Upload Area */
         .upload-area {
             border: 2px dashed var(--glass);
-            border-radius: 1rem;
-            padding: 2rem;
+            border-radius: var(--border-radius);
+            padding: 2rem 1rem;
             margin: 1rem 0;
             cursor: pointer;
             transition: all 0.3s;
-        }
-
-        .upload-area:hover {
-            background: rgba(255, 255, 255, 0.05);
-            border-color: var(--accent);
+            text-align: center;
         }
 
         .upload-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
+            font-size: clamp(2rem, 6vw, 3rem);
+            margin-bottom: 0.5rem;
         }
 
-        .file-input {
-            display: none;
-        }
-
+        /* Drawing Canvas - Responsive */
         .drawing-canvas-container {
             background: rgba(0, 0, 0, 0.3);
-            border-radius: 1rem;
+            border-radius: var(--border-radius);
             padding: 1rem;
             margin: 1rem 0;
         }
@@ -366,7 +461,7 @@
 
         .drawing-tools {
             display: flex;
-            gap: 1rem;
+            gap: 0.5rem;
             justify-content: center;
             margin-top: 1rem;
             flex-wrap: wrap;
@@ -374,24 +469,25 @@
 
         .drawing-tool {
             background: rgba(255, 255, 255, 0.1);
-            padding: 0.5rem 1rem;
+            padding: 0.4rem 0.8rem;
             border-radius: 0.5rem;
             cursor: pointer;
             transition: all 0.3s;
-        }
-
-        .drawing-tool:hover {
-            background: var(--primary);
+            font-size: 0.8rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
         }
 
         .color-picker {
-            width: 40px;
-            height: 40px;
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
             cursor: pointer;
             border: 2px solid white;
         }
 
+        /* Document List - Responsive */
         .document-list {
             margin-top: 1rem;
             max-height: 400px;
@@ -400,25 +496,31 @@
 
         .document-item {
             background: rgba(255, 255, 255, 0.1);
-            padding: 1rem;
-            border-radius: 1rem;
+            padding: 0.8rem;
+            border-radius: var(--border-radius-sm);
             margin-bottom: 0.5rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
         }
 
         .document-info {
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: 0.8rem;
             flex: 1;
-            text-align: left;
+            min-width: 150px;
         }
 
         .document-info i {
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             color: var(--accent);
+        }
+
+        .document-info strong {
+            font-size: 0.9rem;
         }
 
         .document-actions {
@@ -431,45 +533,24 @@
             border: none;
             color: white;
             cursor: pointer;
-            padding: 0.5rem;
-            border-radius: 0.5rem;
+            padding: 0.4rem;
+            border-radius: 0.4rem;
             transition: all 0.3s;
         }
 
-        .document-actions button:hover {
-            background: var(--primary);
-        }
-
-        .analysis-result {
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 1rem;
-            padding: 1rem;
-            margin-top: 1rem;
-            text-align: left;
-            max-height: 300px;
-            overflow-y: auto;
-        }
-
-        .quiz-panel {
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 1rem;
-            padding: 1.5rem;
-            margin-top: 1rem;
-            display: none;
-        }
-
+        /* Subjects Grid - Responsive */
         .subjects-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
-            margin: 3rem 0;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
         }
 
         .subject-card {
             background: var(--glass);
             backdrop-filter: blur(10px);
-            border-radius: 1.5rem;
-            padding: 1.8rem;
+            border-radius: var(--border-radius);
+            padding: 1.2rem;
             border: 1px solid rgba(255, 255, 255, 0.1);
             transition: all 0.3s ease;
             cursor: pointer;
@@ -477,35 +558,42 @@
         }
 
         .subject-card:hover {
-            transform: translateY(-10px);
+            transform: translateY(-5px);
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
             border-color: var(--primary);
         }
 
         .subject-icon {
-            font-size: 3.5rem;
-            margin-bottom: 1rem;
+            font-size: clamp(2rem, 5vw, 3rem);
+            margin-bottom: 0.5rem;
         }
 
         .subject-title {
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
+            font-size: clamp(1rem, 4vw, 1.25rem);
+            margin-bottom: 0.3rem;
             font-weight: 600;
         }
 
         .subject-desc {
             opacity: 0.8;
-            font-size: 0.9rem;
+            font-size: 0.8rem;
         }
 
+        /* Chat Section - Responsive */
         .chat-section {
             background: var(--glass);
             backdrop-filter: blur(10px);
-            border-radius: 2rem;
-            padding: 2rem;
-            margin: 2rem 0;
+            border-radius: var(--border-radius-lg);
+            padding: 1rem;
+            margin: 1.5rem 0;
             border: 1px solid rgba(255, 255, 255, 0.1);
             display: none;
+        }
+
+        @media (max-width: 768px) {
+            .chat-section {
+                padding: 0.8rem;
+            }
         }
 
         .chat-section.active {
@@ -515,58 +603,49 @@
 
         .subject-selector {
             display: flex;
-            gap: 0.75rem;
+            gap: 0.5rem;
             flex-wrap: wrap;
-            margin-bottom: 1.5rem;
-            padding: 1rem;
+            margin-bottom: 1rem;
+            padding: 0.8rem;
             background: rgba(0, 0, 0, 0.2);
-            border-radius: 1rem;
+            border-radius: var(--border-radius);
         }
 
         .subject-chip {
             background: rgba(255, 255, 255, 0.1);
-            padding: 0.6rem 1.2rem;
+            padding: 0.4rem 0.8rem;
             border-radius: 2rem;
             cursor: pointer;
             transition: all 0.3s;
-            font-size: 0.875rem;
+            font-size: 0.75rem;
             font-weight: 500;
         }
 
-        .subject-chip:hover {
-            background: var(--primary);
-            transform: scale(1.05);
-        }
-
-        .subject-chip.active {
-            background: var(--primary);
-            box-shadow: 0 0 15px rgba(99, 102, 241, 0.5);
+        @media (max-width: 480px) {
+            .subject-chip {
+                padding: 0.3rem 0.6rem;
+                font-size: 0.7rem;
+            }
         }
 
         .chat-container {
             background: rgba(0, 0, 0, 0.2);
-            border-radius: 1.5rem;
+            border-radius: var(--border-radius);
             display: flex;
             flex-direction: column;
         }
 
         .chat-messages {
             flex: 1;
-            padding: 1.5rem;
+            padding: 1rem;
             overflow-y: auto;
-            max-height: 500px;
-            min-height: 450px;
+            max-height: 450px;
+            min-height: 350px;
         }
 
         .message {
-            margin-bottom: 1rem;
+            margin-bottom: 0.8rem;
             display: flex;
-            animation: messageSlide 0.3s ease;
-        }
-
-        @keyframes messageSlide {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
         }
 
         .message.user {
@@ -578,12 +657,21 @@
         }
 
         .message-content {
-            max-width: 75%;
-            padding: 1rem 1.2rem;
-            border-radius: 1.2rem;
+            max-width: 85%;
+            padding: 0.8rem 1rem;
+            border-radius: 1rem;
             word-wrap: break-word;
             white-space: pre-wrap;
-            line-height: 1.5;
+            line-height: 1.4;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 480px) {
+            .message-content {
+                max-width: 90%;
+                padding: 0.6rem 0.8rem;
+                font-size: 0.85rem;
+            }
         }
 
         .message.user .message-content {
@@ -597,19 +685,19 @@
         }
 
         .message-time {
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             opacity: 0.6;
-            margin-top: 0.3rem;
+            margin-top: 0.2rem;
             text-align: right;
         }
 
         .chat-input-area {
             display: flex;
-            gap: 1rem;
-            padding: 1.2rem;
+            gap: 0.8rem;
+            padding: 0.8rem;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
             background: rgba(0, 0, 0, 0.2);
-            border-radius: 0 0 1.5rem 1.5rem;
+            border-radius: 0 0 var(--border-radius) var(--border-radius);
         }
 
         .chat-input {
@@ -617,50 +705,191 @@
             background: rgba(255, 255, 255, 0.1);
             border: 2px solid rgba(255, 255, 255, 0.2);
             color: white;
-            padding: 1rem;
-            border-radius: 1rem;
-            font-size: 1rem;
+            padding: 0.8rem;
+            border-radius: 0.8rem;
+            font-size: 0.9rem;
             resize: none;
             font-family: inherit;
         }
 
-        .chat-input:focus {
-            outline: none;
-            border-color: var(--accent);
-            background: rgba(255, 255, 255, 0.15);
+        @media (max-width: 480px) {
+            .chat-input {
+                padding: 0.6rem;
+                font-size: 0.85rem;
+            }
         }
 
         .btn {
             background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             color: white;
             border: none;
-            padding: 0.8rem 1.8rem;
-            font-size: 1rem;
-            border-radius: 1rem;
+            padding: 0.6rem 1.2rem;
+            font-size: 0.9rem;
+            border-radius: 0.8rem;
             cursor: pointer;
             transition: all 0.3s;
             font-weight: 600;
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
+            white-space: nowrap;
         }
 
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
+        @media (max-width: 480px) {
+            .btn {
+                padding: 0.5rem 0.8rem;
+                font-size: 0.8rem;
+            }
         }
 
         .btn-secondary {
             background: rgba(255, 255, 255, 0.1);
         }
 
-        .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
-
         .btn-gold {
             background: linear-gradient(135deg, var(--gold), #ffed4e);
             color: #000;
+        }
+
+        /* Quick Actions - Responsive */
+        .quick-actions {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin: 0.8rem 0;
+            justify-content: center;
+        }
+
+        .quick-action {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.4rem 0.8rem;
+            border-radius: 2rem;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--success);
+            color: white;
+            padding: 0.8rem 1.2rem;
+            border-radius: 0.8rem;
+            animation: slideIn 0.3s ease;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            font-size: 0.85rem;
+            max-width: 90%;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        /* Analysis Result */
+        .analysis-result {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: var(--border-radius);
+            padding: 1rem;
+            margin-top: 1rem;
+            text-align: left;
+            max-height: 300px;
+            overflow-y: auto;
+            font-size: 0.85rem;
+        }
+
+        .analysis-result h4 {
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+
+        /* Email Capture - Responsive */
+        .email-capture {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            margin: 1.5rem 0;
+            text-align: center;
+        }
+
+        .email-input {
+            padding: 0.7rem 1rem;
+            border-radius: 0.8rem;
+            border: none;
+            width: 280px;
+            max-width: 100%;
+            margin-right: 0.5rem;
+            font-size: 0.9rem;
+            background: white;
+            color: #333;
+        }
+
+        @media (max-width: 560px) {
+            .email-input {
+                width: 100%;
+                margin-right: 0;
+                margin-bottom: 0.5rem;
+            }
+        }
+
+        /* Streak Badge - Responsive */
+        .streak-badge {
+            position: fixed;
+            top: 1rem;
+            left: 1rem;
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            padding: 0.5rem 0.8rem;
+            border-radius: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-weight: bold;
+            z-index: 100;
+            font-size: 0.8rem;
+        }
+
+        @media (max-width: 768px) {
+            .streak-badge {
+                top: 0.75rem;
+                left: 0.75rem;
+                padding: 0.4rem 0.6rem;
+                font-size: 0.7rem;
+            }
+        }
+
+        /* Progress Bar */
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 2px;
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--accent);
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        .loader {
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            border-left-color: var(--accent);
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
 
         .typing-indicator {
@@ -679,21 +908,7 @@
 
         @keyframes typing {
             0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
-            30% { transform: translateY(-10px); opacity: 1; }
-        }
-
-        .loader {
-            border: 3px solid rgba(255, 255, 255, 0.1);
-            border-left-color: var(--accent);
-            border-radius: 50%;
-            width: 24px;
-            height: 24px;
-            animation: spin 1s linear infinite;
-            display: inline-block;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
+            30% { transform: translateY(-8px); opacity: 1; }
         }
 
         .close-btn {
@@ -703,122 +918,34 @@
             background: none;
             border: none;
             color: white;
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             cursor: pointer;
             opacity: 0.7;
         }
 
-        .close-btn:hover {
-            opacity: 1;
-        }
-
-        .streak-badge {
-            position: fixed;
-            top: 100px;
-            right: 20px;
-            background: linear-gradient(135deg, #f59e0b, #d97706);
-            padding: 0.8rem 1.2rem;
-            border-radius: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-weight: bold;
-            z-index: 100;
-        }
-
-        .email-capture {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            padding: 2.5rem;
-            border-radius: 1.5rem;
-            margin: 2rem 0;
-            text-align: center;
-        }
-
-        .email-input {
-            padding: 0.8rem 1.2rem;
-            border-radius: 1rem;
-            border: none;
-            width: 300px;
-            margin-right: 0.5rem;
-            font-size: 1rem;
-            background: white;
-            color: #333;
-        }
-
         .feedback {
             margin-top: 1rem;
-            padding: 1rem;
+            padding: 0.8rem;
             border-radius: 0.5rem;
             font-weight: 500;
+            font-size: 0.85rem;
         }
 
-        .quick-actions {
-            display: flex;
-            gap: 0.8rem;
-            flex-wrap: wrap;
-            margin: 1rem 0;
-            justify-content: center;
+        .feedback.correct {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--success);
         }
 
-        .quick-action {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 0.5rem 1rem;
-            border-radius: 2rem;
-            font-size: 0.8rem;
-            cursor: pointer;
-            transition: all 0.3s;
+        .feedback.incorrect {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
         }
 
-        .quick-action:hover {
-            background: var(--primary);
-            transform: scale(1.05);
-        }
-
-        .toast {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: var(--success);
-            color: white;
-            padding: 1rem 1.5rem;
-            border-radius: 1rem;
-            animation: slideIn 0.3s ease;
-            z-index: 1000;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-        }
-
-        @keyframes slideIn {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-
-        .progress-bar {
-            width: 100%;
-            height: 4px;
-            background: rgba(255,255,255,0.2);
-            border-radius: 2px;
-            overflow: hidden;
-            margin-top: 1rem;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: var(--accent);
-            width: 0%;
-            transition: width 0.3s;
-        }
-
-        @media (max-width: 768px) {
-            .hero h1 { font-size: 2rem; }
-            .nav-links { display: none; }
-            .subjects-grid { grid-template-columns: 1fr; }
-            .chat-section { padding: 1rem; }
-            .message-content { max-width: 90%; }
-            .upgrade-btn { top: 80px; right: 10px; padding: 0.5rem 1rem; font-size: 0.875rem; }
-            .streak-badge { top: 80px; right: 10px; padding: 0.5rem 0.75rem; }
-            .email-input { width: 100%; margin-bottom: 0.5rem; }
-            .stat-item { padding: 1rem; }
-            .stat-value { font-size: 1.5rem; }
+        /* Hide elements on mobile when needed */
+        @media (max-width: 480px) {
+            .hide-on-mobile {
+                display: none;
+            }
         }
     </style>
 </head>
@@ -834,13 +961,13 @@
     </div>
 
     <button class="upgrade-btn" onclick="showPremiumModal()">
-        <i class="fas fa-crown"></i> Upgrade to Pro - $9.99/mo
+        <i class="fas fa-crown"></i> <span class="hide-on-mobile">Upgrade to Pro</span> <span class="show-on-mobile">Pro</span> - $9.99
     </button>
 
     <div class="streak-badge" id="streakBadge">
         <i class="fas fa-fire"></i>
         <span id="streakCount">0</span>
-        <span>day streak</span>
+        <span>day</span>
     </div>
 
     <nav>
@@ -850,10 +977,10 @@
                 <span>AI Tutor Pro</span>
             </div>
             <ul class="nav-links">
-                <li><a onclick="showSection('home')"><i class="fas fa-home"></i> Home</a></li>
-                <li><a onclick="showSection('upload')"><i class="fas fa-upload"></i> Upload</a></li>
-                <li><a onclick="showSection('chat')"><i class="fas fa-comment-dots"></i> Chat</a></li>
-                <li><a onclick="showSection('subjects')"><i class="fas fa-book"></i> Subjects</a></li>
+                <li><a onclick="showSection('home')"><i class="fas fa-home"></i> <span class="hide-on-mobile">Home</span></a></li>
+                <li><a onclick="showSection('upload')"><i class="fas fa-upload"></i> <span class="hide-on-mobile">Upload</span></a></li>
+                <li><a onclick="showSection('chat')"><i class="fas fa-comment-dots"></i> <span class="hide-on-mobile">Chat</span></a></li>
+                <li><a onclick="showSection('subjects')"><i class="fas fa-book"></i> <span class="hide-on-mobile">Subjects</span></a></li>
             </ul>
         </div>
     </nav>
@@ -861,15 +988,15 @@
     <div class="container">
         <section id="home" class="hero">
             <h1><i class="fas fa-robot"></i> Your Personal AI Tutor</h1>
-            <p>Upload past papers, draw geometry, and get AI-powered help for any subject!</p>
+            <p>Upload past papers, draw geometry, and get AI-powered help for any subject</p>
             <div class="stats-bar">
                 <div class="stat-item">
                     <div class="stat-value" id="totalQuestions">0</div>
-                    <div class="stat-label">Questions Asked</div>
+                    <div class="stat-label">Questions</div>
                 </div>
                 <div class="stat-item">
                     <div class="stat-value" id="sessionsLeft">0</div>
-                    <div class="stat-label">Free Sessions Left</div>
+                    <div class="stat-label">Free Sessions</div>
                 </div>
                 <div class="stat-item">
                     <div class="stat-value" id="documentsCount">0</div>
@@ -880,45 +1007,45 @@
                     <div class="stat-label">Day Streak</div>
                 </div>
             </div>
-            <div style="margin-top: 2rem;">
-                <button class="btn" onclick="showSection('upload')" style="font-size: 1.25rem; padding: 1rem 2rem; margin-right: 1rem;">
+            <div style="margin-top: 1.5rem; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <button class="btn" onclick="showSection('upload')">
                     <i class="fas fa-upload"></i> Upload / Draw
                 </button>
-                <button class="btn" onclick="showSection('chat')" style="font-size: 1.25rem; padding: 1rem 2rem;">
-                    <i class="fas fa-play"></i> Start Learning →
+                <button class="btn" onclick="showSection('chat')">
+                    <i class="fas fa-play"></i> Start Learning
                 </button>
             </div>
         </section>
 
         <div class="email-capture" id="emailCapture">
-            <i class="fas fa-gift" style="font-size: 2rem; margin-bottom: 1rem;"></i>
-            <h3>🎁 Get 10 Free AI Tutoring Sessions!</h3>
+            <i class="fas fa-gift" style="font-size: 1.8rem; margin-bottom: 0.5rem;"></i>
+            <h3>🎁 Get 10 Free Sessions!</h3>
             <p>Join students learning with AI Tutor Pro</p>
             <form id="emailForm" onsubmit="subscribeWithVerification(event)">
-                <input type="email" id="userEmail" class="email-input" placeholder="Enter your email address" required>
-                <button type="submit" class="btn" id="subscribeBtn"><i class="fas fa-envelope"></i> Get Free Access →</button>
+                <input type="email" id="userEmail" class="email-input" placeholder="Enter your email" required>
+                <button type="submit" class="btn" id="subscribeBtn"><i class="fas fa-envelope"></i> Get Free Access</button>
             </form>
-            <div id="emailStatus" style="margin-top: 1rem; display: none;"></div>
-            <p style="font-size:0.875rem;opacity:0.8;margin-top:0.5rem;">
+            <div id="emailStatus" style="margin-top: 0.8rem; display: none;"></div>
+            <p style="font-size:0.75rem;opacity:0.8;margin-top:0.5rem;">
                 <i class="fas fa-lock"></i> No spam. Unsubscribe anytime.
             </p>
         </div>
 
         <!-- Upload Section -->
         <section id="upload" class="upload-section">
-            <h2><i class="fas fa-upload"></i> Upload or Draw</h2>
+            <h2 style="font-size: 1.3rem;"><i class="fas fa-upload"></i> Upload or Draw</h2>
             
             <div class="upload-tabs">
-                <div class="upload-tab active" onclick="switchUploadTab('file')"><i class="fas fa-file-alt"></i> Upload File</div>
-                <div class="upload-tab" onclick="switchUploadTab('draw')"><i class="fas fa-draw-polygon"></i> Draw Geometry</div>
+                <div class="upload-tab active" onclick="switchUploadTab('file')"><i class="fas fa-file-alt"></i> File</div>
+                <div class="upload-tab" onclick="switchUploadTab('draw')"><i class="fas fa-draw-polygon"></i> Draw</div>
             </div>
 
             <!-- File Upload Tab -->
             <div id="fileUploadTab">
                 <div class="upload-area" onclick="document.getElementById('fileInput').click()">
                     <i class="fas fa-cloud-upload-alt upload-icon"></i>
-                    <p>Click or drag & drop your PDF/TXT files here</p>
-                    <p style="font-size: 0.8rem; opacity: 0.7;">Supported: PDF, TXT (max 10MB)</p>
+                    <p>Click or drag & drop PDF/TXT files</p>
+                    <p style="font-size: 0.75rem; opacity: 0.7;">Max 10MB</p>
                     <div id="uploadProgress" class="progress-bar" style="display: none;">
                         <div class="progress-fill" id="progressFill"></div>
                     </div>
@@ -934,14 +1061,14 @@
                         <div class="drawing-tool" onclick="setDrawingTool('pen')"><i class="fas fa-pen"></i> Pen</div>
                         <div class="drawing-tool" onclick="setDrawingTool('line')"><i class="fas fa-chart-line"></i> Line</div>
                         <div class="drawing-tool" onclick="setDrawingTool('circle')"><i class="fas fa-circle"></i> Circle</div>
-                        <div class="drawing-tool" onclick="setDrawingTool('rectangle')"><i class="fas fa-square"></i> Rectangle</div>
+                        <div class="drawing-tool" onclick="setDrawingTool('rectangle')"><i class="fas fa-square"></i> Rect</div>
                         <div class="drawing-tool" onclick="setDrawingTool('eraser')"><i class="fas fa-eraser"></i> Eraser</div>
                         <input type="color" id="drawColor" class="color-picker" value="#6366f1">
                         <div class="drawing-tool" onclick="clearCanvas()"><i class="fas fa-trash"></i> Clear</div>
                     </div>
-                    <div style="margin-top: 1rem; display: flex; gap: 1rem; justify-content: center;">
-                        <button class="btn" onclick="analyzeDrawing()"><i class="fas fa-chart-line"></i> Analyze Geometry</button>
-                        <button class="btn btn-secondary" onclick="saveDrawing()"><i class="fas fa-save"></i> Save Drawing</button>
+                    <div style="margin-top: 0.8rem; display: flex; gap: 0.8rem; justify-content: center; flex-wrap: wrap;">
+                        <button class="btn" onclick="analyzeDrawing()"><i class="fas fa-chart-line"></i> Analyze</button>
+                        <button class="btn btn-secondary" onclick="saveDrawing()"><i class="fas fa-save"></i> Save</button>
                     </div>
                 </div>
             </div>
@@ -952,25 +1079,25 @@
                 <div class="analysis-result" id="analysisResult"></div>
             </div>
 
-            <div id="quizPanel" class="quiz-panel">
+            <div id="quizPanel" class="quiz-panel" style="display: none;">
                 <h3><i class="fas fa-question-circle"></i> Practice Quiz</h3>
                 <div id="quizQuestions"></div>
-                <div id="quizResult" style="margin-top: 1rem;"></div>
-                <button class="btn btn-secondary" onclick="generateNewQuiz()" style="margin-top: 1rem;"><i class="fas fa-sync-alt"></i> Generate New Quiz</button>
+                <div id="quizResult"></div>
+                <button class="btn btn-secondary" onclick="generateNewQuiz()" style="margin-top: 0.8rem;"><i class="fas fa-sync-alt"></i> New Quiz</button>
             </div>
 
             <div style="margin-top: 1rem;">
-                <button class="btn btn-secondary" onclick="showSection('home')"><i class="fas fa-home"></i> Back to Home</button>
+                <button class="btn btn-secondary" onclick="showSection('home')"><i class="fas fa-home"></i> Back</button>
             </div>
         </section>
 
         <section id="subjects" class="subjects-grid" style="display: none;">
-            <div class="subject-card" onclick="startChat('Mathematics')"><div class="subject-icon">📐</div><h3>Mathematics</h3><p class="subject-desc">Algebra, Calculus, Geometry, Statistics</p></div>
+            <div class="subject-card" onclick="startChat('Mathematics')"><div class="subject-icon">📐</div><h3>Mathematics</h3><p class="subject-desc">Algebra, Calculus, Geometry</p></div>
             <div class="subject-card" onclick="startChat('Physics')"><div class="subject-icon">⚛️</div><h3>Physics</h3><p class="subject-desc">Mechanics, Quantum, Electricity</p></div>
-            <div class="subject-card" onclick="startChat('Chemistry')"><div class="subject-icon">🧪</div><h3>Chemistry</h3><p class="subject-desc">Organic, Reactions, Periodic Table</p></div>
-            <div class="subject-card" onclick="startChat('Biology')"><div class="subject-icon">🧬</div><h3>Biology</h3><p class="subject-desc">Cell Biology, Genetics, Anatomy</p></div>
-            <div class="subject-card" onclick="startChat('Computer Science')"><div class="subject-icon">💻</div><h3>Computer Science</h3><p class="subject-desc">Programming, Algorithms, AI</p></div>
-            <div class="subject-card" onclick="startChat('History')"><div class="subject-icon">📜</div><h3>History</h3><p class="subject-desc">World History, US History</p></div>
+            <div class="subject-card" onclick="startChat('Chemistry')"><div class="subject-icon">🧪</div><h3>Chemistry</h3><p class="subject-desc">Organic, Reactions</p></div>
+            <div class="subject-card" onclick="startChat('Biology')"><div class="subject-icon">🧬</div><h3>Biology</h3><p class="subject-desc">Genetics, Anatomy</p></div>
+            <div class="subject-card" onclick="startChat('Computer Science')"><div class="subject-icon">💻</div><h3>Computer Science</h3><p class="subject-desc">Programming, AI</p></div>
+            <div class="subject-card" onclick="startChat('History')"><div class="subject-icon">📜</div><h3>History</h3><p class="subject-desc">World History</p></div>
         </section>
 
         <section id="chat" class="chat-section">
@@ -978,35 +1105,33 @@
                 <div class="subject-chip active" onclick="changeSubject('General')">💬 General</div>
                 <div class="subject-chip" onclick="changeSubject('Mathematics')">📐 Math</div>
                 <div class="subject-chip" onclick="changeSubject('Physics')">⚛️ Physics</div>
-                <div class="subject-chip" onclick="changeSubject('Chemistry')">🧪 Chemistry</div>
-                <div class="subject-chip" onclick="changeSubject('Biology')">🧬 Biology</div>
+                <div class="subject-chip" onclick="changeSubject('Chemistry')">🧪 Chem</div>
+                <div class="subject-chip" onclick="changeSubject('Biology')">🧬 Bio</div>
                 <div class="subject-chip" onclick="changeSubject('Computer Science')">💻 CS</div>
-                <div class="subject-chip" onclick="changeSubject('History')">📜 History</div>
             </div>
             <div class="chat-container">
                 <div class="chat-messages" id="chatMessages">
                     <div class="message assistant">
                         <div class="message-content">
-                            👋 Hi! I'm your AI Tutor Pro.<br><br>
-                            I can help with any subject! Upload files, draw geometry diagrams, and I'll analyze them.<br><br>
-                            What would you like to learn today?
+                            👋 Hi! I'm your AI Tutor.<br><br>
+                            Ask me anything about any subject!
                         </div>
                     </div>
                 </div>
                 <div class="quick-actions">
-                    <span class="quick-action" onclick="setQuickQuestion('Explain quantum physics')">🔬 Quantum Physics</span>
-                    <span class="quick-action" onclick="setQuickQuestion('What is the Pythagorean theorem?')">📐 Pythagorean Theorem</span>
-                    <span class="quick-action" onclick="setQuickQuestion('How to calculate area of a circle?')">⚪ Circle Area</span>
-                    <span class="quick-action" onclick="setQuickQuestion('Explain photosynthesis')">🌱 Photosynthesis</span>
+                    <span class="quick-action" onclick="setQuickQuestion('Explain quantum physics')">🔬 Quantum</span>
+                    <span class="quick-action" onclick="setQuickQuestion('Pythagorean theorem?')">📐 Pythagoras</span>
+                    <span class="quick-action" onclick="setQuickQuestion('Circle area formula?')">⚪ Circle Area</span>
+                    <span class="quick-action" onclick="setQuickQuestion('Photosynthesis?')">🌱 Photosynthesis</span>
                 </div>
                 <div class="chat-input-area">
-                    <textarea class="chat-input" id="chatInput" placeholder="Ask me anything..." rows="2" onkeypress="if(event.key==='Enter' && !event.shiftKey){event.preventDefault();sendMessage();}"></textarea>
+                    <textarea class="chat-input" id="chatInput" placeholder="Ask me anything..." rows="1" onkeypress="if(event.key==='Enter' && !event.shiftKey){event.preventDefault();sendMessage();}"></textarea>
                     <button class="btn" onclick="sendMessage()"><i class="fas fa-paper-plane"></i> Send</button>
                 </div>
             </div>
-            <div style="margin-top: 1rem; text-align: center;">
-                <button class="btn btn-secondary" onclick="clearChat()"><i class="fas fa-trash"></i> Clear Chat</button>
-                <button class="btn btn-secondary" onclick="showSection('home')"><i class="fas fa-home"></i> Back to Home</button>
+            <div style="margin-top: 0.8rem; text-align: center; display: flex; gap: 0.8rem; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-secondary" onclick="clearChat()"><i class="fas fa-trash"></i> Clear</button>
+                <button class="btn btn-secondary" onclick="showSection('home')"><i class="fas fa-home"></i> Back</button>
             </div>
         </section>
     </div>
@@ -1184,7 +1309,7 @@
             const imageData = canvas.toDataURL('image/png');
             showToast('Analyzing geometry...', 'info');
             
-            const prompt = `Please analyze this geometry diagram. Describe what shapes you see, identify geometric properties, and provide a detailed analysis including what concepts apply. This is a drawing of a geometry diagram.`;
+            const prompt = `Please analyze this geometry diagram. Describe what shapes you see, identify geometric properties, and provide a detailed analysis. This is a drawing of a geometry diagram.`;
 
             try {
                 const response = await fetch(`${BACKEND_URL}/api/tutor`, {
@@ -1344,7 +1469,7 @@ Content: ${doc.content.substring(0, 3000)}`;
             if (!container) return;
             
             if (uploadedDocuments.length === 0) {
-                container.innerHTML = '<p style="text-align: center;"><i class="fas fa-folder-open"></i> No documents yet. Upload files or draw geometry!</p>';
+                container.innerHTML = '<p style="text-align: center;"><i class="fas fa-folder-open"></i> No documents yet</p>';
                 return;
             }
             
@@ -1353,8 +1478,7 @@ Content: ${doc.content.substring(0, 3000)}`;
                     <div class="document-info">
                         <i class="fas fa-${doc.isDrawing ? 'draw-polygon' : 'file-alt'}"></i>
                         <div>
-                            <strong>${doc.name.substring(0, 40)}</strong><br>
-                            <small>${new Date(doc.uploadedAt).toLocaleDateString()}</small>
+                            <strong>${doc.name.substring(0, 35)}</strong>
                         </div>
                     </div>
                     <div class="document-actions">
@@ -1370,7 +1494,7 @@ Content: ${doc.content.substring(0, 3000)}`;
             if (!doc) return;
             showSection('chat');
             setTimeout(() => {
-                document.getElementById('chatInput').value = `I uploaded "${doc.name}". Can you help me understand the key concepts?`;
+                document.getElementById('chatInput').value = `I uploaded "${doc.name}". Can you help me understand it?`;
                 sendMessage();
             }, 500);
         }
@@ -1427,7 +1551,7 @@ Content: ${doc.content.substring(0, 3000)}`;
             chatHistory.forEach(msg => {
                 const div = document.createElement('div');
                 div.className = `message ${msg.role}`;
-                const time = new Date(msg.timestamp).toLocaleTimeString();
+                const time = new Date(msg.timestamp).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
                 div.innerHTML = `<div class="message-content">${msg.content.replace(/\n/g, '<br>')}<div class="message-time">${time}</div></div>`;
                 container.appendChild(div);
             });
@@ -1435,11 +1559,11 @@ Content: ${doc.content.substring(0, 3000)}`;
         }
         
         function clearChat() {
-            if (confirm('Clear all chat history?')) {
+            if (confirm('Clear chat history?')) {
                 chatHistory = [];
                 saveChatHistory();
                 renderMessages();
-                addMessage('assistant', '👋 Hi! I\'m your AI Tutor Pro. What would you like to learn today?');
+                addMessage('assistant', '👋 Hi! Ready to learn?');
                 showToast('Chat cleared', 'success');
             }
         }
@@ -1473,7 +1597,7 @@ Content: ${doc.content.substring(0, 3000)}`;
             let contextMessage = message;
             if (uploadedDocuments.length > 0) {
                 const docContext = uploadedDocuments.map(doc => `[Document: ${doc.name}]`).join(', ');
-                contextMessage = `${message}\n\n[Context: I have uploaded ${uploadedDocuments.length} document(s): ${docContext}]`;
+                contextMessage = `${message}\n\n[Context: ${uploadedDocuments.length} document(s): ${docContext}]`;
             }
             
             try {
@@ -1507,7 +1631,7 @@ Content: ${doc.content.substring(0, 3000)}`;
                 }
             } catch (error) {
                 document.getElementById('typingIndicator')?.remove();
-                addMessage('assistant', '⚠️ Network error. Please check your connection.');
+                addMessage('assistant', '⚠️ Network error. Please try again.');
             }
         }
         
@@ -1543,18 +1667,18 @@ Content: ${doc.content.substring(0, 3000)}`;
         function startPayPalCheckout() {
             const email = localStorage.getItem('userEmail') || document.getElementById('userEmail')?.value;
             if (!email) {
-                showToast('Please enter your email first', 'warning');
+                showToast('Enter your email first', 'warning');
                 return;
             }
             localStorage.setItem('paymentEmail', email);
             const paypalUrl = `https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=${encodeURIComponent(PAYPAL_EMAIL)}&item_name=AI Tutor Pro&amount=9.99&currency_code=USD&return=https://innocent200509.github.io/Universal-AI-Tutor/success.html&cancel_return=https://innocent200509.github.io/Universal-AI-Tutor/&custom=${encodeURIComponent(email)}`;
             window.open(paypalUrl, '_blank');
-            showToast('PayPal opened. Complete payment to activate.', 'info');
+            showToast('PayPal opened. Complete payment.', 'info');
         }
         
         function manualActivatePremium() {
             const email = localStorage.getItem('paymentEmail') || localStorage.getItem('userEmail');
-            if (email && confirm('Did you complete payment?')) {
+            if (email && confirm('Completed payment?')) {
                 localStorage.setItem('aiTutorPremium', 'true');
                 isPremium = true;
                 remainingSessions = Infinity;
@@ -1570,13 +1694,13 @@ Content: ${doc.content.substring(0, 3000)}`;
             event.preventDefault();
             const email = document.getElementById('userEmail').value;
             if (!email || !email.includes('@')) {
-                showToast('Please enter a valid email', 'warning');
+                showToast('Enter a valid email', 'warning');
                 return;
             }
             
             const subscribeBtn = document.getElementById('subscribeBtn');
             subscribeBtn.disabled = true;
-            subscribeBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+            subscribeBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
             
             try {
                 const response = await fetch(`${BACKEND_URL}/api/subscribe`, {
@@ -1607,7 +1731,7 @@ Content: ${doc.content.substring(0, 3000)}`;
                 showToast('Network error', 'error');
             } finally {
                 subscribeBtn.disabled = false;
-                subscribeBtn.innerHTML = '<i class="fas fa-envelope"></i> Get Free Access →';
+                subscribeBtn.innerHTML = '<i class="fas fa-envelope"></i> Get Access';
             }
         }
         
@@ -1650,12 +1774,12 @@ Content: ${doc.content.substring(0, 3000)}`;
             modal.innerHTML = `
                 <div class="modal-content">
                     <button class="close-btn" onclick="this.closest('.modal-overlay').remove()">×</button>
-                    <i class="fas fa-crown" style="font-size: 3rem; color: var(--gold);"></i>
+                    <i class="fas fa-crown" style="font-size: 2.5rem; color: var(--gold);"></i>
                     <h2>Upgrade to Pro</h2>
-                    <div class="price-tag">$9.99<span style="font-size:1rem;">/month</span></div>
+                    <div class="price-tag">$9.99<span style="font-size:0.9rem;">/month</span></div>
                     <ul class="feature-list">
                         <li>✅ Unlimited questions</li>
-                        <li>✅ Upload unlimited documents</li>
+                        <li>✅ Unlimited document uploads</li>
                         <li>✅ Draw and analyze geometry</li>
                         <li>✅ Generate practice quizzes</li>
                         <li>✅ Cancel anytime</li>
@@ -1664,7 +1788,7 @@ Content: ${doc.content.substring(0, 3000)}`;
                         <i class="fab fa-paypal"></i> Pay with PayPal
                     </button>
                     <button onclick="manualActivatePremium()" class="btn btn-secondary" style="width:100%;">
-                        <i class="fas fa-check"></i> I've Completed Payment
+                        <i class="fas fa-check"></i> Already Paid
                     </button>
                 </div>
             `;
@@ -1684,7 +1808,7 @@ Content: ${doc.content.substring(0, 3000)}`;
                 document.getElementById('subjects').style.display = 'grid';
             } else if (section === 'chat') {
                 if (!emailVerified && !isPremium) {
-                    showToast('Please verify your email first!', 'warning');
+                    showToast('Verify email first!', 'warning');
                     showSection('home');
                     return;
                 }
@@ -1693,7 +1817,7 @@ Content: ${doc.content.substring(0, 3000)}`;
                 document.getElementById('chatInput').focus();
             } else if (section === 'upload') {
                 if (!emailVerified && !isPremium) {
-                    showToast('Please verify your email first!', 'warning');
+                    showToast('Verify email first!', 'warning');
                     showSection('home');
                     return;
                 }
@@ -1743,7 +1867,6 @@ Content: ${doc.content.substring(0, 3000)}`;
             loadChatHistory();
             renderDocumentList();
             
-            // Set up file input
             document.getElementById('fileInput').addEventListener('change', (e) => {
                 handleFiles(e.target.files);
             });
@@ -1763,7 +1886,6 @@ Content: ${doc.content.substring(0, 3000)}`;
                 document.querySelector('.upgrade-btn')?.remove();
             }
             
-            // Initialize with file upload tab visible
             switchUploadTab('file');
         });
     </script>
