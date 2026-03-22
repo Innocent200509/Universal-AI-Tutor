@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Tutor Pro - Your Personal AI Learning Assistant</title>
+    <title>AI Tutor Pro - Upload & Learn</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -300,6 +300,150 @@
             margin-top: 0.5rem;
         }
 
+        /* Upload Section */
+        .upload-section {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border-radius: 2rem;
+            padding: 2rem;
+            margin: 2rem 0;
+            border: 2px dashed rgba(255, 255, 255, 0.3);
+            text-align: center;
+            transition: all 0.3s;
+            display: none;
+        }
+
+        .upload-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .upload-section:hover {
+            border-color: var(--primary);
+        }
+
+        .upload-area {
+            border: 2px dashed var(--glass);
+            border-radius: 1rem;
+            padding: 2rem;
+            margin: 1rem 0;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .upload-area:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--accent);
+        }
+
+        .upload-area.drag-over {
+            background: rgba(99, 102, 241, 0.2);
+            border-color: var(--primary);
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .upload-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .document-list {
+            margin-top: 1rem;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .document-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1rem;
+            border-radius: 1rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s;
+        }
+
+        .document-item:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .document-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .document-info i {
+            font-size: 1.5rem;
+            color: var(--accent);
+        }
+
+        .document-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .document-actions button {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            padding: 0.3rem;
+            border-radius: 0.3rem;
+            transition: all 0.3s;
+        }
+
+        .document-actions button:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .quiz-panel {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .quiz-question {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .quiz-option {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .quiz-option:hover {
+            background: rgba(99, 102, 241, 0.3);
+        }
+
+        .quiz-option.correct {
+            background: var(--success);
+            color: white;
+        }
+
+        .quiz-option.wrong {
+            background: var(--danger);
+            color: white;
+        }
+
         /* Subject Grid */
         .subjects-grid {
             display: grid;
@@ -356,18 +500,6 @@
         .subject-desc {
             opacity: 0.8;
             font-size: 0.9rem;
-        }
-
-        .subject-badge {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            background: var(--gold);
-            color: #000;
-            padding: 0.25rem 0.75rem;
-            border-radius: 1rem;
-            font-size: 0.7rem;
-            font-weight: bold;
         }
 
         /* Chat Section */
@@ -538,8 +670,8 @@
             color: #000;
         }
 
-        .btn-danger {
-            background: linear-gradient(135deg, var(--danger), #dc2626);
+        .btn-success {
+            background: linear-gradient(135deg, var(--success), #059669);
         }
 
         .typing-indicator {
@@ -656,7 +788,7 @@
             display: flex;
             gap: 0.8rem;
             flex-wrap: wrap;
-            margin-top: 1rem;
+            margin: 1rem 0;
             justify-content: center;
         }
 
@@ -704,6 +836,7 @@
             .email-input { width: 100%; margin-bottom: 0.5rem; }
             .stat-item { padding: 1rem; }
             .stat-value { font-size: 1.5rem; }
+            .upload-section { padding: 1rem; }
         }
     </style>
 </head>
@@ -736,6 +869,7 @@
             </div>
             <ul class="nav-links">
                 <li><a onclick="showSection('home')"><i class="fas fa-home"></i> Home</a></li>
+                <li><a onclick="showSection('upload')"><i class="fas fa-upload"></i> Upload</a></li>
                 <li><a onclick="showSection('chat')"><i class="fas fa-comment-dots"></i> Chat</a></li>
                 <li><a onclick="showSection('subjects')"><i class="fas fa-book"></i> Subjects</a></li>
                 <li><a onclick="showSection('resources')"><i class="fas fa-graduation-cap"></i> Resources</a></li>
@@ -746,7 +880,7 @@
     <div class="container">
         <section id="home" class="hero">
             <h1><i class="fas fa-robot"></i> Your Personal AI Tutor</h1>
-            <p>Learn anything, anytime. Get instant, personalized help in any subject with our advanced AI.</p>
+            <p>Upload past papers, get AI-powered study help, generate practice questions, and master any subject!</p>
             <div class="stats-bar">
                 <div class="stat-item">
                     <div class="stat-value" id="totalQuestions">0</div>
@@ -757,17 +891,20 @@
                     <div class="stat-label"><i class="fas fa-gift"></i> Free Sessions Left</div>
                 </div>
                 <div class="stat-item">
+                    <div class="stat-value" id="documentsCount">0</div>
+                    <div class="stat-label"><i class="fas fa-file-alt"></i> Documents</div>
+                </div>
+                <div class="stat-item">
                     <div class="stat-value" id="streakDisplay">0</div>
                     <div class="stat-label"><i class="fas fa-calendar-check"></i> Day Streak</div>
                 </div>
-                <div class="stat-item">
-                    <div class="stat-value" id="subjectsMastered">0</div>
-                    <div class="stat-label"><i class="fas fa-trophy"></i> Subjects Explored</div>
-                </div>
             </div>
             <div style="margin-top: 2rem;">
+                <button class="btn" onclick="showSection('upload')" style="font-size: 1.25rem; padding: 1rem 2rem; margin-right: 1rem;">
+                    <i class="fas fa-upload"></i> Upload Past Paper
+                </button>
                 <button class="btn" onclick="showSection('chat')" style="font-size: 1.25rem; padding: 1rem 2rem;">
-                    <i class="fas fa-play"></i> Start Learning Now →
+                    <i class="fas fa-play"></i> Start Learning →
                 </button>
             </div>
         </section>
@@ -785,6 +922,32 @@
                 <i class="fas fa-lock"></i> No spam. Unsubscribe anytime.
             </p>
         </div>
+
+        <!-- Upload Section -->
+        <section id="upload" class="upload-section">
+            <h2><i class="fas fa-upload"></i> Upload Past Papers</h2>
+            <p>Upload your past exam papers, notes, or study materials. The AI will analyze them and help you study!</p>
+            
+            <div class="upload-area" id="uploadArea" onclick="document.getElementById('fileInput').click()">
+                <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                <p>Click or drag & drop your PDF/TXT files here</p>
+                <p style="font-size: 0.8rem; opacity: 0.7;">Supported: PDF, TXT, DOCX (max 10MB)</p>
+                <input type="file" id="fileInput" class="file-input" accept=".pdf,.txt,.docx" multiple>
+            </div>
+
+            <div class="document-list" id="documentList"></div>
+
+            <div id="quizPanel" class="quiz-panel" style="display: none;">
+                <h3><i class="fas fa-question-circle"></i> Generated Quiz</h3>
+                <div id="quizQuestions"></div>
+                <div id="quizResult" style="margin-top: 1rem;"></div>
+                <button class="btn btn-secondary" onclick="generateNewQuiz()"><i class="fas fa-sync-alt"></i> Generate New Quiz</button>
+            </div>
+
+            <div style="margin-top: 1rem;">
+                <button class="btn btn-secondary" onclick="showSection('home')"><i class="fas fa-home"></i> Back to Home</button>
+            </div>
+        </section>
 
         <section id="subjects" class="subjects-grid" style="display: none;">
             <div class="subject-card" onclick="startChat('Mathematics')">
@@ -860,6 +1023,7 @@
                         <div class="message-content">
                             <i class="fas fa-robot"></i> 👋 Hi! I'm your AI Tutor Pro.<br><br>
                             I can help with any subject - math, science, history, languages, and more!<br><br>
+                            💡 <strong>Pro Tip:</strong> Upload your past papers in the "Upload" section, and I'll analyze them to help you study better and generate practice questions!<br><br>
                             What would you like to learn today?
                         </div>
                     </div>
@@ -872,7 +1036,7 @@
                     <span class="quick-action" onclick="setQuickQuestion('How to learn Spanish fast?')">🇪🇸 Learn Spanish</span>
                 </div>
                 <div class="chat-input-area">
-                    <textarea class="chat-input" id="chatInput" placeholder="Ask me anything... (e.g., 'Explain quantum physics', 'Help me with calculus', 'What is the French Revolution?')" rows="2" onkeypress="if(event.key==='Enter' && !event.shiftKey){event.preventDefault();sendMessage();}"></textarea>
+                    <textarea class="chat-input" id="chatInput" placeholder="Ask me anything... or ask about your uploaded documents!" rows="2" onkeypress="if(event.key==='Enter' && !event.shiftKey){event.preventDefault();sendMessage();}"></textarea>
                     <button class="btn" onclick="sendMessage()"><i class="fas fa-paper-plane"></i> Send</button>
                 </div>
             </div>
@@ -887,24 +1051,24 @@
             <h2 style="text-align: center; margin-bottom: 2rem;"><i class="fas fa-graduation-cap"></i> Learning Resources</h2>
             <div style="display: grid; gap: 1.5rem; margin: 2rem 0;">
                 <div class="subject-card" style="cursor: default;">
-                    <div class="subject-icon">🎓</div>
-                    <h3>Study Tips & Strategies</h3>
-                    <p>Get personalized study techniques, memorization methods, and exam preparation advice.</p>
+                    <div class="subject-icon">📄</div>
+                    <h3>Past Paper Analysis</h3>
+                    <p>Upload your past papers and get detailed analysis of question patterns, common topics, and key areas to focus on.</p>
                 </div>
                 <div class="subject-card" style="cursor: default;">
                     <div class="subject-icon">📝</div>
-                    <h3>Essay Writing Help</h3>
-                    <p>Structure your essays, develop thesis statements, and get writing feedback.</p>
+                    <h3>Practice Questions Generator</h3>
+                    <p>AI generates custom practice questions based on your uploaded materials, similar to real exam questions.</p>
                 </div>
                 <div class="subject-card" style="cursor: default;">
                     <div class="subject-icon">💡</div>
-                    <h3>Concept Explanations</h3>
-                    <p>Complex topics broken down into simple, easy-to-understand explanations with examples.</p>
+                    <h3>Smart Study Recommendations</h3>
+                    <p>Get personalized study plans and topic recommendations based on your uploaded documents.</p>
                 </div>
                 <div class="subject-card" style="cursor: default;">
-                    <div class="subject-icon">📚</div>
-                    <h3>Recommended Books & Courses</h3>
-                    <p>Curated list of the best textbooks, online courses, and learning materials.</p>
+                    <div class="subject-icon">🎯</div>
+                    <h3>Exam Strategy Tips</h3>
+                    <p>Learn effective exam techniques, time management strategies, and how to tackle different question types.</p>
                 </div>
             </div>
             <button class="btn btn-secondary" onclick="showSection('home')"><i class="fas fa-home"></i> Back to Home</button>
@@ -925,6 +1089,275 @@
         let remainingSessions = parseInt(localStorage.getItem('remainingSessions')) || 0;
         let emailVerified = localStorage.getItem('emailVerified') === 'true';
         let subjectsUsed = JSON.parse(localStorage.getItem('subjectsUsed')) || [];
+        
+        // Document Storage
+        let uploadedDocuments = JSON.parse(localStorage.getItem('uploadedDocuments')) || [];
+        let currentQuiz = null;
+        let quizAnswers = {};
+
+        // ==================== DOCUMENT UPLOAD FUNCTIONS ====================
+        function initializeUpload() {
+            const uploadArea = document.getElementById('uploadArea');
+            const fileInput = document.getElementById('fileInput');
+            
+            uploadArea.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                uploadArea.classList.add('drag-over');
+            });
+            
+            uploadArea.addEventListener('dragleave', () => {
+                uploadArea.classList.remove('drag-over');
+            });
+            
+            uploadArea.addEventListener('drop', (e) => {
+                e.preventDefault();
+                uploadArea.classList.remove('drag-over');
+                handleFiles(e.dataTransfer.files);
+            });
+            
+            fileInput.addEventListener('change', (e) => {
+                handleFiles(e.target.files);
+            });
+            
+            renderDocumentList();
+        }
+
+        function handleFiles(files) {
+            for (let file of files) {
+                if (file.size > 10 * 1024 * 1024) {
+                    showToast(`${file.name} is too large (max 10MB)`, 'warning');
+                    continue;
+                }
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const content = e.target.result;
+                    
+                    const newDoc = {
+                        id: Date.now() + Math.random(),
+                        name: file.name,
+                        type: file.type,
+                        size: file.size,
+                        content: content.substring(0, 10000), // Store first 10k chars for context
+                        uploadedAt: new Date().toISOString()
+                    };
+                    
+                    uploadedDocuments.push(newDoc);
+                    localStorage.setItem('uploadedDocuments', JSON.stringify(uploadedDocuments));
+                    renderDocumentList();
+                    updateStats();
+                    showToast(`${file.name} uploaded successfully!`, 'success');
+                    
+                    // Analyze document with AI
+                    analyzeDocument(newDoc);
+                };
+                
+                if (file.type === 'text/plain' || file.name.endsWith('.txt')) {
+                    reader.readAsText(file);
+                } else {
+                    // For PDF/DOCX, we'll just store metadata and let AI handle analysis via backend
+                    const newDoc = {
+                        id: Date.now() + Math.random(),
+                        name: file.name,
+                        type: file.type,
+                        size: file.size,
+                        content: `[File: ${file.name}] Please analyze this document content.`,
+                        uploadedAt: new Date().toISOString()
+                    };
+                    uploadedDocuments.push(newDoc);
+                    localStorage.setItem('uploadedDocuments', JSON.stringify(uploadedDocuments));
+                    renderDocumentList();
+                    updateStats();
+                    showToast(`${file.name} uploaded! AI will analyze it.`, 'success');
+                    analyzeDocument(newDoc);
+                }
+            }
+        }
+
+        async function analyzeDocument(doc) {
+            try {
+                const response = await fetch(`${BACKEND_URL}/api/tutor`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        message: `Please analyze this document: ${doc.name}\n\nContent: ${doc.content.substring(0, 5000)}\n\nPlease provide a summary of key topics, identify important concepts, and suggest study areas.`,
+                        subject: 'General',
+                        email: userEmail
+                    })
+                });
+                
+                const data = await response.json();
+                if (data.reply) {
+                    addMessage('assistant', `📄 **Analysis of "${doc.name}":**\n\n${data.reply}`);
+                    showToast(`Analysis complete for ${doc.name}!`, 'success');
+                }
+            } catch (error) {
+                console.error('Analysis error:', error);
+            }
+        }
+
+        function renderDocumentList() {
+            const container = document.getElementById('documentList');
+            if (!container) return;
+            
+            if (uploadedDocuments.length === 0) {
+                container.innerHTML = '<p style="text-align: center; opacity: 0.7;"><i class="fas fa-folder-open"></i> No documents uploaded yet. Upload your past papers to get started!</p>';
+                return;
+            }
+            
+            container.innerHTML = uploadedDocuments.map(doc => `
+                <div class="document-item">
+                    <div class="document-info">
+                        <i class="fas fa-file-alt"></i>
+                        <div>
+                            <strong>${doc.name}</strong><br>
+                            <small>${new Date(doc.uploadedAt).toLocaleDateString()} • ${(doc.size / 1024).toFixed(1)} KB</small>
+                        </div>
+                    </div>
+                    <div class="document-actions">
+                        <button onclick="askAboutDocument('${doc.id}')" title="Ask about this document"><i class="fas fa-comment"></i></button>
+                        <button onclick="generateQuestionsFromDocument('${doc.id}')" title="Generate practice questions"><i class="fas fa-question-circle"></i></button>
+                        <button onclick="deleteDocument('${doc.id}')" title="Delete"><i class="fas fa-trash"></i></button>
+                    </div>
+                </div>
+            `).join('');
+            
+            document.getElementById('documentsCount').textContent = uploadedDocuments.length;
+        }
+
+        async function askAboutDocument(docId) {
+            const doc = uploadedDocuments.find(d => d.id == docId);
+            if (!doc) return;
+            
+            showSection('chat');
+            setTimeout(() => {
+                document.getElementById('chatInput').value = `Can you help me study based on my uploaded document "${doc.name}"? What are the key concepts I should focus on?`;
+                sendMessage();
+            }, 500);
+        }
+
+        async function generateQuestionsFromDocument(docId) {
+            const doc = uploadedDocuments.find(d => d.id == docId);
+            if (!doc) return;
+            
+            showToast('Generating practice questions...', 'info');
+            
+            try {
+                const response = await fetch(`${BACKEND_URL}/api/tutor`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        message: `Based on this document "${doc.name}":\n\n${doc.content.substring(0, 5000)}\n\nGenerate 5 practice questions similar to what might appear in an exam. Format as JSON with question, options, and correct answer.`,
+                        subject: 'General',
+                        email: userEmail
+                    })
+                });
+                
+                const data = await response.json();
+                if (data.reply) {
+                    parseAndDisplayQuiz(data.reply, doc.name);
+                }
+            } catch (error) {
+                console.error('Quiz generation error:', error);
+                showToast('Failed to generate quiz. Please try again.', 'error');
+            }
+        }
+
+        function parseAndDisplayQuiz(aiResponse, docName) {
+            const quizPanel = document.getElementById('quizPanel');
+            const quizQuestionsDiv = document.getElementById('quizQuestions');
+            
+            // Parse AI response for quiz questions
+            let questions = [];
+            try {
+                // Try to parse as JSON first
+                const jsonMatch = aiResponse.match(/```json\n([\s\S]*?)\n```/);
+                if (jsonMatch) {
+                    questions = JSON.parse(jsonMatch[1]);
+                } else {
+                    // Fallback: split by numbered questions
+                    const questionMatches = aiResponse.match(/\d+\.\s*([^\n]+)/g);
+                    if (questionMatches) {
+                        questions = questionMatches.map((q, i) => ({
+                            question: q,
+                            options: ['Option A', 'Option B', 'Option C', 'Option D'],
+                            correct: 0
+                        }));
+                    }
+                }
+            } catch(e) {
+                // If parsing fails, show raw response
+                quizQuestionsDiv.innerHTML = `<div class="quiz-question">${aiResponse}</div>`;
+                quizPanel.style.display = 'block';
+                return;
+            }
+            
+            currentQuiz = { questions, docName };
+            quizAnswers = {};
+            
+            quizQuestionsDiv.innerHTML = questions.map((q, idx) => `
+                <div class="quiz-question" data-qid="${idx}">
+                    <strong>Question ${idx + 1}:</strong> ${q.question}
+                    <div class="quiz-options">
+                        ${q.options ? q.options.map((opt, optIdx) => `
+                            <div class="quiz-option" onclick="selectAnswer(${idx}, ${optIdx}, '${opt.replace(/'/g, "\\'")}')">
+                                ${String.fromCharCode(65 + optIdx)}. ${opt}
+                            </div>
+                        `).join('') : '<p>Review the document to find the answer!</p>'}
+                    </div>
+                    <div id="feedback-${idx}" style="margin-top: 0.5rem;"></div>
+                </div>
+            `).join('');
+            
+            quizPanel.style.display = 'block';
+            document.getElementById('quizResult').innerHTML = '';
+        }
+
+        function selectAnswer(questionIdx, optionIdx, optionText) {
+            if (!currentQuiz) return;
+            
+            const question = currentQuiz.questions[questionIdx];
+            const feedbackDiv = document.getElementById(`feedback-${questionIdx}`);
+            const optionsDiv = document.querySelectorAll(`[data-qid="${questionIdx}"] .quiz-option`);
+            
+            // Highlight selected
+            optionsDiv.forEach(opt => opt.classList.remove('correct', 'wrong'));
+            optionsDiv[optionIdx].classList.add(optionIdx === question.correct ? 'correct' : 'wrong');
+            
+            if (optionIdx === question.correct) {
+                feedbackDiv.innerHTML = '<span style="color: var(--success);">✓ Correct!</span>';
+                quizAnswers[questionIdx] = true;
+            } else {
+                feedbackDiv.innerHTML = `<span style="color: var(--danger);">✗ Incorrect. The correct answer is ${String.fromCharCode(65 + question.correct)}: ${question.options[question.correct]}</span>`;
+                quizAnswers[questionIdx] = false;
+            }
+            
+            // Update result
+            const correctCount = Object.values(quizAnswers).filter(v => v === true).length;
+            const total = currentQuiz.questions.length;
+            document.getElementById('quizResult').innerHTML = `
+                <div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 0.5rem;">
+                    <strong>Score: ${correctCount}/${total}</strong> (${Math.round(correctCount/total*100)}%)
+                    ${correctCount === total ? '<br>🎉 Perfect score! Great job!' : '<br>Keep practicing!'}
+                </div>
+            `;
+        }
+
+        function generateNewQuiz() {
+            if (uploadedDocuments.length > 0) {
+                generateQuestionsFromDocument(uploadedDocuments[0].id);
+            } else {
+                showToast('Upload a document first to generate a quiz!', 'warning');
+            }
+        }
+
+        function deleteDocument(docId) {
+            uploadedDocuments = uploadedDocuments.filter(d => d.id != docId);
+            localStorage.setItem('uploadedDocuments', JSON.stringify(uploadedDocuments));
+            renderDocumentList();
+            updateStats();
+            showToast('Document deleted', 'success');
+        }
 
         // ==================== QUICK ACTIONS ====================
         function setQuickQuestion(question) {
@@ -962,8 +1395,8 @@
         function showToast(message, type = 'success') {
             const toast = document.createElement('div');
             toast.className = 'toast';
-            toast.style.background = type === 'success' ? '#10b981' : '#f59e0b';
-            toast.innerHTML = `<i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-triangle'}"></i> ${message}`;
+            toast.style.background = type === 'success' ? '#10b981' : type === 'warning' ? '#f59e0b' : '#ef4444';
+            toast.innerHTML = `<i class="fas fa-${type === 'success' ? 'check-circle' : type === 'warning' ? 'exclamation-triangle' : 'times-circle'}"></i> ${message}`;
             document.body.appendChild(toast);
             setTimeout(() => toast.remove(), 3000);
         }
@@ -1174,12 +1607,19 @@
             document.getElementById('chatMessages').appendChild(typingDiv);
             document.getElementById('chatMessages').scrollTop = document.getElementById('chatMessages').scrollHeight;
             
+            // Include document context if available
+            let contextMessage = message;
+            if (uploadedDocuments.length > 0) {
+                const docContext = uploadedDocuments.map(doc => `[Uploaded Document: ${doc.name}]`).join(', ');
+                contextMessage = `${message}\n\n[Context: You have uploaded ${uploadedDocuments.length} document(s): ${docContext}]`;
+            }
+            
             try {
                 const response = await fetch(`${BACKEND_URL}/api/tutor`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        message: message,
+                        message: contextMessage,
                         subject: currentSubject,
                         conversationHistory: chatHistory.slice(-10),
                         email: userEmail
@@ -1194,7 +1634,6 @@
                     totalQuestions++;
                     localStorage.setItem('totalQuestions', totalQuestions);
                     
-                    // Track subjects used
                     if (!subjectsUsed.includes(currentSubject) && currentSubject !== 'General') {
                         subjectsUsed.push(currentSubject);
                         localStorage.setItem('subjectsUsed', JSON.stringify(subjectsUsed));
@@ -1262,10 +1701,11 @@
                     <div class="price-tag">$9.99<span style="font-size:1rem;">/month</span></div>
                     <ul class="feature-list">
                         <li>✅ Unlimited questions - no daily limits</li>
+                        <li>✅ Upload unlimited past papers & documents</li>
+                        <li>✅ AI-generated practice questions from your materials</li>
+                        <li>✅ Detailed document analysis & study plans</li>
                         <li>✅ All 15+ subjects included</li>
-                        <li>✅ In-depth explanations with examples</li>
-                        <li>✅ Priority response times</li>
-                        <li>✅ Export chat conversations</li>
+                        <li>✅ Export conversations & study materials</li>
                         <li>✅ Cancel anytime</li>
                     </ul>
                     <button onclick="startPayPalCheckout()" class="btn btn-gold" style="width:100%;padding:1rem;font-size:1.1rem;margin-bottom:0.5rem;">
@@ -1287,8 +1727,10 @@
             document.getElementById('home').style.display = 'none';
             document.getElementById('subjects').style.display = 'none';
             document.getElementById('chat').classList.remove('active');
+            document.getElementById('upload').classList.remove('active');
             document.getElementById('resources').classList.remove('active');
             document.getElementById('chat').style.display = 'none';
+            document.getElementById('upload').style.display = 'none';
             document.getElementById('resources').style.display = 'none';
             
             if (section === 'home') {
@@ -1303,6 +1745,14 @@
                 document.getElementById('chat').style.display = 'block';
                 setTimeout(() => document.getElementById('chat').classList.add('active'), 10);
                 document.getElementById('chatInput').focus();
+            } else if (section === 'upload') {
+                if (!emailVerified && !isPremium) {
+                    showToast('Please verify your email first to upload documents!', 'warning');
+                    showSection('home');
+                    return;
+                }
+                document.getElementById('upload').style.display = 'block';
+                setTimeout(() => document.getElementById('upload').classList.add('active'), 10);
             } else if (section === 'subjects') {
                 document.getElementById('subjects').style.display = 'grid';
                 document.getElementById('home').style.display = 'block';
@@ -1318,6 +1768,7 @@
             document.getElementById('streakDisplay').textContent = streak;
             document.getElementById('streakCount').textContent = streak;
             document.getElementById('subjectsMastered').textContent = subjectsUsed.length;
+            document.getElementById('documentsCount').textContent = uploadedDocuments.length;
             
             if (!isPremium && remainingSessions !== undefined && remainingSessions !== Infinity) {
                 document.getElementById('sessionsLeft').textContent = remainingSessions;
@@ -1348,6 +1799,8 @@
             updateStats();
             updateStreak();
             loadChatHistory();
+            initializeUpload();
+            renderDocumentList();
             
             if (emailVerified || localStorage.getItem('emailVerified') === 'true') {
                 document.getElementById('emailCapture').style.display = 'none';
