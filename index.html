@@ -3,13 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Tutor Pro - Geometry & Document Analysis</title>
+    <title>AI Tutor Pro - Learn Anything</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- PDF.js for PDF text extraction -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
-    <!-- Canvas drawing library -->
-    <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/dist/signature_pad.umd.min.js"></script>
     <script>
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
     </script>
@@ -23,7 +20,6 @@
         :root {
             --primary: #6366f1;
             --primary-dark: #4f46e5;
-            --primary-light: #818cf8;
             --secondary: #ec4899;
             --accent: #06b6d4;
             --dark: #0f172a;
@@ -32,7 +28,6 @@
             --warning: #f59e0b;
             --danger: #ef4444;
             --glass: rgba(255, 255, 255, 0.1);
-            --glass-dark: rgba(0, 0, 0, 0.3);
             --gold: #ffd700;
         }
 
@@ -198,11 +193,6 @@
             gap: 0.5rem;
         }
 
-        .logo i {
-            background: none;
-            -webkit-text-fill-color: var(--primary);
-        }
-
         .nav-links {
             display: flex;
             gap: 2rem;
@@ -349,21 +339,15 @@
             border-color: var(--accent);
         }
 
-        .upload-area.drag-over {
-            background: rgba(99, 102, 241, 0.2);
-            border-color: var(--primary);
+        .upload-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
         }
 
         .file-input {
             display: none;
         }
 
-        .upload-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-        }
-
-        /* Drawing Canvas */
         .drawing-canvas-container {
             background: rgba(0, 0, 0, 0.3);
             border-radius: 1rem;
@@ -394,16 +378,10 @@
             border-radius: 0.5rem;
             cursor: pointer;
             transition: all 0.3s;
-            font-size: 0.9rem;
         }
 
         .drawing-tool:hover {
             background: var(--primary);
-        }
-
-        .drawing-tool.active {
-            background: var(--primary);
-            box-shadow: 0 0 10px rgba(99, 102, 241, 0.5);
         }
 
         .color-picker {
@@ -428,10 +406,6 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-        }
-
-        .document-item:hover {
-            background: rgba(255, 255, 255, 0.2);
         }
 
         .document-info {
@@ -464,7 +438,6 @@
 
         .document-actions button:hover {
             background: var(--primary);
-            transform: scale(1.05);
         }
 
         .analysis-result {
@@ -477,51 +450,12 @@
             overflow-y: auto;
         }
 
-        .analysis-result h4 {
-            color: var(--accent);
-            margin-bottom: 0.5rem;
-        }
-
         .quiz-panel {
             background: rgba(0, 0, 0, 0.3);
             border-radius: 1rem;
             padding: 1.5rem;
             margin-top: 1rem;
             display: none;
-        }
-
-        .quiz-question {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 1rem;
-            border-radius: 0.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .quiz-options {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-            margin-top: 0.5rem;
-        }
-
-        .quiz-option {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 0.5rem 1rem;
-            border-radius: 0.5rem;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .quiz-option:hover {
-            background: rgba(99, 102, 241, 0.3);
-        }
-
-        .quiz-option.correct {
-            background: var(--success);
-        }
-
-        .quiz-option.wrong {
-            background: var(--danger);
         }
 
         .subjects-grid {
@@ -818,16 +752,6 @@
             font-weight: 500;
         }
 
-        .feedback.correct {
-            background: rgba(16, 185, 129, 0.2);
-            color: var(--success);
-        }
-
-        .feedback.incorrect {
-            background: rgba(239, 68, 68, 0.2);
-            color: #ef4444;
-        }
-
         .quick-actions {
             display: flex;
             gap: 0.8rem;
@@ -895,8 +819,6 @@
             .email-input { width: 100%; margin-bottom: 0.5rem; }
             .stat-item { padding: 1rem; }
             .stat-value { font-size: 1.5rem; }
-            .drawing-tools { gap: 0.5rem; }
-            .drawing-tool { padding: 0.3rem 0.6rem; font-size: 0.75rem; }
         }
     </style>
 </head>
@@ -939,23 +861,23 @@
     <div class="container">
         <section id="home" class="hero">
             <h1><i class="fas fa-robot"></i> Your Personal AI Tutor</h1>
-            <p>Upload past papers, draw geometry diagrams, get AI-powered analysis, and master any subject!</p>
+            <p>Upload past papers, draw geometry, and get AI-powered help for any subject!</p>
             <div class="stats-bar">
                 <div class="stat-item">
                     <div class="stat-value" id="totalQuestions">0</div>
-                    <div class="stat-label"><i class="fas fa-question-circle"></i> Questions Asked</div>
+                    <div class="stat-label">Questions Asked</div>
                 </div>
                 <div class="stat-item">
                     <div class="stat-value" id="sessionsLeft">0</div>
-                    <div class="stat-label"><i class="fas fa-gift"></i> Free Sessions Left</div>
+                    <div class="stat-label">Free Sessions Left</div>
                 </div>
                 <div class="stat-item">
                     <div class="stat-value" id="documentsCount">0</div>
-                    <div class="stat-label"><i class="fas fa-file-alt"></i> Documents</div>
+                    <div class="stat-label">Documents</div>
                 </div>
                 <div class="stat-item">
                     <div class="stat-value" id="streakDisplay">0</div>
-                    <div class="stat-label"><i class="fas fa-calendar-check"></i> Day Streak</div>
+                    <div class="stat-label">Day Streak</div>
                 </div>
             </div>
             <div style="margin-top: 2rem;">
@@ -971,7 +893,7 @@
         <div class="email-capture" id="emailCapture">
             <i class="fas fa-gift" style="font-size: 2rem; margin-bottom: 1rem;"></i>
             <h3>🎁 Get 10 Free AI Tutoring Sessions!</h3>
-            <p>Join 10,000+ students learning with AI Tutor Pro</p>
+            <p>Join students learning with AI Tutor Pro</p>
             <form id="emailForm" onsubmit="subscribeWithVerification(event)">
                 <input type="email" id="userEmail" class="email-input" placeholder="Enter your email address" required>
                 <button type="submit" class="btn" id="subscribeBtn"><i class="fas fa-envelope"></i> Get Free Access →</button>
@@ -982,25 +904,26 @@
             </p>
         </div>
 
-        <!-- Upload Section with Drawing -->
+        <!-- Upload Section -->
         <section id="upload" class="upload-section">
             <h2><i class="fas fa-upload"></i> Upload or Draw</h2>
             
             <div class="upload-tabs">
                 <div class="upload-tab active" onclick="switchUploadTab('file')"><i class="fas fa-file-alt"></i> Upload File</div>
                 <div class="upload-tab" onclick="switchUploadTab('draw')"><i class="fas fa-draw-polygon"></i> Draw Geometry</div>
-                <div class="upload-tab" onclick="switchUploadTab('photo')"><i class="fas fa-camera"></i> Upload Photo</div>
             </div>
 
             <!-- File Upload Tab -->
-            <div id="fileUploadTab" class="upload-area" onclick="document.getElementById('fileInput').click()">
-                <i class="fas fa-cloud-upload-alt upload-icon"></i>
-                <p>Click or drag & drop your PDF/TXT/Image files here</p>
-                <p style="font-size: 0.8rem; opacity: 0.7;">Supported: PDF, TXT, PNG, JPG (max 10MB)</p>
-                <div id="uploadProgress" class="progress-bar" style="display: none;">
-                    <div class="progress-fill" id="progressFill"></div>
+            <div id="fileUploadTab">
+                <div class="upload-area" onclick="document.getElementById('fileInput').click()">
+                    <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                    <p>Click or drag & drop your PDF/TXT files here</p>
+                    <p style="font-size: 0.8rem; opacity: 0.7;">Supported: PDF, TXT (max 10MB)</p>
+                    <div id="uploadProgress" class="progress-bar" style="display: none;">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                    <input type="file" id="fileInput" class="file-input" accept=".pdf,.txt">
                 </div>
-                <input type="file" id="fileInput" class="file-input" accept=".pdf,.txt,.png,.jpg,.jpeg">
             </div>
 
             <!-- Drawing Tab -->
@@ -1018,22 +941,8 @@
                     </div>
                     <div style="margin-top: 1rem; display: flex; gap: 1rem; justify-content: center;">
                         <button class="btn" onclick="analyzeDrawing()"><i class="fas fa-chart-line"></i> Analyze Geometry</button>
-                        <button class="btn btn-secondary" onclick="captureDrawing()"><i class="fas fa-camera"></i> Save Drawing</button>
+                        <button class="btn btn-secondary" onclick="saveDrawing()"><i class="fas fa-save"></i> Save Drawing</button>
                     </div>
-                </div>
-            </div>
-
-            <!-- Photo Upload Tab (hidden, same as file upload but with image preview) -->
-            <div id="photoTab" style="display: none;">
-                <div class="upload-area" onclick="document.getElementById('photoInput').click()">
-                    <i class="fas fa-camera upload-icon"></i>
-                    <p>Click to upload a photo of your geometry diagram</p>
-                    <p style="font-size: 0.8rem; opacity: 0.7;">Take a photo of your geometry problem</p>
-                    <input type="file" id="photoInput" class="file-input" accept="image/*" onchange="handlePhotoUpload(this)">
-                </div>
-                <div id="photoPreview" style="margin-top: 1rem; text-align: center; display: none;">
-                    <img id="previewImage" style="max-width: 100%; border-radius: 1rem;">
-                    <button class="btn" onclick="analyzePhoto()" style="margin-top: 1rem;"><i class="fas fa-chart-line"></i> Analyze Geometry</button>
                 </div>
             </div>
 
@@ -1057,30 +966,29 @@
 
         <section id="subjects" class="subjects-grid" style="display: none;">
             <div class="subject-card" onclick="startChat('Mathematics')"><div class="subject-icon">📐</div><h3>Mathematics</h3><p class="subject-desc">Algebra, Calculus, Geometry, Statistics</p></div>
-            <div class="subject-card" onclick="startChat('Geometry')"><div class="subject-icon">📐</div><h3>Geometry</h3><p class="subject-desc">Shapes, Angles, Theorems, Proofs</p><div class="subject-badge">New!</div></div>
             <div class="subject-card" onclick="startChat('Physics')"><div class="subject-icon">⚛️</div><h3>Physics</h3><p class="subject-desc">Mechanics, Quantum, Electricity</p></div>
             <div class="subject-card" onclick="startChat('Chemistry')"><div class="subject-icon">🧪</div><h3>Chemistry</h3><p class="subject-desc">Organic, Reactions, Periodic Table</p></div>
             <div class="subject-card" onclick="startChat('Biology')"><div class="subject-icon">🧬</div><h3>Biology</h3><p class="subject-desc">Cell Biology, Genetics, Anatomy</p></div>
             <div class="subject-card" onclick="startChat('Computer Science')"><div class="subject-icon">💻</div><h3>Computer Science</h3><p class="subject-desc">Programming, Algorithms, AI</p></div>
+            <div class="subject-card" onclick="startChat('History')"><div class="subject-icon">📜</div><h3>History</h3><p class="subject-desc">World History, US History</p></div>
         </section>
 
         <section id="chat" class="chat-section">
             <div class="subject-selector" id="subjectSelector">
                 <div class="subject-chip active" onclick="changeSubject('General')">💬 General</div>
                 <div class="subject-chip" onclick="changeSubject('Mathematics')">📐 Math</div>
-                <div class="subject-chip" onclick="changeSubject('Geometry')">📐 Geometry</div>
                 <div class="subject-chip" onclick="changeSubject('Physics')">⚛️ Physics</div>
                 <div class="subject-chip" onclick="changeSubject('Chemistry')">🧪 Chemistry</div>
                 <div class="subject-chip" onclick="changeSubject('Biology')">🧬 Biology</div>
                 <div class="subject-chip" onclick="changeSubject('Computer Science')">💻 CS</div>
+                <div class="subject-chip" onclick="changeSubject('History')">📜 History</div>
             </div>
             <div class="chat-container">
                 <div class="chat-messages" id="chatMessages">
                     <div class="message assistant">
                         <div class="message-content">
-                            <i class="fas fa-robot"></i> 👋 Hi! I'm your AI Tutor Pro.<br><br>
-                            I can help with any subject! Upload files, draw geometry diagrams, or upload photos of your problems.<br><br>
-                            <strong>Geometry Feature:</strong> Draw shapes and I'll analyze them - calculate area, perimeter, angles, and more!<br><br>
+                            👋 Hi! I'm your AI Tutor Pro.<br><br>
+                            I can help with any subject! Upload files, draw geometry diagrams, and I'll analyze them.<br><br>
                             What would you like to learn today?
                         </div>
                     </div>
@@ -1089,10 +997,10 @@
                     <span class="quick-action" onclick="setQuickQuestion('Explain quantum physics')">🔬 Quantum Physics</span>
                     <span class="quick-action" onclick="setQuickQuestion('What is the Pythagorean theorem?')">📐 Pythagorean Theorem</span>
                     <span class="quick-action" onclick="setQuickQuestion('How to calculate area of a circle?')">⚪ Circle Area</span>
-                    <span class="quick-action" onclick="setQuickQuestion('Explain similar triangles')">📐 Similar Triangles</span>
+                    <span class="quick-action" onclick="setQuickQuestion('Explain photosynthesis')">🌱 Photosynthesis</span>
                 </div>
                 <div class="chat-input-area">
-                    <textarea class="chat-input" id="chatInput" placeholder="Ask me anything... or ask about your drawings and documents!" rows="2" onkeypress="if(event.key==='Enter' && !event.shiftKey){event.preventDefault();sendMessage();}"></textarea>
+                    <textarea class="chat-input" id="chatInput" placeholder="Ask me anything..." rows="2" onkeypress="if(event.key==='Enter' && !event.shiftKey){event.preventDefault();sendMessage();}"></textarea>
                     <button class="btn" onclick="sendMessage()"><i class="fas fa-paper-plane"></i> Send</button>
                 </div>
             </div>
@@ -1118,8 +1026,6 @@
         let emailVerified = localStorage.getItem('emailVerified') === 'true';
         
         let uploadedDocuments = JSON.parse(localStorage.getItem('uploadedDocuments')) || [];
-        let currentQuiz = null;
-        let quizAnswers = {};
 
         // ==================== DRAWING CANVAS ====================
         let canvas = null;
@@ -1147,7 +1053,6 @@
             canvas.addEventListener('mouseup', stopDrawing);
             canvas.addEventListener('mouseleave', stopDrawing);
             
-            // Touch support
             canvas.addEventListener('touchstart', handleTouchStart);
             canvas.addEventListener('touchmove', handleTouchMove);
             canvas.addEventListener('touchend', stopDrawing);
@@ -1158,10 +1063,8 @@
             const pos = getMousePos(e);
             lastX = pos.x;
             lastY = pos.y;
-            if (currentTool === 'pen') {
-                ctx.beginPath();
-                ctx.moveTo(lastX, lastY);
-            }
+            ctx.beginPath();
+            ctx.moveTo(lastX, lastY);
         }
 
         function draw(e) {
@@ -1241,7 +1144,7 @@
         function setDrawingTool(tool) {
             currentTool = tool;
             document.querySelectorAll('.drawing-tool').forEach(t => t.classList.remove('active'));
-            event.target.classList.add('active');
+            if (event && event.target) event.target.classList.add('active');
             if (tool === 'eraser') {
                 ctx.globalCompositeOperation = 'destination-out';
             } else {
@@ -1256,9 +1159,10 @@
             ctx.fillStyle = 'white';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             ctx.fillStyle = currentColor;
+            showToast('Canvas cleared', 'success');
         }
 
-        function captureDrawing() {
+        function saveDrawing() {
             const imageData = canvas.toDataURL('image/png');
             const newDoc = {
                 id: Date.now(),
@@ -1273,28 +1177,21 @@
             localStorage.setItem('uploadedDocuments', JSON.stringify(uploadedDocuments));
             renderDocumentList();
             updateStats();
-            showToast('Drawing saved! Click "Analyze Geometry" to get AI analysis.', 'success');
+            showToast('Drawing saved!', 'success');
         }
 
         async function analyzeDrawing() {
             const imageData = canvas.toDataURL('image/png');
-            showToast('Analyzing geometry diagram...', 'info');
+            showToast('Analyzing geometry...', 'info');
             
-            const prompt = `Please analyze this geometry diagram. Describe what shapes you see, identify geometric properties, and provide a detailed analysis including:
-1. What shapes are present?
-2. Calculate possible area, perimeter, angles if measurable
-3. Identify geometric relationships (parallel lines, perpendicular, similar triangles, etc.)
-4. What geometric concepts apply?
-5. Provide study recommendations for this type of geometry problem.
-
-[Image data: ${imageData.substring(0, 500)}] This is a drawing of a geometry diagram. Please provide a thorough analysis.`;
+            const prompt = `Please analyze this geometry diagram. Describe what shapes you see, identify geometric properties, and provide a detailed analysis including what concepts apply. This is a drawing of a geometry diagram.`;
 
             try {
                 const response = await fetch(`${BACKEND_URL}/api/tutor`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        message: prompt,
+                        message: prompt + `\n\n[Image data: ${imageData.substring(0, 500)}]`,
                         subject: 'Geometry',
                         email: userEmail
                     })
@@ -1305,81 +1202,11 @@
                     const analysisDiv = document.getElementById('analysisResult');
                     analysisDiv.innerHTML = `
                         <h4><i class="fas fa-chart-line"></i> Geometry Analysis</h4>
-                        <div style="white-space: pre-wrap; line-height: 1.6;">${data.reply}</div>
+                        <div style="white-space: pre-wrap;">${data.reply}</div>
                     `;
                     document.getElementById('analysisPanel').style.display = 'block';
-                    showToast('Geometry analysis complete!', 'success');
-                    
-                    // Also add to chat
-                    addMessage('assistant', `📐 **Geometry Diagram Analysis:**\n\n${data.reply}`);
-                    showSection('chat');
-                }
-            } catch (error) {
-                console.error('Analysis error:', error);
-                showToast('Analysis failed. Please try again.', 'error');
-            }
-        }
-
-        // ==================== PHOTO UPLOAD ====================
-        function handlePhotoUpload(input) {
-            if (input.files && input.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById('previewImage').src = e.target.result;
-                    document.getElementById('photoPreview').style.display = 'block';
-                    const newDoc = {
-                        id: Date.now(),
-                        name: `Photo_${new Date().toLocaleDateString()}.jpg`,
-                        type: 'image/jpeg',
-                        size: input.files[0].size,
-                        content: e.target.result,
-                        uploadedAt: new Date().toISOString()
-                    };
-                    uploadedDocuments.push(newDoc);
-                    localStorage.setItem('uploadedDocuments', JSON.stringify(uploadedDocuments));
-                    renderDocumentList();
-                    updateStats();
-                };
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-
-        async function analyzePhoto() {
-            const img = document.getElementById('previewImage');
-            if (!img.src) return;
-            
-            showToast('Analyzing geometry from photo...', 'info');
-            
-            const prompt = `Please analyze this geometry diagram from the photo. Describe what shapes you see, identify geometric properties, and provide a detailed analysis including:
-1. What shapes are present?
-2. Calculate possible area, perimeter, angles if measurable
-3. Identify geometric relationships
-4. What geometric concepts apply?
-5. Provide study recommendations.
-
-[Image data: ${img.src.substring(0, 500)}] This is a photo of a geometry diagram. Please provide a thorough analysis.`;
-
-            try {
-                const response = await fetch(`${BACKEND_URL}/api/tutor`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        message: prompt,
-                        subject: 'Geometry',
-                        email: userEmail
-                    })
-                });
-                
-                const data = await response.json();
-                if (data.reply) {
-                    const analysisDiv = document.getElementById('analysisResult');
-                    analysisDiv.innerHTML = `
-                        <h4><i class="fas fa-chart-line"></i> Photo Geometry Analysis</h4>
-                        <div style="white-space: pre-wrap; line-height: 1.6;">${data.reply}</div>
-                    `;
-                    document.getElementById('analysisPanel').style.display = 'block';
-                    addMessage('assistant', `📸 **Photo Geometry Analysis:**\n\n${data.reply}`);
-                    showSection('chat');
+                    showToast('Analysis complete!', 'success');
+                    addMessage('assistant', `📐 **Geometry Analysis:**\n\n${data.reply}`);
                 }
             } catch (error) {
                 showToast('Analysis failed', 'error');
@@ -1389,18 +1216,17 @@
         // ==================== TAB SWITCHING ====================
         function switchUploadTab(tab) {
             document.querySelectorAll('.upload-tab').forEach(t => t.classList.remove('active'));
-            event.target.classList.add('active');
+            if (event && event.target) event.target.classList.add('active');
             
             document.getElementById('fileUploadTab').style.display = tab === 'file' ? 'block' : 'none';
             document.getElementById('drawTab').style.display = tab === 'draw' ? 'block' : 'none';
-            document.getElementById('photoTab').style.display = tab === 'photo' ? 'block' : 'none';
             
             if (tab === 'draw') {
                 setTimeout(() => initCanvas(), 100);
             }
         }
 
-        // ==================== PDF EXTRACTION (same as before) ====================
+        // ==================== PDF EXTRACTION ====================
         async function extractTextFromPDF(file) {
             return new Promise((resolve, reject) => {
                 const reader = new FileReader();
@@ -1415,7 +1241,9 @@
                             const pageText = textContent.items.map(item => item.str).join(' ');
                             fullText += pageText + '\n';
                             const progress = (i / pdf.numPages) * 100;
-                            document.getElementById('progressFill').style.width = progress + '%';
+                            if (document.getElementById('progressFill')) {
+                                document.getElementById('progressFill').style.width = progress + '%';
+                            }
                         }
                         resolve(fullText);
                     } catch (error) {
@@ -1435,27 +1263,20 @@
                 }
                 
                 showToast(`Processing ${file.name}...`, 'info');
-                document.getElementById('uploadProgress').style.display = 'block';
-                document.getElementById('progressFill').style.width = '0%';
+                const progressBar = document.getElementById('uploadProgress');
+                if (progressBar) progressBar.style.display = 'block';
                 
                 let extractedText = '';
                 
                 try {
                     if (file.name.endsWith('.pdf')) {
                         extractedText = await extractTextFromPDF(file);
-                    } else if (file.name.endsWith('.txt')) {
+                    } else {
                         extractedText = await new Promise((resolve) => {
                             const reader = new FileReader();
                             reader.onload = (e) => resolve(e.target.result);
                             reader.readAsText(file);
                         });
-                    } else if (file.type.startsWith('image/')) {
-                        const reader = new FileReader();
-                        extractedText = await new Promise((resolve) => {
-                            reader.onload = (e) => resolve(e.target.result);
-                            reader.readAsDataURL(file);
-                        });
-                        extractedText = `[Image uploaded: ${file.name}] Please analyze this image for geometry shapes or diagrams.`;
                     }
                     
                     const newDoc = {
@@ -1471,16 +1292,12 @@
                     localStorage.setItem('uploadedDocuments', JSON.stringify(uploadedDocuments));
                     renderDocumentList();
                     updateStats();
-                    document.getElementById('uploadProgress').style.display = 'none';
-                    
-                    if (file.type.startsWith('image/')) {
-                        showToast(`Image uploaded! Click "Analyze" for geometry analysis.`, 'success');
-                    } else {
-                        await analyzeDocument(newDoc);
-                    }
+                    if (progressBar) progressBar.style.display = 'none';
+                    showToast(`${file.name} uploaded!`, 'success');
+                    await analyzeDocument(newDoc);
                 } catch (error) {
-                    showToast(`Failed to process ${file.name}. Try a text file.`, 'error');
-                    document.getElementById('uploadProgress').style.display = 'none';
+                    showToast(`Failed to process ${file.name}`, 'error');
+                    if (progressBar) progressBar.style.display = 'none';
                 }
             }
         }
@@ -1488,15 +1305,14 @@
         async function analyzeDocument(doc) {
             showToast(`Analyzing ${doc.name}...`, 'info');
             const analysisDiv = document.getElementById('analysisResult');
-            analysisDiv.innerHTML = `<div class="loader"></div> Analyzing document...`;
+            analysisDiv.innerHTML = `<div class="loader"></div> Analyzing...`;
             document.getElementById('analysisPanel').style.display = 'block';
             
             try {
                 const prompt = `Please analyze this study document and provide:
-1. **Brief Summary**: What is this document about?
-2. **Key Concepts**: List 3-5 important concepts
-3. **Study Recommendations**: How should a student study this?
-4. **Potential Exam Questions**: What questions might appear?
+1. Brief Summary
+2. Key Concepts (3-5)
+3. Study Recommendations
 
 Document: "${doc.name}"
 Content: ${doc.content.substring(0, 3000)}`;
@@ -1514,13 +1330,12 @@ Content: ${doc.content.substring(0, 3000)}`;
                 const data = await response.json();
                 if (data.reply) {
                     analysisDiv.innerHTML = `
-                        <h4><i class="fas fa-chart-line"></i> Analysis: ${doc.name}</h4>
+                        <h4>Analysis: ${doc.name}</h4>
                         <div style="white-space: pre-wrap;">${data.reply}</div>
                     `;
-                    showToast(`Analysis complete!`, 'success');
                 }
             } catch (error) {
-                analysisDiv.innerHTML = `<p style="color: var(--warning);">Analysis failed. You can still ask questions about it in chat!</p>`;
+                analysisDiv.innerHTML = `<p>Analysis failed. You can still ask questions about it in chat!</p>`;
             }
         }
 
@@ -1529,81 +1344,35 @@ Content: ${doc.content.substring(0, 3000)}`;
             if (!container) return;
             
             if (uploadedDocuments.length === 0) {
-                container.innerHTML = '<p style="text-align: center; opacity: 0.7;"><i class="fas fa-folder-open"></i> No documents uploaded yet. Upload files or draw geometry diagrams!</p>';
+                container.innerHTML = '<p style="text-align: center;"><i class="fas fa-folder-open"></i> No documents yet. Upload files or draw geometry!</p>';
                 return;
             }
             
             container.innerHTML = uploadedDocuments.map(doc => `
                 <div class="document-item">
                     <div class="document-info">
-                        <i class="fas fa-${doc.isDrawing ? 'draw-polygon' : (doc.name.endsWith('.pdf') ? 'file-pdf' : (doc.name.endsWith('.png') ? 'image' : 'file-alt'))}"></i>
+                        <i class="fas fa-${doc.isDrawing ? 'draw-polygon' : 'file-alt'}"></i>
                         <div>
-                            <strong>${doc.name.length > 40 ? doc.name.substring(0, 40) + '...' : doc.name}</strong><br>
-                            <small>${new Date(doc.uploadedAt).toLocaleDateString()} • ${(doc.size / 1024).toFixed(1)} KB</small>
+                            <strong>${doc.name.substring(0, 40)}</strong><br>
+                            <small>${new Date(doc.uploadedAt).toLocaleDateString()}</small>
                         </div>
                     </div>
                     <div class="document-actions">
-                        <button onclick="askAboutDocument('${doc.id}')" title="Ask about this"><i class="fas fa-comment"></i></button>
-                        <button onclick="generateQuizFromDoc('${doc.id}')" title="Generate quiz"><i class="fas fa-question-circle"></i></button>
-                        <button onclick="deleteDocument('${doc.id}')" title="Delete"><i class="fas fa-trash"></i></button>
+                        <button onclick="askAboutDocument('${doc.id}')"><i class="fas fa-comment"></i></button>
+                        <button onclick="deleteDocument('${doc.id}')"><i class="fas fa-trash"></i></button>
                     </div>
                 </div>
             `).join('');
         }
 
-        // ==================== REST OF FUNCTIONS (sendMessage, etc.) ====================
         async function askAboutDocument(docId) {
             const doc = uploadedDocuments.find(d => d.id == docId);
             if (!doc) return;
             showSection('chat');
             setTimeout(() => {
-                document.getElementById('chatInput').value = `I uploaded "${doc.name}". Based on this, can you help me understand the key concepts?`;
+                document.getElementById('chatInput').value = `I uploaded "${doc.name}". Can you help me understand the key concepts?`;
                 sendMessage();
             }, 500);
-        }
-
-        async function generateQuizFromDoc(docId) {
-            const doc = uploadedDocuments.find(d => d.id == docId);
-            if (!doc) return;
-            showToast('Generating quiz...', 'info');
-            
-            try {
-                const prompt = `Based on this document "${doc.name}", generate 3 practice questions.
-Document Content: ${doc.content.substring(0, 3000)}
-Format clearly with Q1: [question] then A) B) C) D) then Correct: [letter]`;
-
-                const response = await fetch(`${BACKEND_URL}/api/tutor`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        message: prompt,
-                        subject: 'General',
-                        email: userEmail
-                    })
-                });
-                
-                const data = await response.json();
-                if (data.reply) {
-                    displayQuiz(data.reply, doc.name);
-                }
-            } catch (error) {
-                showToast('Failed to generate quiz', 'error');
-            }
-        }
-
-        function displayQuiz(quizContent, docName) {
-            const quizPanel = document.getElementById('quizPanel');
-            const quizQuestionsDiv = document.getElementById('quizQuestions');
-            quizQuestionsDiv.innerHTML = `<div class="quiz-question">${quizContent}</div>`;
-            quizPanel.style.display = 'block';
-        }
-
-        function generateNewQuiz() {
-            if (uploadedDocuments.length > 0) {
-                generateQuizFromDoc(uploadedDocuments[0].id);
-            } else {
-                showToast('Upload a document first!', 'warning');
-            }
         }
 
         function deleteDocument(docId) {
@@ -1614,6 +1383,15 @@ Format clearly with Q1: [question] then A) B) C) D) then Correct: [letter]`;
             showToast('Document deleted', 'success');
         }
 
+        function generateNewQuiz() {
+            if (uploadedDocuments.length > 0) {
+                showToast('Quiz generation coming soon!', 'info');
+            } else {
+                showToast('Upload a document first!', 'warning');
+            }
+        }
+
+        // ==================== CHAT FUNCTIONS ====================
         function setQuickQuestion(question) {
             document.getElementById('chatInput').value = question;
             document.getElementById('chatInput').focus();
@@ -1625,26 +1403,337 @@ Format clearly with Q1: [question] then A) B) C) D) then Correct: [letter]`;
             toast.style.background = type === 'success' ? '#10b981' : type === 'warning' ? '#f59e0b' : '#ef4444';
             toast.innerHTML = `<i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-triangle'}"></i> ${message}`;
             document.body.appendChild(toast);
-            setTimeout(() => toast.remove(), 4000);
+            setTimeout(() => toast.remove(), 3000);
         }
 
-        // ==================== EXISTING FUNCTIONS (keep all previous) ====================
-        function startPayPalCheckout() { /* same */ }
-        function manualActivatePremium() { /* same */ }
-        async function subscribeWithVerification(event) { /* same */ }
-        async function checkEmailVerification() { /* same */ }
-        function loadChatHistory() { /* same */ }
-        function saveChatHistory() { /* same */ }
-        function renderMessages() { /* same */ }
-        function clearChat() { /* same */ }
-        async function sendMessage() { /* same - using uploadedDocuments context */ }
-        function addMessage(role, content) { /* same */ }
-        function changeSubject(subject) { /* same */ }
-        function startChat(subject) { /* same */ }
-        function showPremiumModal() { /* same */ }
-        function showSection(section) { /* same */ }
-        function updateStats() { /* same */ }
-        function updateStreak() { /* same */ }
+        function loadChatHistory() {
+            const saved = localStorage.getItem('chatHistory');
+            if (saved) {
+                try {
+                    chatHistory = JSON.parse(saved);
+                    renderMessages();
+                } catch(e) {}
+            }
+        }
+        
+        function saveChatHistory() {
+            localStorage.setItem('chatHistory', JSON.stringify(chatHistory));
+        }
+        
+        function renderMessages() {
+            const container = document.getElementById('chatMessages');
+            if (!container) return;
+            container.innerHTML = '';
+            chatHistory.forEach(msg => {
+                const div = document.createElement('div');
+                div.className = `message ${msg.role}`;
+                const time = new Date(msg.timestamp).toLocaleTimeString();
+                div.innerHTML = `<div class="message-content">${msg.content.replace(/\n/g, '<br>')}<div class="message-time">${time}</div></div>`;
+                container.appendChild(div);
+            });
+            container.scrollTop = container.scrollHeight;
+        }
+        
+        function clearChat() {
+            if (confirm('Clear all chat history?')) {
+                chatHistory = [];
+                saveChatHistory();
+                renderMessages();
+                addMessage('assistant', '👋 Hi! I\'m your AI Tutor Pro. What would you like to learn today?');
+                showToast('Chat cleared', 'success');
+            }
+        }
+        
+        async function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            if (!message) return;
+            
+            if (!emailVerified && !isPremium) {
+                showToast('Please verify your email first!', 'warning');
+                return;
+            }
+            
+            if (!isPremium && remainingSessions <= 0) {
+                showToast('Free sessions used up! Upgrade to Pro.', 'warning');
+                showPremiumModal();
+                return;
+            }
+            
+            addMessage('user', message);
+            input.value = '';
+            
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'message assistant';
+            typingDiv.id = 'typingIndicator';
+            typingDiv.innerHTML = `<div class="message-content"><div class="typing-indicator"><span></span><span></span><span></span></div></div>`;
+            document.getElementById('chatMessages').appendChild(typingDiv);
+            document.getElementById('chatMessages').scrollTop = document.getElementById('chatMessages').scrollHeight;
+            
+            let contextMessage = message;
+            if (uploadedDocuments.length > 0) {
+                const docContext = uploadedDocuments.map(doc => `[Document: ${doc.name}]`).join(', ');
+                contextMessage = `${message}\n\n[Context: I have uploaded ${uploadedDocuments.length} document(s): ${docContext}]`;
+            }
+            
+            try {
+                const response = await fetch(`${BACKEND_URL}/api/tutor`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        message: contextMessage,
+                        subject: currentSubject,
+                        conversationHistory: chatHistory.slice(-10),
+                        email: userEmail
+                    })
+                });
+                
+                const data = await response.json();
+                document.getElementById('typingIndicator')?.remove();
+                
+                if (data.reply) {
+                    addMessage('assistant', data.reply);
+                    totalQuestions++;
+                    localStorage.setItem('totalQuestions', totalQuestions);
+                    
+                    if (!isPremium && remainingSessions > 0) {
+                        remainingSessions--;
+                        localStorage.setItem('remainingSessions', remainingSessions);
+                        updateStats();
+                    }
+                    updateStats();
+                } else {
+                    addMessage('assistant', `⚠️ ${data.error || 'Something went wrong'}`);
+                }
+            } catch (error) {
+                document.getElementById('typingIndicator')?.remove();
+                addMessage('assistant', '⚠️ Network error. Please check your connection.');
+            }
+        }
+        
+        function addMessage(role, content) {
+            chatHistory.push({ role, content, timestamp: Date.now() });
+            saveChatHistory();
+            renderMessages();
+        }
+        
+        function changeSubject(subject) {
+            currentSubject = subject;
+            document.querySelectorAll('.subject-chip').forEach(chip => {
+                chip.classList.remove('active');
+                if (chip.textContent.includes(subject) || chip.textContent === subject) {
+                    chip.classList.add('active');
+                }
+            });
+            addMessage('assistant', `📚 I'll help you with ${subject}. What would you like to learn?`);
+        }
+        
+        function startChat(subject) {
+            if (!emailVerified && !isPremium) {
+                showToast('Please verify your email first!', 'warning');
+                showSection('home');
+                return;
+            }
+            currentSubject = subject;
+            changeSubject(subject);
+            showSection('chat');
+        }
+
+        // ==================== PAYMENT FUNCTIONS ====================
+        function startPayPalCheckout() {
+            const email = localStorage.getItem('userEmail') || document.getElementById('userEmail')?.value;
+            if (!email) {
+                showToast('Please enter your email first', 'warning');
+                return;
+            }
+            localStorage.setItem('paymentEmail', email);
+            const paypalUrl = `https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=${encodeURIComponent(PAYPAL_EMAIL)}&item_name=AI Tutor Pro&amount=9.99&currency_code=USD&return=https://innocent200509.github.io/Universal-AI-Tutor/success.html&cancel_return=https://innocent200509.github.io/Universal-AI-Tutor/&custom=${encodeURIComponent(email)}`;
+            window.open(paypalUrl, '_blank');
+            showToast('PayPal opened. Complete payment to activate.', 'info');
+        }
+        
+        function manualActivatePremium() {
+            const email = localStorage.getItem('paymentEmail') || localStorage.getItem('userEmail');
+            if (email && confirm('Did you complete payment?')) {
+                localStorage.setItem('aiTutorPremium', 'true');
+                isPremium = true;
+                remainingSessions = Infinity;
+                localStorage.setItem('remainingSessions', 'unlimited');
+                updateStats();
+                document.querySelector('.upgrade-btn')?.remove();
+                showToast('🎉 Premium activated!', 'success');
+            }
+        }
+
+        // ==================== EMAIL VERIFICATION ====================
+        async function subscribeWithVerification(event) {
+            event.preventDefault();
+            const email = document.getElementById('userEmail').value;
+            if (!email || !email.includes('@')) {
+                showToast('Please enter a valid email', 'warning');
+                return;
+            }
+            
+            const subscribeBtn = document.getElementById('subscribeBtn');
+            subscribeBtn.disabled = true;
+            subscribeBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+            
+            try {
+                const response = await fetch(`${BACKEND_URL}/api/subscribe`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, source: 'ai-tutor-web' })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    localStorage.setItem('pendingEmail', email);
+                    showToast('Verification email sent!', 'success');
+                    document.getElementById('emailForm').style.display = 'none';
+                } else if (data.alreadyVerified) {
+                    showToast('Email already verified!', 'success');
+                    document.getElementById('emailCapture').style.display = 'none';
+                    userEmail = email;
+                    localStorage.setItem('userEmail', email);
+                    localStorage.setItem('emailVerified', 'true');
+                    remainingSessions = 10;
+                    emailVerified = true;
+                    updateStats();
+                } else {
+                    showToast(data.error || 'Failed to send', 'error');
+                }
+            } catch (error) {
+                showToast('Network error', 'error');
+            } finally {
+                subscribeBtn.disabled = false;
+                subscribeBtn.innerHTML = '<i class="fas fa-envelope"></i> Get Free Access →';
+            }
+        }
+        
+        async function checkEmailVerification() {
+            const email = localStorage.getItem('pendingEmail') || localStorage.getItem('userEmail');
+            if (!email) return;
+            
+            try {
+                const response = await fetch(`${BACKEND_URL}/api/check-verified`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email })
+                });
+                
+                const data = await response.json();
+                
+                if (data.verified) {
+                    localStorage.setItem('emailVerified', 'true');
+                    localStorage.setItem('userEmail', email);
+                    localStorage.setItem('remainingSessions', data.remainingSessions || 10);
+                    userEmail = email;
+                    remainingSessions = data.remainingSessions || 10;
+                    emailVerified = true;
+                    isPremium = data.isPremium || false;
+                    if (isPremium) {
+                        localStorage.setItem('aiTutorPremium', 'true');
+                        document.querySelector('.upgrade-btn')?.remove();
+                    }
+                    document.getElementById('emailCapture').style.display = 'none';
+                    updateStats();
+                    showToast('Email verified!', 'success');
+                }
+            } catch(e) {}
+        }
+
+        // ==================== UI FUNCTIONS ====================
+        function showPremiumModal() {
+            const modal = document.createElement('div');
+            modal.className = 'modal-overlay';
+            modal.innerHTML = `
+                <div class="modal-content">
+                    <button class="close-btn" onclick="this.closest('.modal-overlay').remove()">×</button>
+                    <i class="fas fa-crown" style="font-size: 3rem; color: var(--gold);"></i>
+                    <h2>Upgrade to Pro</h2>
+                    <div class="price-tag">$9.99<span style="font-size:1rem;">/month</span></div>
+                    <ul class="feature-list">
+                        <li>✅ Unlimited questions</li>
+                        <li>✅ Upload unlimited documents</li>
+                        <li>✅ Draw and analyze geometry</li>
+                        <li>✅ Generate practice quizzes</li>
+                        <li>✅ Cancel anytime</li>
+                    </ul>
+                    <button onclick="startPayPalCheckout()" class="btn btn-gold" style="width:100%;margin-bottom:0.5rem;">
+                        <i class="fab fa-paypal"></i> Pay with PayPal
+                    </button>
+                    <button onclick="manualActivatePremium()" class="btn btn-secondary" style="width:100%;">
+                        <i class="fas fa-check"></i> I've Completed Payment
+                    </button>
+                </div>
+            `;
+            document.body.appendChild(modal);
+        }
+        
+        function showSection(section) {
+            document.getElementById('home').style.display = 'none';
+            document.getElementById('subjects').style.display = 'none';
+            document.getElementById('upload').classList.remove('active');
+            document.getElementById('chat').classList.remove('active');
+            document.getElementById('upload').style.display = 'none';
+            document.getElementById('chat').style.display = 'none';
+            
+            if (section === 'home') {
+                document.getElementById('home').style.display = 'block';
+                document.getElementById('subjects').style.display = 'grid';
+            } else if (section === 'chat') {
+                if (!emailVerified && !isPremium) {
+                    showToast('Please verify your email first!', 'warning');
+                    showSection('home');
+                    return;
+                }
+                document.getElementById('chat').style.display = 'block';
+                setTimeout(() => document.getElementById('chat').classList.add('active'), 10);
+                document.getElementById('chatInput').focus();
+            } else if (section === 'upload') {
+                if (!emailVerified && !isPremium) {
+                    showToast('Please verify your email first!', 'warning');
+                    showSection('home');
+                    return;
+                }
+                document.getElementById('upload').style.display = 'block';
+                setTimeout(() => document.getElementById('upload').classList.add('active'), 10);
+            } else if (section === 'subjects') {
+                document.getElementById('subjects').style.display = 'grid';
+                document.getElementById('home').style.display = 'block';
+            }
+            window.scrollTo(0, 0);
+        }
+        
+        function updateStats() {
+            document.getElementById('totalQuestions').textContent = totalQuestions;
+            document.getElementById('streakDisplay').textContent = streak;
+            document.getElementById('streakCount').textContent = streak;
+            document.getElementById('documentsCount').textContent = uploadedDocuments.length;
+            
+            if (!isPremium && remainingSessions !== undefined && remainingSessions !== Infinity) {
+                document.getElementById('sessionsLeft').textContent = remainingSessions;
+            } else if (isPremium) {
+                document.getElementById('sessionsLeft').textContent = '∞';
+            } else {
+                document.getElementById('sessionsLeft').textContent = '0';
+            }
+        }
+        
+        function updateStreak() {
+            const lastActive = localStorage.getItem('lastActive');
+            const today = new Date().toDateString();
+            if (lastActive !== today) {
+                const yesterday = new Date();
+                yesterday.setDate(yesterday.getDate() - 1);
+                if (lastActive === yesterday.toDateString()) streak++;
+                else streak = 1;
+                localStorage.setItem('aiTutorStreak', streak);
+                localStorage.setItem('lastActive', today);
+                updateStats();
+            }
+        }
         
         // ==================== INITIALIZATION ====================
         document.addEventListener('DOMContentLoaded', async () => {
@@ -1652,17 +1741,19 @@ Format clearly with Q1: [question] then A) B) C) D) then Correct: [letter]`;
             updateStats();
             updateStreak();
             loadChatHistory();
-            initCanvas();
+            renderDocumentList();
             
-            // Set up file input handler
+            // Set up file input
             document.getElementById('fileInput').addEventListener('change', (e) => {
                 handleFiles(e.target.files);
             });
             
             document.getElementById('drawColor').addEventListener('change', (e) => {
                 currentColor = e.target.value;
-                ctx.strokeStyle = currentColor;
-                ctx.fillStyle = currentColor;
+                if (ctx) {
+                    ctx.strokeStyle = currentColor;
+                    ctx.fillStyle = currentColor;
+                }
             });
             
             if (emailVerified) {
@@ -1671,6 +1762,9 @@ Format clearly with Q1: [question] then A) B) C) D) then Correct: [letter]`;
             if (isPremium) {
                 document.querySelector('.upgrade-btn')?.remove();
             }
+            
+            // Initialize with file upload tab visible
+            switchUploadTab('file');
         });
     </script>
 </body>
