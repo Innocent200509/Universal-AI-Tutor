@@ -700,7 +700,7 @@
                 const data = await response.json();
                 
                 if (data.id) {
-                    const paypalUrl = `https://www.sandbox.paypal.com/checkoutnow?token=${data.id}`;
+                    const paypalUrl = `https://www.paypal.com/checkoutnow?token=${data.id}`;
                     window.location.href = paypalUrl;
                 } else {
                     alert('Failed to create payment. Please try again.');
