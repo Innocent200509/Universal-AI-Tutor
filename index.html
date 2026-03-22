@@ -671,6 +671,10 @@
         // ==================== CONFIGURATION ====================
         const BACKEND_URL = 'https://universal-ai-tutor-2.onrender.com';
         
+        // ==================== YOUR PAYPAL BUSINESS EMAIL ====================
+        // Money will be sent to this email when users subscribe
+        const PAYPAL_EMAIL = 'innocentmbimbili@gmail.com';
+        
         let currentSubject = 'General';
         let chatHistory = [];
         let isPremium = localStorage.getItem('aiTutorPremium') === 'true';
@@ -680,8 +684,9 @@
         let remainingSessions = parseInt(localStorage.getItem('remainingSessions')) || 0;
         let emailVerified = localStorage.getItem('emailVerified') === 'true';
 
-        // ==================== PAYPAL INTEGRATION ====================
-        async function startPayPalCheckout() {
+        // ==================== LIVE PAYPAL PAYMENT ====================
+        // This sends payments directly to innocentmbimbili@gmail.com
+        function startPayPalCheckout() {
             const email = localStorage.getItem('userEmail') || document.getElementById('userEmail')?.value;
             
             if (!email) {
@@ -690,59 +695,58 @@
                 return;
             }
             
-            try {
-                const response = await fetch(`${BACKEND_URL}/api/create-paypal-order`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email: email })
-                });
+            // Save email for after payment
+            localStorage.setItem('paymentEmail', email);
+            
+            // LIVE PayPal URL - money goes to innocentmbimbili@gmail.com
+            const paypalUrl = `https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=${encodeURIComponent(PAYPAL_EMAIL)}&item_name=AI Tutor Pro - Monthly Subscription&amount=9.99&currency_code=USD&return=https://innocent200509.github.io/Universal-AI-Tutor/success.html&cancel_return=https://innocent200509.github.io/Universal-AI-Tutor/&custom=${encodeURIComponent(email)}&rm=2`;
+            
+            // Open PayPal in new tab
+            window.open(paypalUrl, '_blank');
+            
+            // Show instruction to user
+            alert('PayPal will open in a new tab. After completing payment, return to this page and click "I\'ve Completed Payment" to activate premium.');
+        }
+        
+        // Manual activation button for after PayPal payment
+        function manualActivatePremium() {
+            const email = localStorage.getItem('paymentEmail') || localStorage.getItem('userEmail');
+            if (email && confirm('Did you just complete a PayPal payment? Click OK to activate your premium access.')) {
+                localStorage.setItem('aiTutorPremium', 'true');
+                isPremium = true;
+                remainingSessions = Infinity;
+                localStorage.setItem('remainingSessions', 'unlimited');
+                updateStats();
                 
-                const data = await response.json();
+                const upgradeBtn = document.querySelector('.upgrade-btn');
+                if (upgradeBtn) upgradeBtn.remove();
                 
-                if (data.id) {
-                    const paypalUrl = `https://www.paypal.com/checkoutnow?token=${data.id}`;
-                    window.location.href = paypalUrl;
-                } else {
-                    alert('Failed to create payment. Please try again.');
-                }
-            } catch (error) {
-                console.error('PayPal error:', error);
-                alert('Network error. Please try again.');
+                alert('🎉 Premium activated! You now have unlimited access to AI Tutor Pro.');
             }
         }
 
-        async function checkPayPalReturn() {
+        // Check if returning from PayPal
+        function checkPayPalReturn() {
             const urlParams = new URLSearchParams(window.location.search);
-            const orderId = urlParams.get('token');
-            const payerId = urlParams.get('PayerID');
+            const paymentStatus = urlParams.get('st');
+            const customEmail = urlParams.get('custom');
             
-            if (orderId && payerId) {
-                const email = localStorage.getItem('userEmail');
+            if (paymentStatus === 'completed') {
+                const email = customEmail || localStorage.getItem('paymentEmail');
                 
                 if (email) {
-                    try {
-                        const response = await fetch(`${BACKEND_URL}/api/capture-paypal-order`, {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ orderID: orderId, email: email })
-                        });
-                        
-                        const data = await response.json();
-                        
-                        if (data.success) {
-                            alert('🎉 Payment successful! You now have unlimited access to AI Tutor Pro!');
-                            localStorage.setItem('aiTutorPremium', 'true');
-                            isPremium = true;
-                            remainingSessions = Infinity;
-                            localStorage.setItem('remainingSessions', 'unlimited');
-                            updateStats();
-                            // Remove upgrade button
-                            document.querySelector('.upgrade-btn')?.remove();
-                            window.location.href = '/';
-                        }
-                    } catch (error) {
-                        console.error('Capture error:', error);
-                    }
+                    localStorage.setItem('aiTutorPremium', 'true');
+                    isPremium = true;
+                    remainingSessions = Infinity;
+                    localStorage.setItem('remainingSessions', 'unlimited');
+                    localStorage.setItem('userEmail', email);
+                    updateStats();
+                    
+                    const upgradeBtn = document.querySelector('.upgrade-btn');
+                    if (upgradeBtn) upgradeBtn.remove();
+                    
+                    alert('🎉 Payment successful! You now have unlimited access to AI Tutor Pro!');
+                    window.history.replaceState({}, document.title, window.location.pathname);
                 }
             }
         }
@@ -1022,8 +1026,11 @@
                     <button onclick="startPayPalCheckout()" class="btn btn-gold" style="width:100%;padding:1rem;font-size:1.1rem;">
                         💳 Pay with PayPal - $9.99/month
                     </button>
+                    <button onclick="manualActivatePremium()" class="btn btn-secondary" style="margin-top: 10px; width: 100%;">
+                        I've Completed Payment
+                    </button>
                     <p style="margin-top:1rem;font-size:0.875rem;opacity:0.7;">
-                        🔒 Secure payment via PayPal. Cancel anytime.
+                        🔒 Secure payment via PayPal. Money goes to innocentmbimbili@gmail.com
                     </p>
                 </div>
             `;
