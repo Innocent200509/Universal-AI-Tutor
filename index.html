@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="theme-color" content="#6366f1">
     <meta name="description" content="AI Tutor Pro - Your Personal AI Learning Assistant with voice input, progress tracking, and smart study recommendations">
-    <title>AI Tutor Pro - Smart AI Learning Assistant</title>
+    <title>AI Tutor Pro - Smart AI Learning Platform</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
@@ -58,9 +58,7 @@
             transition: background 0.3s;
         }
 
-        @media (max-width: 768px) {
-            body { font-size: 14px; }
-        }
+        @media (max-width: 768px) { body { font-size: 14px; } }
 
         /* Animated Background */
         .bg-animation {
@@ -126,9 +124,7 @@
             transition: all 0.3s;
         }
 
-        .theme-toggle:hover {
-            transform: scale(1.1);
-        }
+        .theme-toggle:hover { transform: scale(1.1); }
 
         /* Modal Styles */
         .modal-overlay {
@@ -158,46 +154,19 @@
             animation: slideUp 0.3s ease;
         }
 
-        body.light-mode .modal-content {
-            background: white;
-            color: #333;
-        }
+        body.light-mode .modal-content { background: white; color: #333; }
 
-        @media (max-width: 480px) {
-            .modal-content { padding: 1.5rem; }
-            .price-tag { font-size: 2rem; }
-        }
+        @media (max-width: 480px) { .modal-content { padding: 1.5rem; } .price-tag { font-size: 2rem; } }
 
         @keyframes slideUp {
             from { transform: translateY(50px); opacity: 0; }
             to { transform: translateY(0); opacity: 1; }
         }
 
-        .price-tag {
-            font-size: 3rem;
-            font-weight: bold;
-            color: var(--gold);
-            margin: 1rem 0;
-        }
-
-        .feature-list {
-            text-align: left;
-            margin: 1.5rem 0;
-            list-style: none;
-        }
-
-        .feature-list li {
-            padding: 0.5rem 0;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .feature-list li::before {
-            content: "✓";
-            color: var(--success);
-            font-weight: bold;
-        }
+        .price-tag { font-size: 3rem; font-weight: bold; color: var(--gold); margin: 1rem 0; }
+        .feature-list { text-align: left; margin: 1.5rem 0; list-style: none; }
+        .feature-list li { padding: 0.5rem 0; display: flex; align-items: center; gap: 0.5rem; }
+        .feature-list li::before { content: "✓"; color: var(--success); font-weight: bold; }
 
         /* Premium Button */
         .upgrade-btn {
@@ -220,14 +189,7 @@
             gap: 0.5rem;
         }
 
-        @media (max-width: 768px) {
-            .upgrade-btn {
-                top: 0.75rem;
-                right: 0.75rem;
-                padding: 0.5rem 1rem;
-                font-size: 0.8rem;
-            }
-        }
+        @media (max-width: 768px) { .upgrade-btn { top: 0.75rem; right: 0.75rem; padding: 0.5rem 1rem; font-size: 0.8rem; } }
 
         @keyframes pulse {
             0%, 100% { box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4); }
@@ -245,9 +207,7 @@
             border-bottom: 1px solid var(--glass);
         }
 
-        body.light-mode nav {
-            background: rgba(255, 255, 255, 0.8);
-        }
+        body.light-mode nav { background: rgba(255, 255, 255, 0.8); }
 
         .nav-container {
             max-width: 1400px;
@@ -288,16 +248,15 @@
             font-size: 0.9rem;
         }
 
-        .nav-links a:hover {
-            background: var(--glass);
-            color: var(--accent);
-        }
+        .nav-links a:hover { background: var(--glass); color: var(--accent); }
 
         .container {
             max-width: 1400px;
             margin: 0 auto;
             padding: 1.5rem;
         }
+
+        @media (max-width: 768px) { .container { padding: 1rem; } }
 
         /* Hero Section */
         .hero {
@@ -350,10 +309,7 @@
             text-align: center;
         }
 
-        .stat-item:hover {
-            transform: translateY(-3px);
-            border-color: var(--primary);
-        }
+        .stat-item:hover { transform: translateY(-3px); border-color: var(--primary); }
 
         .stat-value {
             font-size: clamp(1.5rem, 4vw, 2.5rem);
@@ -361,22 +317,23 @@
             color: var(--accent);
         }
 
-        .stat-label {
-            font-size: 0.75rem;
-            opacity: 0.8;
-            margin-top: 0.25rem;
-        }
+        .stat-label { font-size: 0.75rem; opacity: 0.8; margin-top: 0.25rem; }
 
         /* Progress Dashboard */
-        .progress-dashboard {
-            margin: 2rem auto;
-            max-width: 600px;
+        .progress-dashboard { margin: 2rem auto; max-width: 600px; }
+        .progress-dashboard h3 { margin-bottom: 1rem; font-size: 1.2rem; }
+
+        /* Pomodoro Timer */
+        .pomodoro-timer {
+            background: var(--glass);
+            border-radius: 1rem;
+            padding: 1rem;
+            margin: 1rem auto;
+            max-width: 400px;
+            text-align: center;
         }
 
-        .progress-dashboard h3 {
-            margin-bottom: 1rem;
-            font-size: 1.2rem;
-        }
+        .timer-display { font-size: 3rem; font-weight: bold; margin: 1rem 0; }
 
         /* Upload Section */
         .upload-section {
@@ -390,10 +347,7 @@
             display: none;
         }
 
-        .upload-section.active {
-            display: block;
-            animation: fadeIn 0.5s ease;
-        }
+        .upload-section.active { display: block; animation: fadeIn 0.5s ease; }
 
         .upload-tabs {
             display: flex;
@@ -413,11 +367,7 @@
             font-size: 0.9rem;
         }
 
-        .upload-tab:hover,
-        .upload-tab.active {
-            background: var(--primary);
-            box-shadow: 0 0 15px rgba(99, 102, 241, 0.5);
-        }
+        .upload-tab:hover, .upload-tab.active { background: var(--primary); box-shadow: 0 0 15px rgba(99, 102, 241, 0.5); }
 
         .upload-area {
             border: 2px dashed var(--glass);
@@ -429,10 +379,7 @@
             text-align: center;
         }
 
-        .upload-icon {
-            font-size: clamp(2rem, 6vw, 3rem);
-            margin-bottom: 0.5rem;
-        }
+        .upload-icon { font-size: clamp(2rem, 6vw, 3rem); margin-bottom: 0.5rem; }
 
         /* Drawing Canvas */
         .drawing-canvas-container {
@@ -471,9 +418,7 @@
             gap: 0.3rem;
         }
 
-        .drawing-tool:hover {
-            background: var(--primary);
-        }
+        .drawing-tool:hover { background: var(--primary); }
 
         .color-picker {
             width: 32px;
@@ -509,15 +454,9 @@
             flex: 1;
         }
 
-        .document-info i {
-            font-size: 1.2rem;
-            color: var(--accent);
-        }
+        .document-info i { font-size: 1.2rem; color: var(--accent); }
 
-        .document-actions {
-            display: flex;
-            gap: 0.5rem;
-        }
+        .document-actions { display: flex; gap: 0.5rem; }
 
         .document-actions button {
             background: rgba(255, 255, 255, 0.1);
@@ -553,21 +492,9 @@
             border-color: var(--primary);
         }
 
-        .subject-icon {
-            font-size: clamp(2rem, 5vw, 3rem);
-            margin-bottom: 0.5rem;
-        }
-
-        .subject-title {
-            font-size: clamp(1rem, 4vw, 1.25rem);
-            margin-bottom: 0.3rem;
-            font-weight: 600;
-        }
-
-        .subject-desc {
-            opacity: 0.8;
-            font-size: 0.8rem;
-        }
+        .subject-icon { font-size: clamp(2rem, 5vw, 3rem); margin-bottom: 0.5rem; }
+        .subject-title { font-size: clamp(1rem, 4vw, 1.25rem); margin-bottom: 0.3rem; font-weight: 600; }
+        .subject-desc { opacity: 0.8; font-size: 0.8rem; }
 
         /* Chat Section */
         .chat-section {
@@ -580,10 +507,7 @@
             display: none;
         }
 
-        .chat-section.active {
-            display: block;
-            animation: fadeIn 0.5s ease;
-        }
+        .chat-section.active { display: block; animation: fadeIn 0.5s ease; }
 
         .subject-selector {
             display: flex;
@@ -604,10 +528,7 @@
             font-size: 0.75rem;
         }
 
-        .subject-chip:hover,
-        .subject-chip.active {
-            background: var(--primary);
-        }
+        .subject-chip:hover, .subject-chip.active { background: var(--primary); }
 
         .chat-container {
             background: rgba(0, 0, 0, 0.2);
@@ -658,12 +579,7 @@
             border-bottom-left-radius: 0.25rem;
         }
 
-        .message-time {
-            font-size: 0.65rem;
-            opacity: 0.6;
-            margin-top: 0.2rem;
-            text-align: right;
-        }
+        .message-time { font-size: 0.65rem; opacity: 0.6; margin-top: 0.2rem; text-align: right; }
 
         .chat-input-area {
             display: flex;
@@ -672,6 +588,7 @@
             border-top: 1px solid rgba(255, 255, 255, 0.1);
             background: rgba(0, 0, 0, 0.2);
             border-radius: 0 0 var(--border-radius) var(--border-radius);
+            flex-wrap: wrap;
         }
 
         .chat-input {
@@ -701,19 +618,10 @@
             gap: 0.5rem;
         }
 
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
-        }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3); }
 
-        .btn-secondary {
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .btn-gold {
-            background: linear-gradient(135deg, var(--gold), #ffed4e);
-            color: #000;
-        }
+        .btn-secondary { background: rgba(255, 255, 255, 0.1); }
+        .btn-gold { background: linear-gradient(135deg, var(--gold), #ffed4e); color: #000; }
 
         /* Quick Actions */
         .quick-actions {
@@ -733,10 +641,7 @@
             transition: all 0.3s;
         }
 
-        .quick-action:hover {
-            background: var(--primary);
-            transform: scale(1.05);
-        }
+        .quick-action:hover { background: var(--primary); transform: scale(1.05); }
 
         /* Toast Notification */
         .toast {
@@ -755,37 +660,75 @@
             white-space: nowrap;
         }
 
-        @media (max-width: 480px) {
-            .toast { white-space: normal; max-width: 90%; text-align: center; }
-        }
+        @media (max-width: 480px) { .toast { white-space: normal; max-width: 90%; text-align: center; } }
 
-        /* Loading Skeleton */
-        .skeleton {
-            background: linear-gradient(90deg, rgba(255,255,255,0.1) 25%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0.1) 75%);
-            background-size: 200% 100%;
-            animation: loading 1.5s infinite;
-            border-radius: 4px;
-        }
-
-        @keyframes loading {
-            0% { background-position: 200% 0; }
-            100% { background-position: -200% 0; }
-        }
-
-        .message-skeleton {
+        /* Flashcard Styles */
+        .flashcard {
+            width: 250px;
+            height: 300px;
+            background: var(--glass);
+            border-radius: 1rem;
             padding: 1rem;
-            margin: 0.5rem 0;
-            width: 60%;
-            height: 60px;
+            cursor: pointer;
+            position: relative;
+            perspective: 1000px;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
         }
 
-        .message-skeleton.user {
-            margin-left: auto;
-            width: 40%;
+        .flashcard.flipped { transform: rotateY(180deg); }
+
+        .flashcard-front, .flashcard-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 1rem;
+            border-radius: 1rem;
         }
 
-        .message-skeleton.assistant {
-            margin-right: auto;
+        .flashcard-back {
+            transform: rotateY(180deg);
+            background: var(--primary);
+        }
+
+        /* Quiz Styles */
+        .quiz-question {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .quiz-option {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 0.5rem;
+            margin: 0.2rem 0;
+            border-radius: 0.3rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .quiz-option:hover { background: rgba(99, 102, 241, 0.3); }
+
+        /* Equation Editor */
+        #equationEditor {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            z-index: 10000;
+            max-width: 90%;
+            width: 500px;
+            border: 1px solid var(--primary);
         }
 
         .analysis-result {
@@ -859,9 +802,7 @@
             display: inline-block;
         }
 
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
+        @keyframes spin { to { transform: rotate(360deg); } }
 
         .typing-indicator {
             display: flex;
@@ -902,15 +843,8 @@
             font-size: 0.85rem;
         }
 
-        .feedback.correct {
-            background: rgba(16, 185, 129, 0.2);
-            color: var(--success);
-        }
-
-        .feedback.incorrect {
-            background: rgba(239, 68, 68, 0.2);
-            color: #ef4444;
-        }
+        .feedback.correct { background: rgba(16, 185, 129, 0.2); color: var(--success); }
+        .feedback.incorrect { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
 
         @media (max-width: 768px) {
             .container { padding: 1rem; }
@@ -949,8 +883,9 @@
             <ul class="nav-links">
                 <li><a onclick="showSection('home')"><i class="fas fa-home"></i> Home</a></li>
                 <li><a onclick="showSection('upload')"><i class="fas fa-upload"></i> Upload</a></li>
+                <li><a onclick="showSection('quiz')"><i class="fas fa-brain"></i> Quiz</a></li>
+                <li><a onclick="showSection('flashcards')"><i class="fas fa-cards"></i> Cards</a></li>
                 <li><a onclick="showSection('chat')"><i class="fas fa-comment-dots"></i> Chat</a></li>
-                <li><a onclick="showSection('subjects')"><i class="fas fa-book"></i> Subjects</a></li>
             </ul>
         </div>
     </nav>
@@ -958,12 +893,28 @@
     <div class="container">
         <section id="home" class="hero">
             <h1><i class="fas fa-robot"></i> Your Personal AI Tutor</h1>
-            <p>Upload papers, draw geometry, use voice input, and get AI-powered help for any subject</p>
+            <p>Upload papers, draw geometry, take quizzes, create flashcards, and get AI-powered help</p>
             <div class="stats-bar">
                 <div class="stat-item"><div class="stat-value" id="totalQuestions">0</div><div class="stat-label">Questions</div></div>
                 <div class="stat-item"><div class="stat-value" id="sessionsLeft">0</div><div class="stat-label">Free Sessions</div></div>
                 <div class="stat-item"><div class="stat-value" id="documentsCount">0</div><div class="stat-label">Documents</div></div>
                 <div class="stat-item"><div class="stat-value" id="streakDisplay">0</div><div class="stat-label">Day Streak</div></div>
+            </div>
+
+            <!-- Pomodoro Timer -->
+            <div class="pomodoro-timer">
+                <h3><i class="fas fa-hourglass-half"></i> Focus Timer</h3>
+                <div class="timer-display" id="timerDisplay">25:00</div>
+                <div style="display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap;">
+                    <button class="btn btn-secondary" onclick="startTimer()"><i class="fas fa-play"></i> Start</button>
+                    <button class="btn btn-secondary" onclick="pauseTimer()"><i class="fas fa-pause"></i> Pause</button>
+                    <button class="btn btn-secondary" onclick="resetTimer()"><i class="fas fa-redo"></i> Reset</button>
+                </div>
+                <div style="margin-top: 0.5rem;">
+                    <span class="quick-action" onclick="setTimer(25)">25 min</span>
+                    <span class="quick-action" onclick="setTimer(5)">5 min break</span>
+                    <span class="quick-action" onclick="setTimer(15)">15 min</span>
+                </div>
             </div>
 
             <!-- Progress Dashboard -->
@@ -983,10 +934,18 @@
                 </div>
             </div>
 
+            <!-- Achievements -->
+            <div id="achievementsDisplay" style="background: var(--glass); border-radius: 1rem; padding: 1rem; margin-top: 1rem;">
+                <h3><i class="fas fa-trophy"></i> Achievements <span id="achievementsCount">0/0</span></h3>
+                <div id="achievementsList" style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.5rem;"></div>
+            </div>
+
             <div style="margin-top: 1.5rem; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
                 <button class="btn" onclick="showSection('upload')"><i class="fas fa-upload"></i> Upload</button>
-                <button class="btn" onclick="showSection('chat')"><i class="fas fa-play"></i> Start Learning</button>
+                <button class="btn" onclick="showSection('quiz')"><i class="fas fa-brain"></i> Take Quiz</button>
+                <button class="btn" onclick="showSection('flashcards')"><i class="fas fa-cards"></i> Flashcards</button>
                 <button class="btn btn-secondary" onclick="getStudyRecommendations()"><i class="fas fa-lightbulb"></i> Study Tips</button>
+                <button class="btn btn-secondary" onclick="generateShareLink()"><i class="fas fa-share-alt"></i> Share</button>
             </div>
         </section>
 
@@ -1039,14 +998,49 @@
             <div style="margin-top: 1rem;"><button class="btn btn-secondary" onclick="showSection('home')"><i class="fas fa-home"></i> Back</button></div>
         </section>
 
-        <section id="subjects" class="subjects-grid" style="display: none;">
-            <div class="subject-card" onclick="startChat('Mathematics')"><div class="subject-icon">📐</div><h3>Mathematics</h3><p class="subject-desc">Algebra, Calculus, Geometry</p></div>
-            <div class="subject-card" onclick="startChat('Physics')"><div class="subject-icon">⚛️</div><h3>Physics</h3><p class="subject-desc">Mechanics, Quantum</p></div>
-            <div class="subject-card" onclick="startChat('Chemistry')"><div class="subject-icon">🧪</div><h3>Chemistry</h3><p class="subject-desc">Organic, Reactions</p></div>
-            <div class="subject-card" onclick="startChat('Biology')"><div class="subject-icon">🧬</div><h3>Biology</h3><p class="subject-desc">Genetics, Anatomy</p></div>
-            <div class="subject-card" onclick="startChat('Computer Science')"><div class="subject-icon">💻</div><h3>Computer Science</h3><p class="subject-desc">Programming, AI</p></div>
+        <!-- Quiz Section -->
+        <section id="quiz" class="chat-section">
+            <h2><i class="fas fa-brain"></i> AI Quiz Generator</h2>
+            <div class="quiz-generator" style="margin-top: 1rem; padding: 1rem; background: rgba(0,0,0,0.2); border-radius: 1rem;">
+                <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin: 1rem 0; justify-content: center;">
+                    <select id="quizSubject" class="email-input" style="width: auto;">
+                        <option value="Mathematics">Mathematics</option>
+                        <option value="Physics">Physics</option>
+                        <option value="Chemistry">Chemistry</option>
+                        <option value="Biology">Biology</option>
+                        <option value="History">History</option>
+                        <option value="Computer Science">Computer Science</option>
+                    </select>
+                    <select id="quizDifficulty" class="email-input" style="width: auto;">
+                        <option value="easy">Easy</option>
+                        <option value="medium">Medium</option>
+                        <option value="hard">Hard</option>
+                    </select>
+                    <select id="quizCount" class="email-input" style="width: auto;">
+                        <option value="3">3 Questions</option>
+                        <option value="5">5 Questions</option>
+                        <option value="10">10 Questions</option>
+                    </select>
+                    <button class="btn" onclick="generateQuiz()"><i class="fas fa-magic"></i> Generate Quiz</button>
+                </div>
+                <div id="quizContainer"></div>
+                <div id="quizScore" style="margin-top: 1rem; text-align: center;"></div>
+            </div>
+            <div style="margin-top: 1rem;"><button class="btn btn-secondary" onclick="showSection('home')"><i class="fas fa-home"></i> Back</button></div>
         </section>
 
+        <!-- Flashcards Section -->
+        <section id="flashcards" class="chat-section">
+            <h2><i class="fas fa-cards"></i> AI Flashcards</h2>
+            <div style="margin-bottom: 1rem; text-align: center;">
+                <input type="text" id="flashcardTopic" class="email-input" placeholder="Enter a topic (e.g., 'Photosynthesis', 'Calculus')" style="width: 70%;">
+                <button class="btn" onclick="generateFlashcards()"><i class="fas fa-magic"></i> Generate</button>
+            </div>
+            <div id="flashcardContainer" style="display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center;"></div>
+            <div style="margin-top: 1rem;"><button class="btn btn-secondary" onclick="showSection('home')"><i class="fas fa-home"></i> Back</button></div>
+        </section>
+
+        <!-- Chat Section -->
         <section id="chat" class="chat-section">
             <div class="subject-selector" id="subjectSelector">
                 <div class="subject-chip active" onclick="changeSubject('General')">💬 General</div>
@@ -1058,16 +1052,18 @@
             </div>
             <div class="chat-container">
                 <div class="chat-messages" id="chatMessages">
-                    <div class="message assistant"><div class="message-content">👋 Hi! I'm your AI Tutor.<br><br>Ask me anything! Use voice input by clicking the microphone button.</div></div>
+                    <div class="message assistant"><div class="message-content">👋 Hi! I'm your AI Tutor.<br><br>Ask me anything! Use voice input by clicking the microphone button, or click the Σ button for math equations.</div></div>
                 </div>
                 <div class="quick-actions">
                     <span class="quick-action" onclick="setQuickQuestion('Explain quantum physics')">🔬 Quantum</span>
                     <span class="quick-action" onclick="setQuickQuestion('Pythagorean theorem?')">📐 Pythagoras</span>
                     <span class="quick-action" onclick="setQuickQuestion('Circle area formula?')">⚪ Circle Area</span>
                     <span class="quick-action" onclick="setQuickQuestion('Photosynthesis?')">🌱 Photosynthesis</span>
+                    <span class="quick-action" onclick="speakLastAnswer()"><i class="fas fa-volume-up"></i> Speak</span>
                 </div>
                 <div class="chat-input-area">
                     <textarea class="chat-input" id="chatInput" placeholder="Ask me anything... (Ctrl+Enter to send)" rows="1" onkeypress="if(event.key==='Enter' && !event.shiftKey){event.preventDefault();sendMessage();}"></textarea>
+                    <button id="eqBtn" class="btn btn-secondary" onclick="showEquationEditor()" style="padding: 0.8rem;"><i class="fas fa-square-root-alt"></i></button>
                     <button id="micBtn" class="btn btn-secondary" onclick="toggleSpeechRecognition()" style="padding: 0.8rem;"><i class="fas fa-microphone"></i></button>
                     <button class="btn" onclick="sendMessage()"><i class="fas fa-paper-plane"></i> Send</button>
                 </div>
@@ -1078,6 +1074,33 @@
                 <button class="btn btn-secondary" onclick="showSection('home')"><i class="fas fa-home"></i> Back</button>
             </div>
         </section>
+    </div>
+
+    <!-- Equation Editor Modal -->
+    <div id="equationEditor" style="display: none;">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
+            <h3>Math Equation Editor</h3>
+            <button onclick="closeEquationEditor()" style="background: none; border: none; color: white; font-size: 1.2rem;">✕</button>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem; margin-bottom: 1rem;">
+            <button class="btn btn-secondary" onclick="insertMath('^2')">x²</button>
+            <button class="btn btn-secondary" onclick="insertMath('^3')">x³</button>
+            <button class="btn btn-secondary" onclick="insertMath('\\sqrt{}')">√</button>
+            <button class="btn btn-secondary" onclick="insertMath('\\frac{}{}')">a/b</button>
+            <button class="btn btn-secondary" onclick="insertMath('\\pi')">π</button>
+            <button class="btn btn-secondary" onclick="insertMath('\\theta')">θ</button>
+            <button class="btn btn-secondary" onclick="insertMath('\\alpha')">α</button>
+            <button class="btn btn-secondary" onclick="insertMath('\\beta')">β</button>
+            <button class="btn btn-secondary" onclick="insertMath('\\int')">∫</button>
+            <button class="btn btn-secondary" onclick="insertMath('\\sum')">∑</button>
+            <button class="btn btn-secondary" onclick="insertMath('\\lim')">lim</button>
+            <button class="btn btn-secondary" onclick="insertMath('\\infty')">∞</button>
+        </div>
+        <textarea id="equationInput" rows="3" style="width: 100%; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; padding: 0.5rem; border-radius: 0.5rem; margin-bottom: 1rem;" placeholder="Type LaTeX or math expression..."></textarea>
+        <div style="display: flex; gap: 1rem;">
+            <button class="btn" onclick="insertEquation()">Insert</button>
+            <button class="btn btn-secondary" onclick="closeEquationEditor()">Cancel</button>
+        </div>
     </div>
 
     <script>
@@ -1103,10 +1126,92 @@
             biology: { questions: 0, correct: 0 },
             general: { questions: 0, correct: 0 }
         };
+        
+        // Achievements
+        let achievements = JSON.parse(localStorage.getItem('achievements')) || {
+            firstQuestion: { name: '🌟 First Steps', description: 'Asked your first question', unlocked: false },
+            tenQuestions: { name: '📚 Curious Mind', description: 'Asked 10 questions', unlocked: false },
+            fiftyQuestions: { name: '🎓 Scholar', description: 'Asked 50 questions', unlocked: false },
+            hundredQuestions: { name: '🏆 Master', description: 'Asked 100 questions', unlocked: false },
+            sevenDayStreak: { name: '⚡ On Fire!', description: '7-day learning streak', unlocked: false },
+            thirtyDayStreak: { name: '🔥 Legendary', description: '30-day learning streak', unlocked: false },
+            firstDocument: { name: '📄 Explorer', description: 'Uploaded first document', unlocked: false },
+            geometryMaster: { name: '📐 Geometry Master', description: 'Analyzed a geometry drawing', unlocked: false }
+        };
+
+        // ==================== TIMER ====================
+        let timerInterval = null;
+        let timerSeconds = 25 * 60;
+        let isTimerRunning = false;
+
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timerSeconds / 60);
+            const seconds = timerSeconds % 60;
+            document.getElementById('timerDisplay').textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        function startTimer() {
+            if (isTimerRunning) return;
+            isTimerRunning = true;
+            timerInterval = setInterval(() => {
+                if (timerSeconds > 0) {
+                    timerSeconds--;
+                    updateTimerDisplay();
+                } else {
+                    pauseTimer();
+                    showToast('Time\'s up! Great focus session! 🎉', 'success');
+                    playNotificationSound();
+                }
+            }, 1000);
+        }
+
+        function pauseTimer() {
+            if (timerInterval) clearInterval(timerInterval);
+            isTimerRunning = false;
+            timerInterval = null;
+        }
+
+        function resetTimer() { pauseTimer(); timerSeconds = 25 * 60; updateTimerDisplay(); }
+        function setTimer(minutes) { pauseTimer(); timerSeconds = minutes * 60; updateTimerDisplay(); }
+        function playNotificationSound() { try { const audioContext = new (window.AudioContext || window.webkitAudioContext)(); const oscillator = audioContext.createOscillator(); const gainNode = audioContext.createGain(); oscillator.connect(gainNode); gainNode.connect(audioContext.destination); oscillator.frequency.value = 880; gainNode.gain.value = 0.5; oscillator.start(); setTimeout(() => oscillator.stop(), 500); } catch(e) {} }
+
+        // ==================== ACHIEVEMENTS ====================
+        function checkAchievements() {
+            let newAchievements = [];
+            if (totalQuestions >= 1 && !achievements.firstQuestion.unlocked) { achievements.firstQuestion.unlocked = true; newAchievements.push(achievements.firstQuestion); }
+            if (totalQuestions >= 10 && !achievements.tenQuestions.unlocked) { achievements.tenQuestions.unlocked = true; newAchievements.push(achievements.tenQuestions); }
+            if (totalQuestions >= 50 && !achievements.fiftyQuestions.unlocked) { achievements.fiftyQuestions.unlocked = true; newAchievements.push(achievements.fiftyQuestions); }
+            if (totalQuestions >= 100 && !achievements.hundredQuestions.unlocked) { achievements.hundredQuestions.unlocked = true; newAchievements.push(achievements.hundredQuestions); }
+            if (streak >= 7 && !achievements.sevenDayStreak.unlocked) { achievements.sevenDayStreak.unlocked = true; newAchievements.push(achievements.sevenDayStreak); }
+            if (streak >= 30 && !achievements.thirtyDayStreak.unlocked) { achievements.thirtyDayStreak.unlocked = true; newAchievements.push(achievements.thirtyDayStreak); }
+            if (uploadedDocuments.length >= 1 && !achievements.firstDocument.unlocked) { achievements.firstDocument.unlocked = true; newAchievements.push(achievements.firstDocument); }
+            
+            if (newAchievements.length > 0) {
+                newAchievements.forEach(ach => { showToast(`🏆 Achievement Unlocked: ${ach.name}`, 'success'); });
+                localStorage.setItem('achievements', JSON.stringify(achievements));
+                renderAchievements();
+            }
+        }
+
+        function renderAchievements() {
+            const unlockedCount = Object.values(achievements).filter(a => a.unlocked).length;
+            const totalCount = Object.values(achievements).length;
+            document.getElementById('achievementsCount').textContent = `${unlockedCount}/${totalCount}`;
+            const container = document.getElementById('achievementsList');
+            if (container) {
+                container.innerHTML = Object.entries(achievements).map(([key, ach]) => `
+                    <div style="background: ${ach.unlocked ? 'var(--success)' : 'rgba(255,255,255,0.1)'}; padding: 0.3rem 0.8rem; border-radius: 2rem; font-size: 0.75rem;">
+                        ${ach.unlocked ? '✅' : '🔒'} ${ach.name}
+                    </div>
+                `).join('');
+            }
+        }
 
         // ==================== VOICE INPUT ====================
         let recognition = null;
         let isListening = false;
+        let speechSynthesis = window.speechSynthesis;
+        let isSpeaking = false;
 
         function initSpeechRecognition() {
             if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
@@ -1115,84 +1220,152 @@
                 recognition.continuous = false;
                 recognition.interimResults = false;
                 recognition.lang = 'en-US';
-                
-                recognition.onstart = () => {
-                    isListening = true;
-                    const micBtn = document.getElementById('micBtn');
-                    if (micBtn) {
-                        micBtn.style.background = '#ef4444';
-                        micBtn.innerHTML = '<i class="fas fa-microphone-slash"></i>';
-                        showToast('Listening... Speak your question', 'info');
-                    }
-                };
-                
-                recognition.onend = () => {
-                    isListening = false;
-                    const micBtn = document.getElementById('micBtn');
-                    if (micBtn) {
-                        micBtn.style.background = 'rgba(255, 255, 255, 0.1)';
-                        micBtn.innerHTML = '<i class="fas fa-microphone"></i>';
-                    }
-                };
-                
-                recognition.onresult = (event) => {
-                    const transcript = event.results[0][0].transcript;
-                    document.getElementById('chatInput').value = transcript;
-                    showToast(`Recognized: "${transcript}"`, 'success');
-                };
-                
-                recognition.onerror = (event) => {
-                    showToast('Error: ' + event.error, 'error');
-                    isListening = false;
-                };
-            } else {
-                showToast('Speech recognition not supported in this browser', 'warning');
+                recognition.onstart = () => { isListening = true; const micBtn = document.getElementById('micBtn'); if (micBtn) { micBtn.style.background = '#ef4444'; micBtn.innerHTML = '<i class="fas fa-microphone-slash"></i>'; } showToast('Listening... Speak your question', 'info'); };
+                recognition.onend = () => { isListening = false; const micBtn = document.getElementById('micBtn'); if (micBtn) { micBtn.style.background = 'rgba(255, 255, 255, 0.1)'; micBtn.innerHTML = '<i class="fas fa-microphone"></i>'; } };
+                recognition.onresult = (event) => { const transcript = event.results[0][0].transcript; document.getElementById('chatInput').value = transcript; showToast(`Recognized: "${transcript}"`, 'success'); };
+                recognition.onerror = (event) => { showToast('Error: ' + event.error, 'error'); isListening = false; };
+            } else { showToast('Speech recognition not supported', 'warning'); }
+        }
+
+        function toggleSpeechRecognition() { if (!recognition) initSpeechRecognition(); if (isListening) recognition.stop(); else recognition.start(); }
+
+        function speakText(text) { if (!speechSynthesis) return; if (isSpeaking) speechSynthesis.cancel(); const utterance = new SpeechSynthesisUtterance(text); utterance.lang = 'en-US'; utterance.rate = 0.9; utterance.onstart = () => { isSpeaking = true; }; utterance.onend = () => { isSpeaking = false; }; speechSynthesis.speak(utterance); }
+
+        function speakLastAnswer() { const lastMessage = chatHistory.filter(m => m.role === 'assistant').pop(); if (lastMessage) { speakText(lastMessage.content); showToast('Reading answer...', 'info'); } else { showToast('No answer to read', 'warning'); } }
+
+        // ==================== EQUATION EDITOR ====================
+        function showEquationEditor() { document.getElementById('equationEditor').style.display = 'block'; }
+        function closeEquationEditor() { document.getElementById('equationEditor').style.display = 'none'; }
+        function insertMath(symbol) { const input = document.getElementById('equationInput'); input.value += symbol; input.focus(); }
+        function insertEquation() { const equation = document.getElementById('equationInput').value; const chatInput = document.getElementById('chatInput'); chatInput.value += ` [Math: ${equation}] `; closeEquationEditor(); chatInput.focus(); }
+
+        // ==================== FLASHCARDS ====================
+        let currentFlashcards = [];
+
+        async function generateFlashcards() {
+            const topic = document.getElementById('flashcardTopic').value;
+            if (!topic) { showToast('Please enter a topic', 'warning'); return; }
+            showToast('Generating flashcards...', 'info');
+            const prompt = `Create 5 flashcards for the topic: ${topic}. Format each as: Q: [question] | A: [answer]`;
+            try {
+                const response = await fetch(`${BACKEND_URL}/api/tutor`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: prompt, subject: topic, email: userEmail }) });
+                const data = await response.json();
+                if (data.reply) { parseFlashcards(data.reply); showToast('Flashcards generated!', 'success'); }
+            } catch (error) { showToast('Failed to generate flashcards', 'error'); }
+        }
+
+        function parseFlashcards(content) {
+            const lines = content.split('\n');
+            const flashcards = [];
+            let currentCard = null;
+            for (let line of lines) {
+                if (line.startsWith('Q:')) { if (currentCard) flashcards.push(currentCard); currentCard = { question: line.substring(2).trim(), answer: '' }; }
+                else if (line.startsWith('A:') && currentCard) { currentCard.answer = line.substring(2).trim(); flashcards.push(currentCard); currentCard = null; }
+            }
+            currentFlashcards = flashcards;
+            renderFlashcards();
+        }
+
+        function renderFlashcards() {
+            const container = document.getElementById('flashcardContainer');
+            if (!container) return;
+            container.innerHTML = currentFlashcards.map((card, idx) => `
+                <div class="flashcard" onclick="this.classList.toggle('flipped')">
+                    <div class="flashcard-front"><strong>Q${idx + 1}:</strong><br>${card.question}</div>
+                    <div class="flashcard-back"><strong>Answer:</strong><br>${card.answer}</div>
+                </div>
+            `).join('');
+        }
+
+        // ==================== QUIZ ====================
+        let currentQuizQuestions = [];
+        let quizUserAnswers = {};
+
+        async function generateQuiz() {
+            const subject = document.getElementById('quizSubject').value;
+            const difficulty = document.getElementById('quizDifficulty').value;
+            const count = document.getElementById('quizCount').value;
+            showToast(`Generating ${difficulty} ${subject} quiz...`, 'info');
+            const prompt = `Generate a ${difficulty} difficulty quiz with ${count} questions about ${subject}. Format each as:\nQ1: [question]\nA) [option]\nB) [option]\nC) [option]\nD) [option]\nCorrect: [letter]`;
+            try {
+                const response = await fetch(`${BACKEND_URL}/api/tutor`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: prompt, subject: subject, email: userEmail }) });
+                const data = await response.json();
+                if (data.reply) { parseQuiz(data.reply); showToast('Quiz ready!', 'success'); }
+            } catch (error) { showToast('Failed to generate quiz', 'error'); }
+        }
+
+        function parseQuiz(content) {
+            const lines = content.split('\n');
+            const questions = [];
+            let currentQuestion = null;
+            for (let line of lines) {
+                line = line.trim();
+                if (line.match(/^Q\d+:/i)) { if (currentQuestion) questions.push(currentQuestion); currentQuestion = { text: line.replace(/^Q\d+:/i, '').trim(), options: [], correct: null }; }
+                else if (line.match(/^[A-D]\)/i) && currentQuestion) { currentQuestion.options.push(line); }
+                else if (line.match(/^Correct:/i) && currentQuestion) { const match = line.match(/[A-D]/i); if (match) currentQuestion.correct = match[0].toUpperCase(); }
+            }
+            if (currentQuestion) questions.push(currentQuestion);
+            currentQuizQuestions = questions;
+            quizUserAnswers = {};
+            renderQuiz();
+        }
+
+        function renderQuiz() {
+            const container = document.getElementById('quizContainer');
+            if (!container) return;
+            container.innerHTML = currentQuizQuestions.map((q, idx) => `
+                <div class="quiz-question">
+                    <strong>Question ${idx + 1}:</strong> ${q.text}
+                    <div class="quiz-options">
+                        ${q.options.map((opt, optIdx) => `<div class="quiz-option" onclick="selectQuizAnswer(${idx}, '${String.fromCharCode(65 + optIdx)}')">${opt}</div>`).join('')}
+                    </div>
+                    <div id="quiz-feedback-${idx}" style="margin-top: 0.5rem;"></div>
+                </div>
+            `).join('');
+            document.getElementById('quizScore').innerHTML = '<button class="btn btn-secondary" onclick="submitQuiz()">Submit Quiz</button>';
+        }
+
+        function selectQuizAnswer(questionIdx, selectedLetter) {
+            const question = currentQuizQuestions[questionIdx];
+            const feedbackDiv = document.getElementById(`quiz-feedback-${questionIdx}`);
+            const isCorrect = selectedLetter === question.correct;
+            quizUserAnswers[questionIdx] = isCorrect;
+            feedbackDiv.innerHTML = isCorrect ? '<span style="color: var(--success);">✓ Correct!</span>' : `<span style="color: var(--danger);">✗ Incorrect. Correct answer is ${question.correct}.</span>`;
+        }
+
+        function submitQuiz() {
+            const total = currentQuizQuestions.length;
+            const correct = Object.values(quizUserAnswers).filter(v => v === true).length;
+            const percentage = Math.round((correct / total) * 100);
+            let message = percentage >= 90 ? '🎉 Excellent! You\'re a master!' : percentage >= 70 ? '👍 Good job! Keep practicing!' : percentage >= 50 ? '📚 Good attempt!' : '💪 Keep learning!';
+            document.getElementById('quizScore').innerHTML = `<div style="background: rgba(255,255,255,0.1); padding: 1rem; border-radius: 0.5rem;"><strong>Score: ${correct}/${total} (${percentage}%)</strong><br>${message}<br><button class="btn btn-secondary" onclick="generateQuiz()" style="margin-top: 0.5rem;">New Quiz</button></div>`;
+        }
+
+        // ==================== SHARE FEATURE ====================
+        function generateShareLink() {
+            const sessionData = { subject: currentSubject, chatHistory: chatHistory.slice(-20), documents: uploadedDocuments.map(d => ({ name: d.name })) };
+            const encodedData = btoa(JSON.stringify(sessionData));
+            const shareUrl = `${window.location.origin}${window.location.pathname}?session=${encodedData}`;
+            navigator.clipboard.writeText(shareUrl);
+            showToast('Share link copied to clipboard!', 'success');
+        }
+
+        function loadSharedSession() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const sessionData = urlParams.get('session');
+            if (sessionData) {
+                try { const data = JSON.parse(atob(sessionData)); if (data.chatHistory) { chatHistory = data.chatHistory; saveChatHistory(); renderMessages(); showToast('Loaded shared study session!', 'success'); } } catch(e) {}
             }
         }
 
-        function toggleSpeechRecognition() {
-            if (!recognition) initSpeechRecognition();
-            if (isListening) recognition.stop();
-            else recognition.start();
-        }
-
-        // ==================== THEME TOGGLE ====================
-        function initTheme() {
-            const savedTheme = localStorage.getItem('theme') || 'dark';
-            if (savedTheme === 'light') document.body.classList.add('light-mode');
-            
-            const themeBtn = document.createElement('div');
-            themeBtn.className = 'theme-toggle';
-            themeBtn.innerHTML = '<i class="fas fa-moon"></i>';
-            themeBtn.onclick = toggleTheme;
-            document.body.appendChild(themeBtn);
-            updateThemeIcon();
-        }
-
-        function toggleTheme() {
-            document.body.classList.toggle('light-mode');
-            localStorage.setItem('theme', document.body.classList.contains('light-mode') ? 'light' : 'dark');
-            updateThemeIcon();
-        }
-
-        function updateThemeIcon() {
-            const themeBtn = document.querySelector('.theme-toggle');
-            if (themeBtn) {
-                const isLight = document.body.classList.contains('light-mode');
-                themeBtn.innerHTML = isLight ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
-            }
-        }
-
-        // ==================== PROGRESS TRACKING ====================
+        // ==================== VOICE INPUT ====================
+        // [Previous voice input code continues...]
+        
+        // ==================== PROGRESS & STATS ====================
         function updateProgress(question, wasCorrect) {
             const subject = currentSubject.toLowerCase();
-            if (subjectProgress[subject]) {
-                subjectProgress[subject].questions++;
-                if (wasCorrect) subjectProgress[subject].correct++;
-            } else {
-                subjectProgress.general.questions++;
-                if (wasCorrect) subjectProgress.general.correct++;
-            }
+            if (subjectProgress[subject]) { subjectProgress[subject].questions++; if (wasCorrect) subjectProgress[subject].correct++; }
+            else { subjectProgress.general.questions++; if (wasCorrect) subjectProgress.general.correct++; }
             localStorage.setItem('subjectProgress', JSON.stringify(subjectProgress));
             renderProgressDashboard();
         }
@@ -1200,44 +1373,22 @@
         function renderProgressDashboard() {
             const container = document.getElementById('subjectProgressList');
             if (!container) return;
-            
-            let totalCorrect = 0;
-            let totalQuestions = 0;
-            
+            let totalCorrect = 0, totalQuestions = 0;
             container.innerHTML = Object.entries(subjectProgress).map(([subject, data]) => {
                 const percent = data.questions > 0 ? Math.round((data.correct / data.questions) * 100) : 0;
-                totalCorrect += data.correct;
-                totalQuestions += data.questions;
+                totalCorrect += data.correct; totalQuestions += data.questions;
                 if (data.questions === 0) return '';
-                return `
-                    <div style="margin-bottom: 0.8rem;">
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.2rem;">
-                            <span style="text-transform: capitalize;">${subject}</span>
-                            <span>${data.correct}/${data.questions} (${percent}%)</span>
-                        </div>
-                        <div class="progress-bar" style="height: 4px;">
-                            <div class="progress-fill" style="width: ${percent}%;"></div>
-                        </div>
-                    </div>
-                `;
+                return `<div style="margin-bottom: 0.8rem;"><div style="display: flex; justify-content: space-between;"><span style="text-transform: capitalize;">${subject}</span><span>${data.correct}/${data.questions} (${percent}%)</span></div><div class="progress-bar"><div class="progress-fill" style="width: ${percent}%;"></div></div></div>`;
             }).join('');
-            
             const overallPercent = totalQuestions > 0 ? Math.round((totalCorrect / totalQuestions) * 100) : 0;
             document.getElementById('masteryPercent').textContent = `${overallPercent}%`;
             document.getElementById('masteryBar').style.width = `${overallPercent}%`;
         }
 
         function getWeakestSubject() {
-            let weakest = null;
-            let lowestPercent = 100;
+            let weakest = null, lowestPercent = 100;
             Object.entries(subjectProgress).forEach(([subject, data]) => {
-                if (data.questions > 0) {
-                    const percent = (data.correct / data.questions) * 100;
-                    if (percent < lowestPercent) {
-                        lowestPercent = percent;
-                        weakest = subject;
-                    }
-                }
+                if (data.questions > 0) { const percent = (data.correct / data.questions) * 100; if (percent < lowestPercent) { lowestPercent = percent; weakest = subject; } }
             });
             return weakest ? `${weakest} (${Math.round(lowestPercent)}% accuracy)` : null;
         }
@@ -1247,59 +1398,18 @@
             const weakest = getWeakestSubject();
             const prompt = `Based on my learning data:\n- Total questions: ${totalQuestions}\n- Weakest area: ${weakest || 'None yet'}\n- Documents uploaded: ${uploadedDocuments.length}\n\nProvide 3 personalized study tips and recommended topics to focus on.`;
             try {
-                const response = await fetch(`${BACKEND_URL}/api/tutor`, {
-                    method: 'POST', headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ message: prompt, subject: 'Study Strategy', email: userEmail })
-                });
+                const response = await fetch(`${BACKEND_URL}/api/tutor`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: prompt, subject: 'Study Strategy', email: userEmail }) });
                 const data = await response.json();
-                if (data.reply) {
-                    addMessage('assistant', `📚 **Personalized Study Plan:**\n\n${data.reply}`);
-                    showSection('chat');
-                }
+                if (data.reply) { addMessage('assistant', `📚 **Personalized Study Plan:**\n\n${data.reply}`); showSection('chat'); }
             } catch (error) { showToast('Failed to get recommendations', 'error'); }
-        }
-
-        // ==================== PDF EXPORT ====================
-        async function exportAsPDF() {
-            if (chatHistory.length === 0) { showToast('No conversation to export', 'warning'); return; }
-            showToast('Generating export...', 'info');
-            let content = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>AI Tutor Pro - Study Notes</title><style>body{font-family:Arial;padding:40px;line-height:1.6;} h1{color:#6366f1;} .message{margin:20px 0;padding:15px;border-radius:10px;} .user{background:#f0f0f0;border-left:4px solid #6366f1;} .assistant{background:#e8f4f8;border-left:4px solid #10b981;} .date{color:#666;font-size:12px;}</style></head><body><h1>🤖 AI Tutor Pro - Study Notes</h1><div class="date">Generated: ${new Date().toLocaleString()}</div><div><p><strong>Total Questions:</strong> ${totalQuestions}</p><p><strong>Documents Uploaded:</strong> ${uploadedDocuments.length}</p><p><strong>Day Streak:</strong> ${streak} days</p></div><hr>`;
-            chatHistory.forEach(msg => {
-                const date = new Date(msg.timestamp).toLocaleString();
-                content += `<div class="message ${msg.role}"><strong>${msg.role === 'user' ? '👤 You' : '🤖 AI Tutor'}</strong><div style="margin-top:5px;">${msg.content.replace(/\n/g, '<br>')}</div><div style="font-size:10px;color:#999;margin-top:5px;">${date}</div></div>`;
-            });
-            content += `<div class="footer">Generated by AI Tutor Pro</div></body></html>`;
-            const blob = new Blob([content], { type: 'text/html' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `AI-Tutor-Notes-${new Date().toISOString().slice(0,19)}.html`;
-            a.click();
-            URL.revokeObjectURL(url);
-            showToast('Study notes exported!', 'success');
-        }
-
-        // ==================== KEYBOARD SHORTCUTS ====================
-        function initKeyboardShortcuts() {
-            document.addEventListener('keydown', (e) => {
-                if (e.ctrlKey && e.key === 'Enter') { e.preventDefault(); sendMessage(); }
-                if (e.altKey && e.key === 'c') { e.preventDefault(); clearChat(); }
-                if (e.altKey && e.key === 'h') { e.preventDefault(); showSection('home'); }
-                if (e.key === 'Escape') { document.querySelector('.modal-overlay')?.remove(); }
-                if (e.key === '/' && document.activeElement !== document.getElementById('chatInput')) {
-                    e.preventDefault(); document.getElementById('chatInput').focus(); showToast('Type your question...', 'info');
-                }
-            });
         }
 
         // ==================== DRAWING CANVAS ====================
         let canvas = null, ctx = null, drawing = false, currentTool = 'pen', currentColor = '#6366f1', lastX = 0, lastY = 0;
 
         function initCanvas() {
-            canvas = document.getElementById('geometryCanvas');
-            if (!canvas) return;
-            ctx = canvas.getContext('2d');
-            canvas.width = 600; canvas.height = 400;
+            canvas = document.getElementById('geometryCanvas'); if (!canvas) return;
+            ctx = canvas.getContext('2d'); canvas.width = 600; canvas.height = 400;
             ctx.fillStyle = 'white'; ctx.fillRect(0, 0, canvas.width, canvas.height);
             ctx.strokeStyle = currentColor; ctx.fillStyle = currentColor; ctx.lineWidth = 3; ctx.lineCap = 'round';
             canvas.addEventListener('mousedown', startDrawing); canvas.addEventListener('mousemove', draw);
@@ -1324,7 +1434,7 @@
         function setDrawingTool(tool) { currentTool = tool; if (tool === 'eraser') ctx.globalCompositeOperation = 'destination-out'; else { ctx.globalCompositeOperation = 'source-over'; ctx.strokeStyle = document.getElementById('drawColor').value; ctx.fillStyle = document.getElementById('drawColor').value; currentColor = document.getElementById('drawColor').value; } }
         function clearCanvas() { ctx.fillStyle = 'white'; ctx.fillRect(0, 0, canvas.width, canvas.height); ctx.fillStyle = currentColor; showToast('Canvas cleared', 'success'); }
         function saveDrawing() { const imageData = canvas.toDataURL('image/png'); uploadedDocuments.push({ id: Date.now(), name: `Drawing_${new Date().toLocaleDateString()}.png`, type: 'image/png', size: imageData.length, content: imageData, uploadedAt: new Date().toISOString(), isDrawing: true }); localStorage.setItem('uploadedDocuments', JSON.stringify(uploadedDocuments)); renderDocumentList(); updateStats(); showToast('Drawing saved!', 'success'); }
-        async function analyzeDrawing() { const imageData = canvas.toDataURL('image/png'); showToast('Analyzing geometry...', 'info'); const prompt = `Analyze this geometry diagram. Describe shapes, geometric properties, and concepts.`; try { const response = await fetch(`${BACKEND_URL}/api/tutor`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: prompt + `\n\n[Image data: ${imageData.substring(0, 500)}]`, subject: 'Geometry', email: userEmail }) }); const data = await response.json(); if (data.reply) { document.getElementById('analysisResult').innerHTML = `<h4>Geometry Analysis</h4><div>${data.reply}</div>`; document.getElementById('analysisPanel').style.display = 'block'; addMessage('assistant', `📐 **Geometry Analysis:**\n\n${data.reply}`); } } catch (error) { showToast('Analysis failed', 'error'); } }
+        async function analyzeDrawing() { const imageData = canvas.toDataURL('image/png'); showToast('Analyzing geometry...', 'info'); const prompt = `Analyze this geometry diagram. Describe shapes, geometric properties, and concepts.`; try { const response = await fetch(`${BACKEND_URL}/api/tutor`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: prompt + `\n\n[Image data: ${imageData.substring(0, 500)}]`, subject: 'Geometry', email: userEmail }) }); const data = await response.json(); if (data.reply) { document.getElementById('analysisResult').innerHTML = `<h4>Geometry Analysis</h4><div>${data.reply}</div>`; document.getElementById('analysisPanel').style.display = 'block'; addMessage('assistant', `📐 **Geometry Analysis:**\n\n${data.reply}`); achievements.geometryMaster.unlocked = true; localStorage.setItem('achievements', JSON.stringify(achievements)); renderAchievements(); } } catch (error) { showToast('Analysis failed', 'error'); } }
 
         // ==================== FILE HANDLING ====================
         function switchUploadTab(tab) { document.querySelectorAll('.upload-tab').forEach(t => t.classList.remove('active')); if (event?.target) event.target.classList.add('active'); document.getElementById('fileUploadTab').style.display = tab === 'file' ? 'block' : 'none'; document.getElementById('drawTab').style.display = tab === 'draw' ? 'block' : 'none'; if (tab === 'draw') setTimeout(() => initCanvas(), 100); }
@@ -1342,10 +1452,19 @@
         function saveChatHistory() { localStorage.setItem('chatHistory', JSON.stringify(chatHistory)); }
         function renderMessages() { const container = document.getElementById('chatMessages'); if (!container) return; container.innerHTML = ''; chatHistory.forEach(msg => { const div = document.createElement('div'); div.className = `message ${msg.role}`; const time = new Date(msg.timestamp).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}); div.innerHTML = `<div class="message-content">${msg.content.replace(/\n/g, '<br>')}<div class="message-time">${time}</div></div>`; container.appendChild(div); }); container.scrollTop = container.scrollHeight; }
         function clearChat() { if (confirm('Clear chat history?')) { chatHistory = []; saveChatHistory(); renderMessages(); addMessage('assistant', '👋 Hi! Ready to learn?'); showToast('Chat cleared', 'success'); } }
-        async function sendMessage() { const input = document.getElementById('chatInput'); const message = input.value.trim(); if (!message) return; if (!emailVerified && !isPremium) { showToast('Please verify your email first!', 'warning'); return; } if (!isPremium && remainingSessions <= 0) { showToast('Free sessions used up! Upgrade to Pro.', 'warning'); showPremiumModal(); return; } addMessage('user', message); input.value = ''; const typingDiv = document.createElement('div'); typingDiv.className = 'message assistant'; typingDiv.id = 'typingIndicator'; typingDiv.innerHTML = `<div class="message-content"><div class="typing-indicator"><span></span><span></span><span></span></div></div>`; document.getElementById('chatMessages').appendChild(typingDiv); document.getElementById('chatMessages').scrollTop = document.getElementById('chatMessages').scrollHeight; let contextMessage = message; if (uploadedDocuments.length > 0) contextMessage = `${message}\n\n[Context: ${uploadedDocuments.length} document(s)]`; try { const response = await fetch(`${BACKEND_URL}/api/tutor`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: contextMessage, subject: currentSubject, conversationHistory: chatHistory.slice(-10), email: userEmail }) }); const data = await response.json(); document.getElementById('typingIndicator')?.remove(); if (data.reply) { addMessage('assistant', data.reply); totalQuestions++; localStorage.setItem('totalQuestions', totalQuestions); if (!isPremium && remainingSessions > 0) { remainingSessions--; localStorage.setItem('remainingSessions', remainingSessions); updateStats(); } updateStats(); } else { addMessage('assistant', `⚠️ ${data.error || 'Something went wrong'}`); } } catch (error) { document.getElementById('typingIndicator')?.remove(); addMessage('assistant', '⚠️ Network error. Please try again.'); } }
+        async function sendMessage() { const input = document.getElementById('chatInput'); const message = input.value.trim(); if (!message) return; if (!emailVerified && !isPremium) { showToast('Please verify your email first!', 'warning'); return; } if (!isPremium && remainingSessions <= 0) { showToast('Free sessions used up! Upgrade to Pro.', 'warning'); showPremiumModal(); return; } addMessage('user', message); input.value = ''; const typingDiv = document.createElement('div'); typingDiv.className = 'message assistant'; typingDiv.id = 'typingIndicator'; typingDiv.innerHTML = `<div class="message-content"><div class="typing-indicator"><span></span><span></span><span></span></div></div>`; document.getElementById('chatMessages').appendChild(typingDiv); document.getElementById('chatMessages').scrollTop = document.getElementById('chatMessages').scrollHeight; let contextMessage = message; if (uploadedDocuments.length > 0) contextMessage = `${message}\n\n[Context: ${uploadedDocuments.length} document(s)]`; try { const response = await fetch(`${BACKEND_URL}/api/tutor`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: contextMessage, subject: currentSubject, conversationHistory: chatHistory.slice(-10), email: userEmail }) }); const data = await response.json(); document.getElementById('typingIndicator')?.remove(); if (data.reply) { addMessage('assistant', data.reply); totalQuestions++; localStorage.setItem('totalQuestions', totalQuestions); if (!isPremium && remainingSessions > 0) { remainingSessions--; localStorage.setItem('remainingSessions', remainingSessions); updateStats(); } updateStats(); updateProgress(null, true); checkAchievements(); } else { addMessage('assistant', `⚠️ ${data.error || 'Something went wrong'}`); } } catch (error) { document.getElementById('typingIndicator')?.remove(); addMessage('assistant', '⚠️ Network error. Please try again.'); } }
         function addMessage(role, content) { chatHistory.push({ role, content, timestamp: Date.now() }); saveChatHistory(); renderMessages(); }
         function changeSubject(subject) { currentSubject = subject; document.querySelectorAll('.subject-chip').forEach(chip => chip.classList.remove('active')); if (event?.target) event.target.classList.add('active'); addMessage('assistant', `📚 I'll help you with ${subject}. What would you like to learn?`); }
         function startChat(subject) { if (!emailVerified && !isPremium) { showToast('Please verify your email first!', 'warning'); showSection('home'); return; } currentSubject = subject; changeSubject(subject); showSection('chat'); }
+
+        // ==================== PDF EXPORT ====================
+        async function exportAsPDF() { if (chatHistory.length === 0) { showToast('No conversation to export', 'warning'); return; } showToast('Generating export...', 'info'); let content = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>AI Tutor Pro - Study Notes</title><style>body{font-family:Arial;padding:40px;} h1{color:#6366f1;} .message{margin:20px 0;padding:15px;border-radius:10px;} .user{background:#f0f0f0;border-left:4px solid #6366f1;} .assistant{background:#e8f4f8;border-left:4px solid #10b981;}</style></head><body><h1>🤖 AI Tutor Pro - Study Notes</h1><div>Generated: ${new Date().toLocaleString()}</div><div><p><strong>Total Questions:</strong> ${totalQuestions}</p><p><strong>Documents Uploaded:</strong> ${uploadedDocuments.length}</p><p><strong>Day Streak:</strong> ${streak} days</p></div><hr>`; chatHistory.forEach(msg => { const date = new Date(msg.timestamp).toLocaleString(); content += `<div class="message ${msg.role}"><strong>${msg.role === 'user' ? '👤 You' : '🤖 AI Tutor'}</strong><div>${msg.content.replace(/\n/g, '<br>')}</div><div style="font-size:10px;color:#999;">${date}</div></div>`; }); content += `</body></html>`; const blob = new Blob([content], { type: 'text/html' }); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = `AI-Tutor-Notes-${new Date().toISOString().slice(0,19)}.html`; a.click(); URL.revokeObjectURL(url); showToast('Study notes exported!', 'success'); }
+
+        // ==================== THEME & KEYBOARD ====================
+        function initTheme() { const savedTheme = localStorage.getItem('theme') || 'dark'; if (savedTheme === 'light') document.body.classList.add('light-mode'); const themeBtn = document.createElement('div'); themeBtn.className = 'theme-toggle'; themeBtn.innerHTML = '<i class="fas fa-moon"></i>'; themeBtn.onclick = toggleTheme; document.body.appendChild(themeBtn); updateThemeIcon(); }
+        function toggleTheme() { document.body.classList.toggle('light-mode'); localStorage.setItem('theme', document.body.classList.contains('light-mode') ? 'light' : 'dark'); updateThemeIcon(); }
+        function updateThemeIcon() { const themeBtn = document.querySelector('.theme-toggle'); if (themeBtn) themeBtn.innerHTML = document.body.classList.contains('light-mode') ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>'; }
+        function initKeyboardShortcuts() { document.addEventListener('keydown', (e) => { if (e.ctrlKey && e.key === 'Enter') { e.preventDefault(); sendMessage(); } if (e.altKey && e.key === 'c') { e.preventDefault(); clearChat(); } if (e.altKey && e.key === 'h') { e.preventDefault(); showSection('home'); } if (e.key === 'Escape') { document.querySelector('.modal-overlay')?.remove(); closeEquationEditor(); } if (e.key === '/' && document.activeElement !== document.getElementById('chatInput')) { e.preventDefault(); document.getElementById('chatInput').focus(); showToast('Type your question...', 'info'); } }); }
 
         // ==================== PAYMENT & AUTH ====================
         function startPayPalCheckout() { const email = localStorage.getItem('userEmail') || document.getElementById('userEmail')?.value; if (!email) { showToast('Enter your email first', 'warning'); return; } localStorage.setItem('paymentEmail', email); window.open(`https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=${encodeURIComponent(PAYPAL_EMAIL)}&item_name=AI Tutor Pro&amount=9.99&currency_code=USD&return=https://innocent200509.github.io/Universal-AI-Tutor/success.html&cancel_return=https://innocent200509.github.io/Universal-AI-Tutor/&custom=${encodeURIComponent(email)}`, '_blank'); showToast('PayPal opened. Complete payment.', 'info'); }
@@ -1354,15 +1473,15 @@
         async function checkEmailVerification() { const email = localStorage.getItem('pendingEmail') || localStorage.getItem('userEmail'); if (!email) return; try { const response = await fetch(`${BACKEND_URL}/api/check-verified`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email }) }); const data = await response.json(); if (data.verified) { localStorage.setItem('emailVerified', 'true'); localStorage.setItem('userEmail', email); localStorage.setItem('remainingSessions', data.remainingSessions || 10); userEmail = email; remainingSessions = data.remainingSessions || 10; emailVerified = true; isPremium = data.isPremium || false; if (isPremium) { localStorage.setItem('aiTutorPremium', 'true'); document.querySelector('.upgrade-btn')?.remove(); } document.getElementById('emailCapture').style.display = 'none'; updateStats(); showToast('Email verified!', 'success'); } } catch(e) {} }
 
         // ==================== UI FUNCTIONS ====================
-        function showPremiumModal() { const modal = document.createElement('div'); modal.className = 'modal-overlay'; modal.innerHTML = `<div class="modal-content"><button class="close-btn" onclick="this.closest('.modal-overlay').remove()">×</button><i class="fas fa-crown" style="font-size:2.5rem;color:var(--gold);"></i><h2>Upgrade to Pro</h2><div class="price-tag">$9.99<span style="font-size:0.9rem;">/month</span></div><ul class="feature-list"><li>✅ Unlimited questions</li><li>✅ Unlimited document uploads</li><li>✅ Voice input</li><li>✅ Progress tracking</li><li>✅ PDF export</li><li>✅ Cancel anytime</li></ul><button onclick="startPayPalCheckout()" class="btn btn-gold" style="width:100%;margin-bottom:0.5rem;"><i class="fab fa-paypal"></i> Pay with PayPal</button><button onclick="manualActivatePremium()" class="btn btn-secondary" style="width:100%;"><i class="fas fa-check"></i> Already Paid</button></div>`; document.body.appendChild(modal); }
-        function showSection(section) { document.getElementById('home').style.display = 'none'; document.getElementById('subjects').style.display = 'none'; document.getElementById('upload').classList.remove('active'); document.getElementById('chat').classList.remove('active'); document.getElementById('upload').style.display = 'none'; document.getElementById('chat').style.display = 'none'; if (section === 'home') { document.getElementById('home').style.display = 'block'; document.getElementById('subjects').style.display = 'grid'; } else if (section === 'chat') { if (!emailVerified && !isPremium) { showToast('Verify email first!', 'warning'); showSection('home'); return; } document.getElementById('chat').style.display = 'block'; setTimeout(() => document.getElementById('chat').classList.add('active'), 10); document.getElementById('chatInput').focus(); } else if (section === 'upload') { if (!emailVerified && !isPremium) { showToast('Verify email first!', 'warning'); showSection('home'); return; } document.getElementById('upload').style.display = 'block'; setTimeout(() => document.getElementById('upload').classList.add('active'), 10); } else if (section === 'subjects') { document.getElementById('subjects').style.display = 'grid'; document.getElementById('home').style.display = 'block'; } window.scrollTo(0, 0); }
-        function updateStats() { document.getElementById('totalQuestions').textContent = totalQuestions; document.getElementById('streakDisplay').textContent = streak; document.getElementById('streakCount').textContent = streak; document.getElementById('documentsCount').textContent = uploadedDocuments.length; document.getElementById('sessionsLeft').textContent = !isPremium && remainingSessions !== Infinity ? remainingSessions : isPremium ? '∞' : '0'; renderProgressDashboard(); }
+        function showPremiumModal() { const modal = document.createElement('div'); modal.className = 'modal-overlay'; modal.innerHTML = `<div class="modal-content"><button class="close-btn" onclick="this.closest('.modal-overlay').remove()">×</button><i class="fas fa-crown" style="font-size:2.5rem;color:var(--gold);"></i><h2>Upgrade to Pro</h2><div class="price-tag">$9.99<span style="font-size:0.9rem;">/month</span></div><ul class="feature-list"><li>✅ Unlimited questions</li><li>✅ Unlimited document uploads</li><li>✅ Voice input & speech</li><li>✅ Progress tracking</li><li>✅ AI Flashcards & Quizzes</li><li>✅ PDF export</li><li>✅ Cancel anytime</li></ul><button onclick="startPayPalCheckout()" class="btn btn-gold" style="width:100%;margin-bottom:0.5rem;"><i class="fab fa-paypal"></i> Pay with PayPal</button><button onclick="manualActivatePremium()" class="btn btn-secondary" style="width:100%;"><i class="fas fa-check"></i> Already Paid</button></div>`; document.body.appendChild(modal); }
+        function showSection(section) { document.getElementById('home').style.display = 'none'; document.getElementById('subjects').style.display = 'none'; document.getElementById('upload').classList.remove('active'); document.getElementById('chat').classList.remove('active'); document.getElementById('quiz').classList.remove('active'); document.getElementById('flashcards').classList.remove('active'); document.getElementById('upload').style.display = 'none'; document.getElementById('chat').style.display = 'none'; document.getElementById('quiz').style.display = 'none'; document.getElementById('flashcards').style.display = 'none'; if (section === 'home') { document.getElementById('home').style.display = 'block'; document.getElementById('subjects').style.display = 'grid'; } else if (section === 'chat') { if (!emailVerified && !isPremium) { showToast('Verify email first!', 'warning'); showSection('home'); return; } document.getElementById('chat').style.display = 'block'; setTimeout(() => document.getElementById('chat').classList.add('active'), 10); document.getElementById('chatInput').focus(); } else if (section === 'upload') { if (!emailVerified && !isPremium) { showToast('Verify email first!', 'warning'); showSection('home'); return; } document.getElementById('upload').style.display = 'block'; setTimeout(() => document.getElementById('upload').classList.add('active'), 10); } else if (section === 'quiz') { document.getElementById('quiz').style.display = 'block'; setTimeout(() => document.getElementById('quiz').classList.add('active'), 10); } else if (section === 'flashcards') { document.getElementById('flashcards').style.display = 'block'; setTimeout(() => document.getElementById('flashcards').classList.add('active'), 10); } else if (section === 'subjects') { document.getElementById('subjects').style.display = 'grid'; document.getElementById('home').style.display = 'block'; } window.scrollTo(0, 0); }
+        function updateStats() { document.getElementById('totalQuestions').textContent = totalQuestions; document.getElementById('streakDisplay').textContent = streak; document.getElementById('streakCount').textContent = streak; document.getElementById('documentsCount').textContent = uploadedDocuments.length; document.getElementById('sessionsLeft').textContent = !isPremium && remainingSessions !== Infinity ? remainingSessions : isPremium ? '∞' : '0'; renderProgressDashboard(); renderAchievements(); }
         function updateStreak() { const lastActive = localStorage.getItem('lastActive'); const today = new Date().toDateString(); if (lastActive !== today) { const yesterday = new Date(); yesterday.setDate(yesterday.getDate() - 1); streak = lastActive === yesterday.toDateString() ? streak + 1 : 1; localStorage.setItem('aiTutorStreak', streak); localStorage.setItem('lastActive', today); updateStats(); } }
 
         // ==================== INITIALIZATION ====================
         document.addEventListener('DOMContentLoaded', async () => {
             await checkEmailVerification();
-            updateStats(); updateStreak(); loadChatHistory(); renderDocumentList(); initTheme(); initKeyboardShortcuts(); initSpeechRecognition();
+            updateStats(); updateStreak(); loadChatHistory(); renderDocumentList(); initTheme(); initKeyboardShortcuts(); initSpeechRecognition(); loadSharedSession();
             document.getElementById('fileInput').addEventListener('change', e => handleFiles(e.target.files));
             document.getElementById('drawColor').addEventListener('change', e => { currentColor = e.target.value; if (ctx) { ctx.strokeStyle = currentColor; ctx.fillStyle = currentColor; } });
             if (emailVerified) document.getElementById('emailCapture').style.display = 'none';
