@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Tutor - Your Personal AI Learning Assistant</title>
+    <title>AI Tutor Pro - Your Personal AI Learning Assistant</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
             margin: 0;
@@ -14,18 +16,23 @@
         :root {
             --primary: #6366f1;
             --primary-dark: #4f46e5;
+            --primary-light: #818cf8;
             --secondary: #ec4899;
             --accent: #06b6d4;
             --dark: #0f172a;
             --light: #f8fafc;
             --success: #10b981;
             --warning: #f59e0b;
+            --danger: #ef4444;
             --glass: rgba(255, 255, 255, 0.1);
+            --glass-dark: rgba(0, 0, 0, 0.3);
             --gold: #ffd700;
+            --purple: #a855f7;
+            --cyan: #06b6d4;
         }
 
         body {
-            font-family: 'Segoe UI', system-ui, sans-serif;
+            font-family: 'Inter', sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             color: var(--light);
@@ -39,8 +46,22 @@
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: -1;
+            z-index: -2;
             overflow: hidden;
+        }
+
+        .bg-animation::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(99,102,241,0.3) 0%, rgba(236,72,153,0.3) 100%);
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
         }
 
         .bg-animation span {
@@ -66,29 +87,36 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.85);
+            background: rgba(0, 0, 0, 0.9);
             z-index: 9999;
             display: flex;
             align-items: center;
             justify-content: center;
-            backdrop-filter: blur(5px);
+            backdrop-filter: blur(10px);
+            animation: fadeIn 0.3s ease;
         }
 
         .modal-content {
             background: linear-gradient(135deg, #1e293b, #0f172a);
             padding: 2.5rem;
-            border-radius: 1.5rem;
-            max-width: 450px;
+            border-radius: 2rem;
+            max-width: 500px;
             width: 90%;
             text-align: center;
             border: 2px solid var(--primary);
             position: relative;
             animation: slideUp 0.3s ease;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
         }
 
         @keyframes slideUp {
             from { transform: translateY(50px); opacity: 0; }
             to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         .price-tag {
@@ -132,11 +160,16 @@
             z-index: 999;
             box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
             animation: pulse 2s infinite;
+            transition: transform 0.3s;
+        }
+
+        .upgrade-btn:hover {
+            transform: scale(1.05);
         }
 
         @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
+            0%, 100% { box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4); }
+            50% { box-shadow: 0 4px 25px rgba(255, 215, 0, 0.8); }
         }
 
         /* Navigation */
@@ -151,7 +184,7 @@
         }
 
         .nav-container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             display: flex;
             justify-content: space-between;
@@ -161,15 +194,20 @@
         }
 
         .logo {
-            font-size: 1.5rem;
-            font-weight: bold;
-            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
             display: flex;
             align-items: center;
             gap: 0.5rem;
+        }
+
+        .logo i {
+            background: none;
+            -webkit-text-fill-color: var(--primary);
         }
 
         .nav-links {
@@ -182,17 +220,20 @@
         .nav-links a {
             color: var(--light);
             text-decoration: none;
-            transition: color 0.3s;
+            transition: all 0.3s;
             font-weight: 500;
             cursor: pointer;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
         }
 
         .nav-links a:hover {
+            background: var(--glass);
             color: var(--accent);
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             padding: 2rem;
         }
@@ -210,9 +251,12 @@
         }
 
         .hero h1 {
-            font-size: 3.5rem;
+            font-size: 4rem;
             margin-bottom: 1rem;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            background: linear-gradient(135deg, #fff, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .hero p {
@@ -224,21 +268,28 @@
         .stats-bar {
             display: flex;
             justify-content: center;
-            gap: 3rem;
+            gap: 2rem;
             margin-top: 2rem;
             flex-wrap: wrap;
         }
 
         .stat-item {
             background: var(--glass);
-            padding: 1rem 2rem;
-            border-radius: 1rem;
+            padding: 1.5rem 2rem;
+            border-radius: 1.5rem;
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s;
+            min-width: 150px;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
         }
 
         .stat-value {
-            font-size: 2rem;
+            font-size: 2.5rem;
             font-weight: bold;
             color: var(--accent);
         }
@@ -246,12 +297,13 @@
         .stat-label {
             font-size: 0.875rem;
             opacity: 0.8;
+            margin-top: 0.5rem;
         }
 
         /* Subject Grid */
         .subjects-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 1.5rem;
             margin: 3rem 0;
         }
@@ -260,32 +312,62 @@
             background: var(--glass);
             backdrop-filter: blur(10px);
             border-radius: 1.5rem;
-            padding: 1.5rem;
+            padding: 1.8rem;
             border: 1px solid rgba(255, 255, 255, 0.1);
             transition: all 0.3s ease;
             cursor: pointer;
             text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .subject-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .subject-card:hover::before {
+            left: 100%;
         }
 
         .subject-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-10px);
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
             border-color: var(--primary);
         }
 
         .subject-icon {
-            font-size: 3rem;
+            font-size: 3.5rem;
             margin-bottom: 1rem;
         }
 
         .subject-title {
             font-size: 1.5rem;
             margin-bottom: 0.5rem;
+            font-weight: 600;
         }
 
         .subject-desc {
             opacity: 0.8;
             font-size: 0.9rem;
+        }
+
+        .subject-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: var(--gold);
+            color: #000;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.7rem;
+            font-weight: bold;
         }
 
         /* Chat Section */
@@ -304,11 +386,6 @@
             animation: fadeIn 0.5s ease;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
         .subject-selector {
             display: flex;
             gap: 0.75rem;
@@ -321,25 +398,27 @@
 
         .subject-chip {
             background: rgba(255, 255, 255, 0.1);
-            padding: 0.5rem 1rem;
+            padding: 0.6rem 1.2rem;
             border-radius: 2rem;
             cursor: pointer;
             transition: all 0.3s;
             font-size: 0.875rem;
+            font-weight: 500;
         }
 
         .subject-chip:hover {
             background: var(--primary);
+            transform: scale(1.05);
         }
 
         .subject-chip.active {
             background: var(--primary);
-            box-shadow: 0 0 10px rgba(99, 102, 241, 0.5);
+            box-shadow: 0 0 15px rgba(99, 102, 241, 0.5);
         }
 
         .chat-container {
             background: rgba(0, 0, 0, 0.2);
-            border-radius: 1rem;
+            border-radius: 1.5rem;
             display: flex;
             flex-direction: column;
         }
@@ -348,8 +427,8 @@
             flex: 1;
             padding: 1.5rem;
             overflow-y: auto;
-            max-height: 450px;
-            min-height: 400px;
+            max-height: 500px;
+            min-height: 450px;
         }
 
         .message {
@@ -372,12 +451,13 @@
         }
 
         .message-content {
-            max-width: 80%;
-            padding: 1rem;
-            border-radius: 1rem;
+            max-width: 75%;
+            padding: 1rem 1.2rem;
+            border-radius: 1.2rem;
             word-wrap: break-word;
             white-space: pre-wrap;
             line-height: 1.5;
+            position: relative;
         }
 
         .message.user .message-content {
@@ -390,11 +470,20 @@
             border-bottom-left-radius: 0.25rem;
         }
 
+        .message-time {
+            font-size: 0.7rem;
+            opacity: 0.6;
+            margin-top: 0.3rem;
+            text-align: right;
+        }
+
         .chat-input-area {
             display: flex;
             gap: 1rem;
-            padding: 1rem;
+            padding: 1.2rem;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 0 0 1.5rem 1.5rem;
         }
 
         .chat-input {
@@ -403,27 +492,32 @@
             border: 2px solid rgba(255, 255, 255, 0.2);
             color: white;
             padding: 1rem;
-            border-radius: 0.5rem;
+            border-radius: 1rem;
             font-size: 1rem;
             resize: none;
             font-family: inherit;
+            transition: all 0.3s;
         }
 
         .chat-input:focus {
             outline: none;
             border-color: var(--accent);
+            background: rgba(255, 255, 255, 0.15);
         }
 
         .btn {
             background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             color: white;
             border: none;
-            padding: 0.75rem 1.5rem;
+            padding: 0.8rem 1.8rem;
             font-size: 1rem;
-            border-radius: 0.5rem;
+            border-radius: 1rem;
             cursor: pointer;
             transition: all 0.3s;
             font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
         .btn:hover {
@@ -444,9 +538,13 @@
             color: #000;
         }
 
+        .btn-danger {
+            background: linear-gradient(135deg, var(--danger), #dc2626);
+        }
+
         .typing-indicator {
             display: flex;
-            gap: 0.25rem;
+            gap: 0.3rem;
             padding: 0.5rem;
         }
 
@@ -467,11 +565,11 @@
         }
 
         .loader {
-            border: 4px solid rgba(255, 255, 255, 0.1);
+            border: 3px solid rgba(255, 255, 255, 0.1);
             border-left-color: var(--accent);
             border-radius: 50%;
-            width: 30px;
-            height: 30px;
+            width: 24px;
+            height: 24px;
             animation: spin 1s linear infinite;
             display: inline-block;
         }
@@ -490,6 +588,7 @@
             font-size: 1.5rem;
             cursor: pointer;
             opacity: 0.7;
+            transition: opacity 0.3s;
         }
 
         .close-btn:hover {
@@ -501,46 +600,97 @@
             top: 100px;
             right: 20px;
             background: linear-gradient(135deg, #f59e0b, #d97706);
-            padding: 0.75rem 1rem;
+            padding: 0.8rem 1.2rem;
             border-radius: 1rem;
             display: flex;
             align-items: center;
             gap: 0.5rem;
             font-weight: bold;
             z-index: 100;
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
         }
 
         .email-capture {
             background: linear-gradient(135deg, var(--primary), var(--secondary));
-            padding: 2rem;
-            border-radius: 1rem;
+            padding: 2.5rem;
+            border-radius: 1.5rem;
             margin: 2rem 0;
             text-align: center;
         }
 
         .email-input {
-            padding: 0.75rem 1rem;
-            border-radius: 0.5rem;
+            padding: 0.8rem 1.2rem;
+            border-radius: 1rem;
             border: none;
-            width: 280px;
+            width: 300px;
             margin-right: 0.5rem;
             font-size: 1rem;
+            background: white;
+            color: #333;
+        }
+
+        .email-input:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.3);
+        }
+
+        .feedback {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
         }
 
         .feedback.correct {
             background: rgba(16, 185, 129, 0.2);
             color: var(--success);
-            padding: 1rem;
-            border-radius: 0.5rem;
-            margin-top: 1rem;
         }
 
         .feedback.incorrect {
             background: rgba(239, 68, 68, 0.2);
             color: #ef4444;
-            padding: 1rem;
-            border-radius: 0.5rem;
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
             margin-top: 1rem;
+            justify-content: center;
+        }
+
+        .quick-action {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .quick-action:hover {
+            background: var(--primary);
+            transform: scale(1.05);
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--success);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 1rem;
+            animation: slideIn 0.3s ease;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
         }
 
         @media (max-width: 768px) {
@@ -552,6 +702,8 @@
             .upgrade-btn { top: 80px; right: 10px; padding: 0.5rem 1rem; font-size: 0.875rem; }
             .streak-badge { top: 80px; right: 10px; padding: 0.5rem 0.75rem; }
             .email-input { width: 100%; margin-bottom: 0.5rem; }
+            .stat-item { padding: 1rem; }
+            .stat-value { font-size: 1.5rem; }
         }
     </style>
 </head>
@@ -566,10 +718,12 @@
         <span style="left:90%; animation-delay:0s;"></span>
     </div>
 
-    <button class="upgrade-btn" onclick="showPremiumModal()">⭐ Upgrade to Pro - $9.99/mo</button>
+    <button class="upgrade-btn" onclick="showPremiumModal()">
+        <i class="fas fa-crown"></i> Upgrade to Pro - $9.99/mo
+    </button>
 
     <div class="streak-badge" id="streakBadge">
-        <span>🔥</span>
+        <i class="fas fa-fire"></i>
         <span id="streakCount">0</span>
         <span>day streak</span>
     </div>
@@ -577,64 +731,113 @@
     <nav>
         <div class="nav-container">
             <div class="logo">
-                <span>🤖</span>
-                <span>AI Tutor</span>
+                <i class="fas fa-robot"></i>
+                <span>AI Tutor Pro</span>
             </div>
             <ul class="nav-links">
-                <li><a onclick="showSection('home')">Home</a></li>
-                <li><a onclick="showSection('chat')">Chat</a></li>
-                <li><a onclick="showSection('subjects')">Subjects</a></li>
+                <li><a onclick="showSection('home')"><i class="fas fa-home"></i> Home</a></li>
+                <li><a onclick="showSection('chat')"><i class="fas fa-comment-dots"></i> Chat</a></li>
+                <li><a onclick="showSection('subjects')"><i class="fas fa-book"></i> Subjects</a></li>
+                <li><a onclick="showSection('resources')"><i class="fas fa-graduation-cap"></i> Resources</a></li>
             </ul>
         </div>
     </nav>
 
     <div class="container">
         <section id="home" class="hero">
-            <h1>🤖 Your Personal AI Tutor</h1>
-            <p>Learn anything, anytime. Get instant, personalized help in any subject.</p>
+            <h1><i class="fas fa-robot"></i> Your Personal AI Tutor</h1>
+            <p>Learn anything, anytime. Get instant, personalized help in any subject with our advanced AI.</p>
             <div class="stats-bar">
                 <div class="stat-item">
                     <div class="stat-value" id="totalQuestions">0</div>
-                    <div class="stat-label">Questions Asked</div>
+                    <div class="stat-label"><i class="fas fa-question-circle"></i> Questions Asked</div>
                 </div>
                 <div class="stat-item">
                     <div class="stat-value" id="sessionsLeft">0</div>
-                    <div class="stat-label">Free Sessions Left</div>
+                    <div class="stat-label"><i class="fas fa-gift"></i> Free Sessions Left</div>
                 </div>
                 <div class="stat-item">
                     <div class="stat-value" id="streakDisplay">0</div>
-                    <div class="stat-label">Day Streak</div>
+                    <div class="stat-label"><i class="fas fa-calendar-check"></i> Day Streak</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="subjectsMastered">0</div>
+                    <div class="stat-label"><i class="fas fa-trophy"></i> Subjects Explored</div>
                 </div>
             </div>
             <div style="margin-top: 2rem;">
-                <button class="btn" onclick="showSection('chat')" style="font-size: 1.25rem; padding: 1rem 2rem;">Start Learning Now →</button>
+                <button class="btn" onclick="showSection('chat')" style="font-size: 1.25rem; padding: 1rem 2rem;">
+                    <i class="fas fa-play"></i> Start Learning Now →
+                </button>
             </div>
         </section>
 
         <div class="email-capture" id="emailCapture">
+            <i class="fas fa-gift" style="font-size: 2rem; margin-bottom: 1rem;"></i>
             <h3>🎁 Get 10 Free AI Tutoring Sessions!</h3>
-            <p>Join 5,000+ students learning with AI Tutor</p>
+            <p>Join 10,000+ students learning with AI Tutor Pro</p>
             <form id="emailForm" onsubmit="subscribeWithVerification(event)">
-                <input type="email" id="userEmail" class="email-input" placeholder="Enter your email" required>
-                <button type="submit" class="btn" id="subscribeBtn">Get Free Access →</button>
+                <input type="email" id="userEmail" class="email-input" placeholder="Enter your email address" required>
+                <button type="submit" class="btn" id="subscribeBtn"><i class="fas fa-envelope"></i> Get Free Access →</button>
             </form>
             <div id="emailStatus" style="margin-top: 1rem; display: none;"></div>
             <p style="font-size:0.875rem;opacity:0.8;margin-top:0.5rem;">
-                🔒 We'll send a verification link to your email. No spam.
+                <i class="fas fa-lock"></i> No spam. Unsubscribe anytime.
             </p>
         </div>
 
         <section id="subjects" class="subjects-grid" style="display: none;">
-            <div class="subject-card" onclick="startChat('Mathematics')"><div class="subject-icon">📐</div><h3>Mathematics</h3><p class="subject-desc">Algebra, Calculus, Geometry, Statistics</p></div>
-            <div class="subject-card" onclick="startChat('Physics')"><div class="subject-icon">⚛️</div><h3>Physics</h3><p class="subject-desc">Mechanics, Quantum, Electricity</p></div>
-            <div class="subject-card" onclick="startChat('Chemistry')"><div class="subject-icon">🧪</div><h3>Chemistry</h3><p class="subject-desc">Organic, Biochem, Reactions</p></div>
-            <div class="subject-card" onclick="startChat('Biology')"><div class="subject-icon">🧬</div><h3>Biology</h3><p class="subject-desc">Cell Bio, Genetics, Anatomy</p></div>
-            <div class="subject-card" onclick="startChat('Computer Science')"><div class="subject-icon">💻</div><h3>Computer Science</h3><p class="subject-desc">Programming, Algorithms, AI</p></div>
-            <div class="subject-card" onclick="startChat('History')"><div class="subject-icon">📜</div><h3>History</h3><p class="subject-desc">World History, US History</p></div>
-            <div class="subject-card" onclick="startChat('Literature')"><div class="subject-icon">📚</div><h3>Literature</h3><p class="subject-desc">Poetry, Novels, Analysis</p></div>
-            <div class="subject-card" onclick="startChat('Economics')"><div class="subject-icon">📊</div><h3>Economics</h3><p class="subject-desc">Micro, Macro, Finance</p></div>
-            <div class="subject-card" onclick="startChat('Psychology')"><div class="subject-icon">🧠</div><h3>Psychology</h3><p class="subject-desc">Cognitive, Behavioral</p></div>
-            <div class="subject-card" onclick="startChat('Languages')"><div class="subject-icon">🌍</div><h3>Languages</h3><p class="subject-desc">Spanish, French, Mandarin</p></div>
+            <div class="subject-card" onclick="startChat('Mathematics')">
+                <div class="subject-icon">📐</div>
+                <h3 class="subject-title">Mathematics</h3>
+                <p class="subject-desc">Algebra, Calculus, Geometry, Statistics, Trigonometry</p>
+                <div class="subject-badge">Popular</div>
+            </div>
+            <div class="subject-card" onclick="startChat('Physics')">
+                <div class="subject-icon">⚛️</div>
+                <h3 class="subject-title">Physics</h3>
+                <p class="subject-desc">Mechanics, Quantum, Thermodynamics, Electricity</p>
+            </div>
+            <div class="subject-card" onclick="startChat('Chemistry')">
+                <div class="subject-icon">🧪</div>
+                <h3 class="subject-title">Chemistry</h3>
+                <p class="subject-desc">Organic, Inorganic, Biochemistry, Reactions</p>
+            </div>
+            <div class="subject-card" onclick="startChat('Biology')">
+                <div class="subject-icon">🧬</div>
+                <h3 class="subject-title">Biology</h3>
+                <p class="subject-desc">Cell Biology, Genetics, Anatomy, Ecology</p>
+            </div>
+            <div class="subject-card" onclick="startChat('Computer Science')">
+                <div class="subject-icon">💻</div>
+                <h3 class="subject-title">Computer Science</h3>
+                <p class="subject-desc">Programming, Algorithms, AI, Web Development</p>
+            </div>
+            <div class="subject-card" onclick="startChat('History')">
+                <div class="subject-icon">📜</div>
+                <h3 class="subject-title">History</h3>
+                <p class="subject-desc">World History, US History, Ancient Civilizations</p>
+            </div>
+            <div class="subject-card" onclick="startChat('Literature')">
+                <div class="subject-icon">📚</div>
+                <h3 class="subject-title">Literature</h3>
+                <p class="subject-desc">Poetry, Novels, Literary Analysis, Writing</p>
+            </div>
+            <div class="subject-card" onclick="startChat('Economics')">
+                <div class="subject-icon">📊</div>
+                <h3 class="subject-title">Economics</h3>
+                <p class="subject-desc">Microeconomics, Macroeconomics, Finance</p>
+            </div>
+            <div class="subject-card" onclick="startChat('Psychology')">
+                <div class="subject-icon">🧠</div>
+                <h3 class="subject-title">Psychology</h3>
+                <p class="subject-desc">Cognitive, Behavioral, Neuroscience</p>
+            </div>
+            <div class="subject-card" onclick="startChat('Languages')">
+                <div class="subject-icon">🌍</div>
+                <h3 class="subject-title">Languages</h3>
+                <p class="subject-desc">Spanish, French, Mandarin, English, Grammar</p>
+            </div>
         </section>
 
         <section id="chat" class="chat-section">
@@ -653,26 +856,64 @@
             </div>
             <div class="chat-container">
                 <div class="chat-messages" id="chatMessages">
-                    <div class="message assistant"><div class="message-content">👋 Hi! I'm your AI Tutor. I can help with any subject - math, science, history, languages, and more!<br><br>What would you like to learn today?</div></div>
+                    <div class="message assistant">
+                        <div class="message-content">
+                            <i class="fas fa-robot"></i> 👋 Hi! I'm your AI Tutor Pro.<br><br>
+                            I can help with any subject - math, science, history, languages, and more!<br><br>
+                            What would you like to learn today?
+                        </div>
+                    </div>
+                </div>
+                <div class="quick-actions" id="quickActions">
+                    <span class="quick-action" onclick="setQuickQuestion('Explain quantum physics')">🔬 Quantum Physics</span>
+                    <span class="quick-action" onclick="setQuickQuestion('What is the quadratic formula?')">📐 Quadratic Formula</span>
+                    <span class="quick-action" onclick="setQuickQuestion('Explain photosynthesis')">🌱 Photosynthesis</span>
+                    <span class="quick-action" onclick="setQuickQuestion('What caused World War I?')">📜 World War I</span>
+                    <span class="quick-action" onclick="setQuickQuestion('How to learn Spanish fast?')">🇪🇸 Learn Spanish</span>
                 </div>
                 <div class="chat-input-area">
                     <textarea class="chat-input" id="chatInput" placeholder="Ask me anything... (e.g., 'Explain quantum physics', 'Help me with calculus', 'What is the French Revolution?')" rows="2" onkeypress="if(event.key==='Enter' && !event.shiftKey){event.preventDefault();sendMessage();}"></textarea>
-                    <button class="btn" onclick="sendMessage()">Send →</button>
+                    <button class="btn" onclick="sendMessage()"><i class="fas fa-paper-plane"></i> Send</button>
                 </div>
             </div>
-            <div style="margin-top: 1rem; text-align: center;">
-                <button class="btn btn-secondary" onclick="clearChat()">Clear Chat</button>
-                <button class="btn btn-secondary" onclick="showSection('home')">Back to Home</button>
+            <div style="margin-top: 1rem; text-align: center; display: flex; gap: 1rem; justify-content: center;">
+                <button class="btn btn-secondary" onclick="clearChat()"><i class="fas fa-trash"></i> Clear Chat</button>
+                <button class="btn btn-secondary" onclick="exportChat()"><i class="fas fa-download"></i> Export Chat</button>
+                <button class="btn btn-secondary" onclick="showSection('home')"><i class="fas fa-home"></i> Back to Home</button>
             </div>
+        </section>
+
+        <section id="resources" class="chat-section">
+            <h2 style="text-align: center; margin-bottom: 2rem;"><i class="fas fa-graduation-cap"></i> Learning Resources</h2>
+            <div style="display: grid; gap: 1.5rem; margin: 2rem 0;">
+                <div class="subject-card" style="cursor: default;">
+                    <div class="subject-icon">🎓</div>
+                    <h3>Study Tips & Strategies</h3>
+                    <p>Get personalized study techniques, memorization methods, and exam preparation advice.</p>
+                </div>
+                <div class="subject-card" style="cursor: default;">
+                    <div class="subject-icon">📝</div>
+                    <h3>Essay Writing Help</h3>
+                    <p>Structure your essays, develop thesis statements, and get writing feedback.</p>
+                </div>
+                <div class="subject-card" style="cursor: default;">
+                    <div class="subject-icon">💡</div>
+                    <h3>Concept Explanations</h3>
+                    <p>Complex topics broken down into simple, easy-to-understand explanations with examples.</p>
+                </div>
+                <div class="subject-card" style="cursor: default;">
+                    <div class="subject-icon">📚</div>
+                    <h3>Recommended Books & Courses</h3>
+                    <p>Curated list of the best textbooks, online courses, and learning materials.</p>
+                </div>
+            </div>
+            <button class="btn btn-secondary" onclick="showSection('home')"><i class="fas fa-home"></i> Back to Home</button>
         </section>
     </div>
 
     <script>
         // ==================== CONFIGURATION ====================
         const BACKEND_URL = 'https://universal-ai-tutor-2.onrender.com';
-        
-        // ==================== YOUR PAYPAL BUSINESS EMAIL ====================
-        // Money will be sent to this email when users subscribe
         const PAYPAL_EMAIL = 'innocentmbimbili@gmail.com';
         
         let currentSubject = 'General';
@@ -683,32 +924,68 @@
         let userEmail = localStorage.getItem('userEmail') || '';
         let remainingSessions = parseInt(localStorage.getItem('remainingSessions')) || 0;
         let emailVerified = localStorage.getItem('emailVerified') === 'true';
+        let subjectsUsed = JSON.parse(localStorage.getItem('subjectsUsed')) || [];
 
-        // ==================== LIVE PAYPAL PAYMENT ====================
-        // This sends payments directly to innocentmbimbili@gmail.com
+        // ==================== QUICK ACTIONS ====================
+        function setQuickQuestion(question) {
+            document.getElementById('chatInput').value = question;
+            document.getElementById('chatInput').focus();
+        }
+
+        // ==================== EXPORT CHAT ====================
+        function exportChat() {
+            if (chatHistory.length === 0) {
+                showToast('No conversation to export', 'warning');
+                return;
+            }
+            
+            let exportText = "AI Tutor Pro - Chat Export\n";
+            exportText += "========================\n\n";
+            
+            chatHistory.forEach(msg => {
+                const date = new Date(msg.timestamp).toLocaleString();
+                exportText += `[${date}] ${msg.role.toUpperCase()}:\n${msg.content}\n\n`;
+            });
+            
+            const blob = new Blob([exportText], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `ai-tutor-chat-${new Date().toISOString().slice(0,19)}.txt`;
+            a.click();
+            URL.revokeObjectURL(url);
+            
+            showToast('Chat exported successfully!', 'success');
+        }
+
+        // ==================== TOAST NOTIFICATION ====================
+        function showToast(message, type = 'success') {
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.style.background = type === 'success' ? '#10b981' : '#f59e0b';
+            toast.innerHTML = `<i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-triangle'}"></i> ${message}`;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+
+        // ==================== PAYPAL PAYMENT ====================
         function startPayPalCheckout() {
             const email = localStorage.getItem('userEmail') || document.getElementById('userEmail')?.value;
             
             if (!email) {
-                alert('Please enter your email first to upgrade to Pro.');
+                showToast('Please enter your email first to upgrade', 'warning');
                 document.getElementById('emailCapture')?.scrollIntoView({ behavior: 'smooth' });
                 return;
             }
             
-            // Save email for after payment
             localStorage.setItem('paymentEmail', email);
             
-            // LIVE PayPal URL - money goes to innocentmbimbili@gmail.com
             const paypalUrl = `https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=${encodeURIComponent(PAYPAL_EMAIL)}&item_name=AI Tutor Pro - Monthly Subscription&amount=9.99&currency_code=USD&return=https://innocent200509.github.io/Universal-AI-Tutor/success.html&cancel_return=https://innocent200509.github.io/Universal-AI-Tutor/&custom=${encodeURIComponent(email)}&rm=2`;
             
-            // Open PayPal in new tab
             window.open(paypalUrl, '_blank');
-            
-            // Show instruction to user
-            alert('PayPal will open in a new tab. After completing payment, return to this page and click "I\'ve Completed Payment" to activate premium.');
+            showToast('PayPal opened in new tab. Complete payment to activate premium.', 'info');
         }
         
-        // Manual activation button for after PayPal payment
         function manualActivatePremium() {
             const email = localStorage.getItem('paymentEmail') || localStorage.getItem('userEmail');
             if (email && confirm('Did you just complete a PayPal payment? Click OK to activate your premium access.')) {
@@ -721,37 +998,11 @@
                 const upgradeBtn = document.querySelector('.upgrade-btn');
                 if (upgradeBtn) upgradeBtn.remove();
                 
-                alert('🎉 Premium activated! You now have unlimited access to AI Tutor Pro.');
+                showToast('🎉 Premium activated! You now have unlimited access!', 'success');
             }
         }
 
-        // Check if returning from PayPal
-        function checkPayPalReturn() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const paymentStatus = urlParams.get('st');
-            const customEmail = urlParams.get('custom');
-            
-            if (paymentStatus === 'completed') {
-                const email = customEmail || localStorage.getItem('paymentEmail');
-                
-                if (email) {
-                    localStorage.setItem('aiTutorPremium', 'true');
-                    isPremium = true;
-                    remainingSessions = Infinity;
-                    localStorage.setItem('remainingSessions', 'unlimited');
-                    localStorage.setItem('userEmail', email);
-                    updateStats();
-                    
-                    const upgradeBtn = document.querySelector('.upgrade-btn');
-                    if (upgradeBtn) upgradeBtn.remove();
-                    
-                    alert('🎉 Payment successful! You now have unlimited access to AI Tutor Pro!');
-                    window.history.replaceState({}, document.title, window.location.pathname);
-                }
-            }
-        }
-
-        // ==================== EMAIL VERIFICATION FUNCTIONS ====================
+        // ==================== EMAIL VERIFICATION ====================
         async function subscribeWithVerification(event) {
             event.preventDefault();
             
@@ -760,14 +1011,14 @@
             const statusDiv = document.getElementById('emailStatus');
             
             if (!email || !email.includes('@')) {
-                showEmailStatus('Please enter a valid email address.', 'error');
+                showToast('Please enter a valid email address', 'warning');
                 return;
             }
             
             subscribeBtn.disabled = true;
-            subscribeBtn.textContent = 'Sending...';
+            subscribeBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
             statusDiv.style.display = 'block';
-            statusDiv.innerHTML = '<div class="loader" style="width:20px;height:20px;"></div> Sending verification email...';
+            statusDiv.innerHTML = '<div class="loader"></div> Sending verification email...';
             statusDiv.className = '';
             
             try {
@@ -783,21 +1034,19 @@
                     localStorage.setItem('pendingEmail', email);
                     
                     if (data.debugUrl) {
-                        showEmailStatus(
-                            `✅ Verification link created! <a href="${data.debugUrl}" target="_blank" style="color: white; text-decoration: underline;">Click here to verify</a> (Testing mode)`, 
-                            'success'
-                        );
+                        statusDiv.innerHTML = `✅ Verification link created! <a href="${data.debugUrl}" target="_blank" style="color: white; text-decoration: underline;">Click here to verify</a>`;
+                        statusDiv.className = 'feedback correct';
                     } else {
-                        showEmailStatus(
-                            '✅ Verification email sent! Check your inbox (and spam folder) and click the link to confirm your email address.', 
-                            'success'
-                        );
+                        statusDiv.innerHTML = '✅ Verification email sent! Check your inbox (and spam folder) and click the link to confirm.';
+                        statusDiv.className = 'feedback correct';
                     }
                     
                     document.getElementById('emailForm').style.display = 'none';
+                    showToast('Verification email sent! Check your inbox.', 'success');
                 } else {
                     if (data.alreadyVerified) {
-                        showEmailStatus('✅ Email already verified! You can start learning now.', 'success');
+                        statusDiv.innerHTML = '✅ Email already verified! You can start learning now.';
+                        statusDiv.className = 'feedback correct';
                         document.getElementById('emailCapture').style.display = 'none';
                         userEmail = email;
                         localStorage.setItem('userEmail', email);
@@ -806,35 +1055,18 @@
                         localStorage.setItem('remainingSessions', 10);
                         emailVerified = true;
                         updateStats();
+                        showToast('Email verified! You have 10 free sessions.', 'success');
                     } else {
-                        showEmailStatus(data.error || 'Failed to send verification. Please try again.', 'error');
+                        statusDiv.innerHTML = data.error || 'Failed to send verification. Please try again.';
+                        statusDiv.className = 'feedback incorrect';
                     }
                 }
             } catch (error) {
-                console.error('Subscription error:', error);
-                showEmailStatus('Network error. Please check your connection and try again.', 'error');
+                statusDiv.innerHTML = 'Network error. Please check your connection.';
+                statusDiv.className = 'feedback incorrect';
             } finally {
                 subscribeBtn.disabled = false;
-                subscribeBtn.textContent = 'Get Free Access →';
-            }
-        }
-        
-        function showEmailStatus(message, type) {
-            const statusDiv = document.getElementById('emailStatus');
-            statusDiv.style.display = 'block';
-            statusDiv.innerHTML = message;
-            statusDiv.className = type === 'error' ? 'feedback incorrect' : 'feedback correct';
-            
-            if (type === 'success') {
-                setTimeout(() => {
-                    if (!message.includes('Testing')) {
-                        statusDiv.style.display = 'none';
-                    }
-                }, 8000);
-            } else {
-                setTimeout(() => {
-                    statusDiv.style.display = 'none';
-                }, 5000);
+                subscribeBtn.innerHTML = '<i class="fas fa-envelope"></i> Get Free Access →';
             }
         }
         
@@ -867,10 +1099,9 @@
                     
                     document.getElementById('emailCapture').style.display = 'none';
                     updateStats();
+                    showToast('Email verified! Ready to learn!', 'success');
                 }
-            } catch(e) {
-                console.log('Email check failed:', e);
-            }
+            } catch(e) {}
         }
 
         // ==================== AI TUTOR FUNCTIONS ====================
@@ -895,7 +1126,13 @@
             chatHistory.forEach(msg => {
                 const div = document.createElement('div');
                 div.className = `message ${msg.role}`;
-                div.innerHTML = `<div class="message-content">${msg.content.replace(/\n/g, '<br>')}</div>`;
+                const time = new Date(msg.timestamp).toLocaleTimeString();
+                div.innerHTML = `
+                    <div class="message-content">
+                        ${msg.content.replace(/\n/g, '<br>')}
+                        <div class="message-time">${time}</div>
+                    </div>
+                `;
                 container.appendChild(div);
             });
             container.scrollTop = container.scrollHeight;
@@ -906,7 +1143,8 @@
                 chatHistory = [];
                 saveChatHistory();
                 renderMessages();
-                addMessage('assistant', '👋 Hi! I\'m your AI Tutor. What would you like to learn today?');
+                addMessage('assistant', '👋 Hi! I\'m your AI Tutor Pro. What would you like to learn today?');
+                showToast('Chat history cleared', 'success');
             }
         }
         
@@ -916,12 +1154,12 @@
             if (!message) return;
             
             if (!emailVerified && !isPremium) {
-                alert('Please verify your email first to start learning! Check your inbox for the verification link.');
+                showToast('Please verify your email first to start learning!', 'warning');
                 return;
             }
             
             if (!isPremium && remainingSessions <= 0) {
-                alert("You've used all your free sessions! Upgrade to Pro for unlimited access.");
+                showToast("You've used all your free sessions! Upgrade to Pro for unlimited access.", 'warning');
                 showPremiumModal();
                 return;
             }
@@ -955,6 +1193,12 @@
                     addMessage('assistant', data.reply);
                     totalQuestions++;
                     localStorage.setItem('totalQuestions', totalQuestions);
+                    
+                    // Track subjects used
+                    if (!subjectsUsed.includes(currentSubject) && currentSubject !== 'General') {
+                        subjectsUsed.push(currentSubject);
+                        localStorage.setItem('subjectsUsed', JSON.stringify(subjectsUsed));
+                    }
                     
                     if (!isPremium && remainingSessions > 0) {
                         remainingSessions--;
@@ -997,7 +1241,7 @@
         
         function startChat(subject) {
             if (!emailVerified && !isPremium) {
-                alert('Please verify your email first to start learning!');
+                showToast('Please verify your email first to start learning!', 'warning');
                 showSection('home');
                 return;
             }
@@ -1006,31 +1250,32 @@
             showSection('chat');
         }
         
-        // ==================== PREMIUM FUNCTIONS ====================
+        // ==================== PREMIUM MODAL ====================
         function showPremiumModal() {
             const modal = document.createElement('div');
             modal.className = 'modal-overlay';
             modal.innerHTML = `
                 <div class="modal-content">
                     <button class="close-btn" onclick="this.closest('.modal-overlay').remove()">×</button>
-                    <div style="font-size:3rem;">🚀</div>
+                    <i class="fas fa-crown" style="font-size: 3rem; color: var(--gold); margin-bottom: 1rem;"></i>
                     <h2>Upgrade to AI Tutor Pro</h2>
                     <div class="price-tag">$9.99<span style="font-size:1rem;">/month</span></div>
                     <ul class="feature-list">
                         <li>✅ Unlimited questions - no daily limits</li>
                         <li>✅ All 15+ subjects included</li>
-                        <li>✅ In-depth explanations</li>
+                        <li>✅ In-depth explanations with examples</li>
                         <li>✅ Priority response times</li>
+                        <li>✅ Export chat conversations</li>
                         <li>✅ Cancel anytime</li>
                     </ul>
-                    <button onclick="startPayPalCheckout()" class="btn btn-gold" style="width:100%;padding:1rem;font-size:1.1rem;">
-                        💳 Pay with PayPal - $9.99/month
+                    <button onclick="startPayPalCheckout()" class="btn btn-gold" style="width:100%;padding:1rem;font-size:1.1rem;margin-bottom:0.5rem;">
+                        <i class="fab fa-paypal"></i> Pay with PayPal - $9.99/month
                     </button>
-                    <button onclick="manualActivatePremium()" class="btn btn-secondary" style="margin-top: 10px; width: 100%;">
-                        I've Completed Payment
+                    <button onclick="manualActivatePremium()" class="btn btn-secondary" style="width:100%;">
+                        <i class="fas fa-check"></i> I've Completed Payment
                     </button>
                     <p style="margin-top:1rem;font-size:0.875rem;opacity:0.7;">
-                        🔒 Secure payment via PayPal. Money goes to innocentmbimbili@gmail.com
+                        <i class="fas fa-lock"></i> Secure payment via PayPal. Money goes to innocentmbimbili@gmail.com
                     </p>
                 </div>
             `;
@@ -1042,14 +1287,16 @@
             document.getElementById('home').style.display = 'none';
             document.getElementById('subjects').style.display = 'none';
             document.getElementById('chat').classList.remove('active');
+            document.getElementById('resources').classList.remove('active');
             document.getElementById('chat').style.display = 'none';
+            document.getElementById('resources').style.display = 'none';
             
             if (section === 'home') {
                 document.getElementById('home').style.display = 'block';
                 document.getElementById('subjects').style.display = 'grid';
             } else if (section === 'chat') {
                 if (!emailVerified && !isPremium) {
-                    alert('Please verify your email first to start learning!');
+                    showToast('Please verify your email first to start learning!', 'warning');
                     showSection('home');
                     return;
                 }
@@ -1059,6 +1306,9 @@
             } else if (section === 'subjects') {
                 document.getElementById('subjects').style.display = 'grid';
                 document.getElementById('home').style.display = 'block';
+            } else if (section === 'resources') {
+                document.getElementById('resources').style.display = 'block';
+                setTimeout(() => document.getElementById('resources').classList.add('active'), 10);
             }
             window.scrollTo(0, 0);
         }
@@ -1067,6 +1317,7 @@
             document.getElementById('totalQuestions').textContent = totalQuestions;
             document.getElementById('streakDisplay').textContent = streak;
             document.getElementById('streakCount').textContent = streak;
+            document.getElementById('subjectsMastered').textContent = subjectsUsed.length;
             
             if (!isPremium && remainingSessions !== undefined && remainingSessions !== Infinity) {
                 document.getElementById('sessionsLeft').textContent = remainingSessions;
@@ -1097,7 +1348,6 @@
             updateStats();
             updateStreak();
             loadChatHistory();
-            checkPayPalReturn();
             
             if (emailVerified || localStorage.getItem('emailVerified') === 'true') {
                 document.getElementById('emailCapture').style.display = 'none';
