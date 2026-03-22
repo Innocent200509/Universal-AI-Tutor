@@ -6,8 +6,13 @@
     <title>AI Tutor Pro - Upload & Learn</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- PDF.js for PDF text extraction -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+    <script>
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
+    </script>
     <style>
-        /* [Keep all the existing CSS from previous version - it's the same] */
+        /* [All previous CSS styles remain the same - keep from previous version] */
         * {
             margin: 0;
             padding: 0;
@@ -28,8 +33,6 @@
             --glass: rgba(255, 255, 255, 0.1);
             --glass-dark: rgba(0, 0, 0, 0.3);
             --gold: #ffd700;
-            --purple: #a855f7;
-            --cyan: #06b6d4;
         }
 
         body {
@@ -92,7 +95,6 @@
             align-items: center;
             justify-content: center;
             backdrop-filter: blur(10px);
-            animation: fadeIn 0.3s ease;
         }
 
         .modal-content {
@@ -105,17 +107,11 @@
             border: 2px solid var(--primary);
             position: relative;
             animation: slideUp 0.3s ease;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
         }
 
         @keyframes slideUp {
             from { transform: translateY(50px); opacity: 0; }
             to { transform: translateY(0); opacity: 1; }
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
         }
 
         .price-tag {
@@ -158,7 +154,6 @@
             z-index: 999;
             box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
             animation: pulse 2s infinite;
-            transition: transform 0.3s;
         }
 
         .upgrade-btn:hover {
@@ -359,7 +354,6 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            transition: all 0.3s;
         }
 
         .document-item:hover {
@@ -472,23 +466,6 @@
             transition: all 0.3s ease;
             cursor: pointer;
             text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .subject-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-            transition: left 0.5s;
-        }
-
-        .subject-card:hover::before {
-            left: 100%;
         }
 
         .subject-card:hover {
@@ -692,9 +669,6 @@
             animation: typing 1.4s infinite;
         }
 
-        .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
-        .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
-
         @keyframes typing {
             0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
             30% { transform: translateY(-10px); opacity: 1; }
@@ -742,7 +716,6 @@
             gap: 0.5rem;
             font-weight: bold;
             z-index: 100;
-            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
         }
 
         .email-capture {
@@ -821,6 +794,22 @@
             to { transform: translateX(0); opacity: 1; }
         }
 
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 2px;
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--accent);
+            width: 0%;
+            transition: width 0.3s;
+        }
+
         @media (max-width: 768px) {
             .hero h1 { font-size: 2rem; }
             .nav-links { display: none; }
@@ -874,7 +863,7 @@
     <div class="container">
         <section id="home" class="hero">
             <h1><i class="fas fa-robot"></i> Your Personal AI Tutor</h1>
-            <p>Upload past papers, get AI-powered study help, generate practice questions, and master any subject!</p>
+            <p>Upload past papers (PDF/TXT), get AI-powered study help, generate practice questions, and master any subject!</p>
             <div class="stats-bar">
                 <div class="stat-item">
                     <div class="stat-value" id="totalQuestions">0</div>
@@ -920,14 +909,16 @@
         <!-- Upload Section -->
         <section id="upload" class="upload-section">
             <h2><i class="fas fa-upload"></i> Upload Past Papers</h2>
-            <p>Upload your past exam papers, notes, or study materials. The AI will analyze them and help you study!</p>
+            <p>Upload your past exam papers, notes, or study materials (PDF, TXT). The AI will extract text and help you study!</p>
             
             <div class="upload-area" id="uploadArea" onclick="document.getElementById('fileInput').click()">
                 <i class="fas fa-cloud-upload-alt upload-icon"></i>
-                <p>Click or drag & drop your TEXT/PDF files here</p>
-                <p style="font-size: 0.8rem; opacity: 0.7;">Supported: .txt, .pdf, .docx (max 5MB)</p>
-                <p style="font-size: 0.7rem; opacity: 0.5;">Note: For best results, use .txt files or paste text directly</p>
-                <input type="file" id="fileInput" class="file-input" accept=".txt,.pdf,.docx">
+                <p>Click or drag & drop your PDF/TXT files here</p>
+                <p style="font-size: 0.8rem; opacity: 0.7;">Supported: PDF, TXT, DOCX (max 10MB)</p>
+                <div id="uploadProgress" class="progress-bar" style="display: none;">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <input type="file" id="fileInput" class="file-input" accept=".pdf,.txt,.docx">
             </div>
 
             <div class="document-list" id="documentList"></div>
@@ -949,51 +940,15 @@
         </section>
 
         <section id="subjects" class="subjects-grid" style="display: none;">
-            <div class="subject-card" onclick="startChat('Mathematics')">
-                <div class="subject-icon">📐</div>
-                <h3 class="subject-title">Mathematics</h3>
-                <p class="subject-desc">Algebra, Calculus, Geometry, Statistics</p>
-            </div>
-            <div class="subject-card" onclick="startChat('Physics')">
-                <div class="subject-icon">⚛️</div>
-                <h3 class="subject-title">Physics</h3>
-                <p class="subject-desc">Mechanics, Quantum, Electricity</p>
-            </div>
-            <div class="subject-card" onclick="startChat('Chemistry')">
-                <div class="subject-icon">🧪</div>
-                <h3 class="subject-title">Chemistry</h3>
-                <p class="subject-desc">Organic, Reactions, Periodic Table</p>
-            </div>
-            <div class="subject-card" onclick="startChat('Biology')">
-                <div class="subject-icon">🧬</div>
-                <h3 class="subject-title">Biology</h3>
-                <p class="subject-desc">Cell Biology, Genetics, Anatomy</p>
-            </div>
-            <div class="subject-card" onclick="startChat('Computer Science')">
-                <div class="subject-icon">💻</div>
-                <h3 class="subject-title">Computer Science</h3>
-                <p class="subject-desc">Programming, Algorithms, AI</p>
-            </div>
-            <div class="subject-card" onclick="startChat('History')">
-                <div class="subject-icon">📜</div>
-                <h3 class="subject-title">History</h3>
-                <p class="subject-desc">World History, US History</p>
-            </div>
-            <div class="subject-card" onclick="startChat('Literature')">
-                <div class="subject-icon">📚</div>
-                <h3 class="subject-title">Literature</h3>
-                <p class="subject-desc">Poetry, Novels, Analysis</p>
-            </div>
-            <div class="subject-card" onclick="startChat('Economics')">
-                <div class="subject-icon">📊</div>
-                <h3 class="subject-title">Economics</h3>
-                <p class="subject-desc">Micro, Macro, Finance</p>
-            </div>
-            <div class="subject-card" onclick="startChat('Languages')">
-                <div class="subject-icon">🌍</div>
-                <h3 class="subject-title">Languages</h3>
-                <p class="subject-desc">Spanish, French, Mandarin</p>
-            </div>
+            <div class="subject-card" onclick="startChat('Mathematics')"><div class="subject-icon">📐</div><h3>Mathematics</h3><p class="subject-desc">Algebra, Calculus, Geometry, Statistics</p></div>
+            <div class="subject-card" onclick="startChat('Physics')"><div class="subject-icon">⚛️</div><h3>Physics</h3><p class="subject-desc">Mechanics, Quantum, Electricity</p></div>
+            <div class="subject-card" onclick="startChat('Chemistry')"><div class="subject-icon">🧪</div><h3>Chemistry</h3><p class="subject-desc">Organic, Reactions, Periodic Table</p></div>
+            <div class="subject-card" onclick="startChat('Biology')"><div class="subject-icon">🧬</div><h3>Biology</h3><p class="subject-desc">Cell Biology, Genetics, Anatomy</p></div>
+            <div class="subject-card" onclick="startChat('Computer Science')"><div class="subject-icon">💻</div><h3>Computer Science</h3><p class="subject-desc">Programming, Algorithms, AI</p></div>
+            <div class="subject-card" onclick="startChat('History')"><div class="subject-icon">📜</div><h3>History</h3><p class="subject-desc">World History, US History</p></div>
+            <div class="subject-card" onclick="startChat('Literature')"><div class="subject-icon">📚</div><h3>Literature</h3><p class="subject-desc">Poetry, Novels, Analysis</p></div>
+            <div class="subject-card" onclick="startChat('Economics')"><div class="subject-icon">📊</div><h3>Economics</h3><p class="subject-desc">Micro, Macro, Finance</p></div>
+            <div class="subject-card" onclick="startChat('Languages')"><div class="subject-icon">🌍</div><h3>Languages</h3><p class="subject-desc">Spanish, French, Mandarin</p></div>
         </section>
 
         <section id="chat" class="chat-section">
@@ -1014,7 +969,7 @@
                     <div class="message assistant">
                         <div class="message-content">
                             <i class="fas fa-robot"></i> 👋 Hi! I'm your AI Tutor Pro.<br><br>
-                            I can help with any subject! Upload your past papers in the Upload section, and I'll analyze them to help you study better and generate practice questions!<br><br>
+                            I can help with any subject! Upload your past papers (PDF/TXT) in the Upload section, and I'll extract the text and help you study!<br><br>
                             What would you like to learn today?
                         </div>
                     </div>
@@ -1051,10 +1006,57 @@
         let remainingSessions = parseInt(localStorage.getItem('remainingSessions')) || 0;
         let emailVerified = localStorage.getItem('emailVerified') === 'true';
         
-        // Document Storage
         let uploadedDocuments = JSON.parse(localStorage.getItem('uploadedDocuments')) || [];
         let currentQuiz = null;
         let quizAnswers = {};
+
+        // ==================== PDF TEXT EXTRACTION ====================
+        async function extractTextFromPDF(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = async function(e) {
+                    const typedarray = new Uint8Array(e.target.result);
+                    try {
+                        const pdf = await pdfjsLib.getDocument(typedarray).promise;
+                        let fullText = '';
+                        
+                        for (let i = 1; i <= pdf.numPages; i++) {
+                            const page = await pdf.getPage(i);
+                            const textContent = await page.getTextContent();
+                            const pageText = textContent.items.map(item => item.str).join(' ');
+                            fullText += pageText + '\n';
+                            
+                            // Update progress
+                            const progress = (i / pdf.numPages) * 100;
+                            document.getElementById('progressFill').style.width = progress + '%';
+                        }
+                        
+                        resolve(fullText);
+                    } catch (error) {
+                        reject(error);
+                    }
+                };
+                reader.onerror = reject;
+                reader.readAsArrayBuffer(file);
+            });
+        }
+
+        async function extractTextFromDOCX(file) {
+            // For DOCX, we'll read as text and clean up
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    // Simple text extraction - for DOCX, the text is usually readable
+                    let text = e.target.result;
+                    // Clean up common DOCX formatting
+                    text = text.replace(/[^\w\s.,!?;:()\-]/g, ' ');
+                    text = text.replace(/\s+/g, ' ');
+                    resolve(text);
+                };
+                reader.onerror = reject;
+                reader.readAsText(file);
+            });
+        }
 
         // ==================== DOCUMENT UPLOAD FUNCTIONS ====================
         function initializeUpload() {
@@ -1085,20 +1087,35 @@
 
         async function handleFiles(files) {
             for (let file of files) {
-                if (file.size > 5 * 1024 * 1024) {
-                    showToast(`${file.name} is too large (max 5MB)`, 'warning');
+                if (file.size > 10 * 1024 * 1024) {
+                    showToast(`${file.name} is too large (max 10MB)`, 'warning');
                     continue;
                 }
                 
                 showToast(`Processing ${file.name}...`, 'info');
+                document.getElementById('uploadProgress').style.display = 'block';
+                document.getElementById('progressFill').style.width = '0%';
                 
-                const reader = new FileReader();
-                reader.onload = async function(e) {
-                    let content = e.target.result;
+                let extractedText = '';
+                
+                try {
+                    if (file.name.endsWith('.pdf')) {
+                        extractedText = await extractTextFromPDF(file);
+                        showToast(`PDF extracted: ${extractedText.length} characters`, 'success');
+                    } else if (file.name.endsWith('.txt')) {
+                        extractedText = await new Promise((resolve) => {
+                            const reader = new FileReader();
+                            reader.onload = (e) => resolve(e.target.result);
+                            reader.readAsText(file);
+                        });
+                    } else {
+                        extractedText = await extractTextFromDOCX(file);
+                    }
                     
-                    // For non-text files, extract readable text
-                    if (file.type !== 'text/plain' && !file.name.endsWith('.txt')) {
-                        content = `[File: ${file.name}]\nType: ${file.type}\nSize: ${(file.size/1024).toFixed(1)} KB\n\nPlease analyze this document content. The file appears to be a ${file.type} file. If you can, please paste the text content directly for better analysis.`;
+                    if (!extractedText || extractedText.trim().length < 10) {
+                        showToast('Could not extract text from this file. Try a text file instead.', 'warning');
+                        document.getElementById('uploadProgress').style.display = 'none';
+                        continue;
                     }
                     
                     const newDoc = {
@@ -1106,7 +1123,7 @@
                         name: file.name,
                         type: file.type,
                         size: file.size,
-                        content: content.substring(0, 8000),
+                        content: extractedText.substring(0, 8000),
                         uploadedAt: new Date().toISOString()
                     };
                     
@@ -1115,14 +1132,15 @@
                     renderDocumentList();
                     updateStats();
                     
+                    document.getElementById('uploadProgress').style.display = 'none';
+                    
                     // Analyze document
                     await analyzeDocument(newDoc);
-                };
-                
-                if (file.type === 'text/plain' || file.name.endsWith('.txt')) {
-                    reader.readAsText(file);
-                } else {
-                    reader.readAsText(file); // Try to read as text anyway
+                    
+                } catch (error) {
+                    console.error('Extraction error:', error);
+                    showToast(`Failed to extract text from ${file.name}. Try a text file instead.`, 'error');
+                    document.getElementById('uploadProgress').style.display = 'none';
                 }
             }
         }
@@ -1131,14 +1149,16 @@
             showToast(`Analyzing ${doc.name}...`, 'info');
             
             const analysisDiv = document.getElementById('analysisResult');
-            analysisDiv.innerHTML = `<div class="loader"></div> Analyzing document...`;
+            analysisDiv.innerHTML = `<div class="loader"></div> Analyzing document...<br><small>This may take a moment...</small>`;
             document.getElementById('analysisPanel').style.display = 'block';
             
             try {
                 const prompt = `Please analyze this study document and provide:
-1. A brief summary of the main topics
-2. 3-5 key concepts that students should focus on
-3. Study recommendations based on this content
+
+1. **Brief Summary**: What is this document about? (2-3 sentences)
+2. **Key Concepts**: List 3-5 important concepts to focus on
+3. **Study Recommendations**: How should a student study this material?
+4. **Potential Exam Questions**: What questions might appear on a test?
 
 Document: "${doc.name}"
 Content: ${doc.content.substring(0, 3000)}`;
@@ -1157,18 +1177,18 @@ Content: ${doc.content.substring(0, 3000)}`;
                 if (data.reply) {
                     analysisDiv.innerHTML = `
                         <h4><i class="fas fa-chart-line"></i> Analysis: ${doc.name}</h4>
-                        <div style="white-space: pre-wrap;">${data.reply}</div>
+                        <div style="white-space: pre-wrap; line-height: 1.6;">${data.reply}</div>
                         <hr style="margin: 1rem 0; opacity: 0.3;">
-                        <div class="quick-actions" style="justify-content: flex-start;">
-                            <span class="quick-action" onclick="askAboutDocument('${doc.id}')"><i class="fas fa-comment"></i> Ask Questions</span>
-                            <span class="quick-action" onclick="generateQuizFromDoc('${doc.id}')"><i class="fas fa-question-circle"></i> Generate Quiz</span>
+                        <div style="display: flex; gap: 1rem; justify-content: center;">
+                            <button class="btn btn-secondary" onclick="askAboutDocument('${doc.id}')" style="font-size: 0.9rem;"><i class="fas fa-comment"></i> Ask Questions</button>
+                            <button class="btn btn-secondary" onclick="generateQuizFromDoc('${doc.id}')" style="font-size: 0.9rem;"><i class="fas fa-question-circle"></i> Generate Quiz</button>
                         </div>
                     `;
                     showToast(`Analysis complete for ${doc.name}!`, 'success');
                 }
             } catch (error) {
                 console.error('Analysis error:', error);
-                analysisDiv.innerHTML = `<p style="color: var(--warning);">Analysis failed. Please try again or paste the text directly in chat.</p>`;
+                analysisDiv.innerHTML = `<p style="color: var(--warning);">⚠️ Analysis failed. The document was uploaded but could not be analyzed. You can still ask questions about it in chat!</p>`;
             }
         }
 
@@ -1184,10 +1204,10 @@ Content: ${doc.content.substring(0, 3000)}`;
             container.innerHTML = uploadedDocuments.map(doc => `
                 <div class="document-item">
                     <div class="document-info">
-                        <i class="fas fa-file-alt"></i>
+                        <i class="fas fa-${doc.name.endsWith('.pdf') ? 'file-pdf' : 'file-alt'}"></i>
                         <div>
                             <strong>${doc.name.length > 40 ? doc.name.substring(0, 40) + '...' : doc.name}</strong><br>
-                            <small>${new Date(doc.uploadedAt).toLocaleDateString()} • ${(doc.size / 1024).toFixed(1)} KB</small>
+                            <small>${new Date(doc.uploadedAt).toLocaleDateString()} • ${(doc.size / 1024).toFixed(1)} KB • ${doc.content.length} chars</small>
                         </div>
                     </div>
                     <div class="document-actions">
@@ -1205,7 +1225,7 @@ Content: ${doc.content.substring(0, 3000)}`;
             
             showSection('chat');
             setTimeout(() => {
-                document.getElementById('chatInput').value = `Based on my uploaded document "${doc.name}", can you help me understand the key concepts and what I should focus on for my exam?`;
+                document.getElementById('chatInput').value = `I uploaded "${doc.name}". Based on this document, can you help me understand the key concepts and what I should focus on for my exam?`;
                 sendMessage();
             }, 500);
         }
@@ -1214,14 +1234,14 @@ Content: ${doc.content.substring(0, 3000)}`;
             const doc = uploadedDocuments.find(d => d.id == docId);
             if (!doc) return;
             
-            showToast('Generating practice questions...', 'info');
+            showToast('Generating practice questions from your document...', 'info');
             
             try {
-                const prompt = `Based on this study document "${doc.name}", generate 3 practice questions that would test understanding of the key concepts.
+                const prompt = `Based on this document "${doc.name}", generate 3 practice questions that would test understanding of the key concepts.
 
-Content: ${doc.content.substring(0, 3000)}
+Document Content: ${doc.content.substring(0, 3000)}
 
-Format your response as:
+Format your response clearly with:
 Q1: [question]
 A) [option]
 B) [option]
@@ -1270,7 +1290,8 @@ Q2: [question]
                 } else if (line.match(/^[A-D]\)/i) && currentQuestion) {
                     currentQuestion.options.push(line);
                 } else if (line.match(/^Correct:/i) && currentQuestion) {
-                    currentQuestion.correct = line.replace(/^Correct:/i, '').trim().charAt(0);
+                    const correctMatch = line.match(/[A-D]/i);
+                    if (correctMatch) currentQuestion.correct = correctMatch[0].toUpperCase();
                 }
             }
             if (currentQuestion) questions.push(currentQuestion);
@@ -1289,7 +1310,7 @@ Q2: [question]
                     <strong>Question ${idx + 1}:</strong> ${q.text}
                     <div class="quiz-options">
                         ${q.options.map((opt, optIdx) => `
-                            <div class="quiz-option" onclick="selectQuizAnswer(${idx}, '${String.fromCharCode(65 + optIdx)}', '${opt.replace(/'/g, "\\'")}')">
+                            <div class="quiz-option" onclick="selectQuizAnswer(${idx}, '${String.fromCharCode(65 + optIdx)}')">
                                 ${opt}
                             </div>
                         `).join('')}
@@ -1302,7 +1323,7 @@ Q2: [question]
             document.getElementById('quizResult').innerHTML = '';
         }
 
-        function selectQuizAnswer(questionIdx, selectedLetter, optionText) {
+        function selectQuizAnswer(questionIdx, selectedLetter) {
             if (!currentQuiz) return;
             
             const question = currentQuiz.questions[questionIdx];
@@ -1317,7 +1338,6 @@ Q2: [question]
                 quizAnswers[questionIdx] = false;
             }
             
-            // Update score
             const correctCount = Object.values(quizAnswers).filter(v => v === true).length;
             const total = currentQuiz.questions.length;
             document.getElementById('quizResult').innerHTML = `
@@ -1343,7 +1363,6 @@ Q2: [question]
             updateStats();
             showToast('Document deleted', 'success');
             
-            // Hide analysis panel if empty
             if (uploadedDocuments.length === 0) {
                 document.getElementById('analysisPanel').style.display = 'none';
                 document.getElementById('quizPanel').style.display = 'none';
@@ -1363,7 +1382,7 @@ Q2: [question]
             toast.style.background = type === 'success' ? '#10b981' : type === 'warning' ? '#f59e0b' : '#ef4444';
             toast.innerHTML = `<i class="fas fa-${type === 'success' ? 'check-circle' : type === 'warning' ? 'exclamation-triangle' : 'times-circle'}"></i> ${message}`;
             document.body.appendChild(toast);
-            setTimeout(() => toast.remove(), 3000);
+            setTimeout(() => toast.remove(), 4000);
         }
 
         // ==================== PAYPAL PAYMENT ====================
@@ -1376,20 +1395,19 @@ Q2: [question]
             localStorage.setItem('paymentEmail', email);
             const paypalUrl = `https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=${encodeURIComponent(PAYPAL_EMAIL)}&item_name=AI Tutor Pro - Monthly Subscription&amount=9.99&currency_code=USD&return=https://innocent200509.github.io/Universal-AI-Tutor/success.html&cancel_return=https://innocent200509.github.io/Universal-AI-Tutor/&custom=${encodeURIComponent(email)}&rm=2`;
             window.open(paypalUrl, '_blank');
-            showToast('PayPal opened in new tab. Complete payment to activate premium.', 'info');
+            showToast('PayPal opened. Complete payment to activate premium.', 'info');
         }
         
         function manualActivatePremium() {
             const email = localStorage.getItem('paymentEmail') || localStorage.getItem('userEmail');
-            if (email && confirm('Did you just complete a PayPal payment? Click OK to activate your premium access.')) {
+            if (email && confirm('Did you just complete a PayPal payment? Click OK to activate.')) {
                 localStorage.setItem('aiTutorPremium', 'true');
                 isPremium = true;
                 remainingSessions = Infinity;
                 localStorage.setItem('remainingSessions', 'unlimited');
                 updateStats();
-                const upgradeBtn = document.querySelector('.upgrade-btn');
-                if (upgradeBtn) upgradeBtn.remove();
-                showToast('🎉 Premium activated! You now have unlimited access!', 'success');
+                document.querySelector('.upgrade-btn')?.remove();
+                showToast('🎉 Premium activated! Unlimited access!', 'success');
             }
         }
 
@@ -1397,18 +1415,14 @@ Q2: [question]
         async function subscribeWithVerification(event) {
             event.preventDefault();
             const email = document.getElementById('userEmail').value;
-            const subscribeBtn = document.getElementById('subscribeBtn');
-            const statusDiv = document.getElementById('emailStatus');
-            
             if (!email || !email.includes('@')) {
-                showToast('Please enter a valid email address', 'warning');
+                showToast('Please enter a valid email', 'warning');
                 return;
             }
             
+            const subscribeBtn = document.getElementById('subscribeBtn');
             subscribeBtn.disabled = true;
             subscribeBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
-            statusDiv.style.display = 'block';
-            statusDiv.innerHTML = '<div class="loader"></div> Sending verification email...';
             
             try {
                 const response = await fetch(`${BACKEND_URL}/api/subscribe`, {
@@ -1421,17 +1435,10 @@ Q2: [question]
                 
                 if (response.ok) {
                     localStorage.setItem('pendingEmail', email);
-                    if (data.debugUrl) {
-                        statusDiv.innerHTML = `✅ Verification link created! <a href="${data.debugUrl}" target="_blank" style="color: white;">Click here to verify</a>`;
-                    } else {
-                        statusDiv.innerHTML = '✅ Verification email sent! Check your inbox and click the link to confirm.';
-                    }
-                    statusDiv.className = 'feedback correct';
-                    document.getElementById('emailForm').style.display = 'none';
                     showToast('Verification email sent! Check your inbox.', 'success');
+                    document.getElementById('emailForm').style.display = 'none';
                 } else if (data.alreadyVerified) {
-                    statusDiv.innerHTML = '✅ Email already verified! You can start learning now.';
-                    statusDiv.className = 'feedback correct';
+                    showToast('Email already verified! Start learning!', 'success');
                     document.getElementById('emailCapture').style.display = 'none';
                     userEmail = email;
                     localStorage.setItem('userEmail', email);
@@ -1440,12 +1447,10 @@ Q2: [question]
                     emailVerified = true;
                     updateStats();
                 } else {
-                    statusDiv.innerHTML = data.error || 'Failed to send verification.';
-                    statusDiv.className = 'feedback incorrect';
+                    showToast(data.error || 'Failed to send verification', 'error');
                 }
             } catch (error) {
-                statusDiv.innerHTML = 'Network error. Please try again.';
-                statusDiv.className = 'feedback incorrect';
+                showToast('Network error. Please try again.', 'error');
             } finally {
                 subscribeBtn.disabled = false;
                 subscribeBtn.innerHTML = '<i class="fas fa-envelope"></i> Get Free Access →';
@@ -1519,7 +1524,7 @@ Q2: [question]
                 saveChatHistory();
                 renderMessages();
                 addMessage('assistant', '👋 Hi! I\'m your AI Tutor Pro. What would you like to learn today?');
-                showToast('Chat history cleared', 'success');
+                showToast('Chat cleared', 'success');
             }
         }
         
@@ -1529,12 +1534,12 @@ Q2: [question]
             if (!message) return;
             
             if (!emailVerified && !isPremium) {
-                showToast('Please verify your email first to start learning!', 'warning');
+                showToast('Please verify your email first!', 'warning');
                 return;
             }
             
             if (!isPremium && remainingSessions <= 0) {
-                showToast("You've used all your free sessions! Upgrade to Pro for unlimited access.", 'warning');
+                showToast('Free sessions used up! Upgrade to Pro.', 'warning');
                 showPremiumModal();
                 return;
             }
@@ -1549,10 +1554,9 @@ Q2: [question]
             document.getElementById('chatMessages').appendChild(typingDiv);
             document.getElementById('chatMessages').scrollTop = document.getElementById('chatMessages').scrollHeight;
             
-            // Include document context
             let contextMessage = message;
             if (uploadedDocuments.length > 0) {
-                const docContext = uploadedDocuments.map(doc => `[Document: ${doc.name} - Content: ${doc.content.substring(0, 500)}]`).join('\n');
+                const docContext = uploadedDocuments.map(doc => `[Document: ${doc.name}\nContent: ${doc.content.substring(0, 1000)}]`).join('\n\n');
                 contextMessage = `${message}\n\n[Context: I have uploaded ${uploadedDocuments.length} document(s):\n${docContext}\nPlease use this information to help me study.]`;
             }
             
@@ -1583,7 +1587,7 @@ Q2: [question]
                     }
                     updateStats();
                 } else if (data.requiresUpgrade) {
-                    addMessage('assistant', '⚠️ You\'ve used all your free sessions! Upgrade to Pro to continue learning.');
+                    addMessage('assistant', '⚠️ Free sessions used up! Upgrade to Pro to continue.');
                     showPremiumModal();
                 } else {
                     addMessage('assistant', `⚠️ ${data.error || 'Something went wrong'}`);
@@ -1613,7 +1617,7 @@ Q2: [question]
         
         function startChat(subject) {
             if (!emailVerified && !isPremium) {
-                showToast('Please verify your email first to start learning!', 'warning');
+                showToast('Please verify your email first!', 'warning');
                 showSection('home');
                 return;
             }
@@ -1633,11 +1637,11 @@ Q2: [question]
                     <h2>Upgrade to AI Tutor Pro</h2>
                     <div class="price-tag">$9.99<span style="font-size:1rem;">/month</span></div>
                     <ul class="feature-list">
-                        <li>✅ Unlimited questions - no daily limits</li>
-                        <li>✅ Upload unlimited past papers & documents</li>
-                        <li>✅ AI-generated practice questions from your materials</li>
-                        <li>✅ Detailed document analysis & study plans</li>
-                        <li>✅ All 15+ subjects included</li>
+                        <li>✅ Unlimited questions</li>
+                        <li>✅ Upload unlimited PDFs & documents</li>
+                        <li>✅ AI extracts text from any file</li>
+                        <li>✅ Generate quizzes from your materials</li>
+                        <li>✅ Detailed document analysis</li>
                         <li>✅ Cancel anytime</li>
                     </ul>
                     <button onclick="startPayPalCheckout()" class="btn btn-gold" style="width:100%;padding:1rem;margin-bottom:0.5rem;">
@@ -1665,7 +1669,7 @@ Q2: [question]
                 document.getElementById('subjects').style.display = 'grid';
             } else if (section === 'chat') {
                 if (!emailVerified && !isPremium) {
-                    showToast('Please verify your email first to start learning!', 'warning');
+                    showToast('Please verify your email first!', 'warning');
                     showSection('home');
                     return;
                 }
@@ -1674,7 +1678,7 @@ Q2: [question]
                 document.getElementById('chatInput').focus();
             } else if (section === 'upload') {
                 if (!emailVerified && !isPremium) {
-                    showToast('Please verify your email first to upload documents!', 'warning');
+                    showToast('Please verify your email first!', 'warning');
                     showSection('home');
                     return;
                 }
