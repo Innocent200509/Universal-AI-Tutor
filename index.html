@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="theme-color" content="#6366f1">
-    <title>AI Tutor Pro - Smart Learning Assistant</title>
+    <meta name="description" content="AI Tutor Pro - Your Personal AI Learning Assistant with voice input, progress tracking, and smart study recommendations">
+    <title>AI Tutor Pro - Smart AI Learning Assistant</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
@@ -36,6 +37,14 @@
             --border-radius: 1rem;
             --border-radius-lg: 1.5rem;
             --border-radius-sm: 0.75rem;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        body.light-mode {
+            --dark: #f8fafc;
+            --light: #0f172a;
+            --glass: rgba(0, 0, 0, 0.05);
+            background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%);
         }
 
         body {
@@ -46,16 +55,14 @@
             overflow-x: hidden;
             font-size: 16px;
             line-height: 1.5;
+            transition: background 0.3s;
         }
 
-        /* Responsive Typography */
         @media (max-width: 768px) {
-            body {
-                font-size: 14px;
-            }
+            body { font-size: 14px; }
         }
 
-        /* Animated Background - Optimized for performance */
+        /* Animated Background */
         .bg-animation {
             position: fixed;
             top: 0;
@@ -73,6 +80,10 @@
             height: 200%;
             background: radial-gradient(circle, rgba(99,102,241,0.3) 0%, rgba(236,72,153,0.3) 100%);
             animation: rotate 20s linear infinite;
+        }
+
+        body.light-mode .bg-animation::before {
+            background: radial-gradient(circle, rgba(99,102,241,0.1) 0%, rgba(236,72,153,0.1) 100%);
         }
 
         @keyframes rotate {
@@ -96,7 +107,30 @@
             100% { transform: translateY(-1000px) rotate(720deg); opacity: 0; }
         }
 
-        /* Responsive Modal */
+        /* Theme Toggle */
+        .theme-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--glass);
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 999;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: all 0.3s;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        /* Modal Styles */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -124,13 +158,14 @@
             animation: slideUp 0.3s ease;
         }
 
+        body.light-mode .modal-content {
+            background: white;
+            color: #333;
+        }
+
         @media (max-width: 480px) {
-            .modal-content {
-                padding: 1.5rem;
-            }
-            .price-tag {
-                font-size: 2rem;
-            }
+            .modal-content { padding: 1.5rem; }
+            .price-tag { font-size: 2rem; }
         }
 
         @keyframes slideUp {
@@ -164,7 +199,7 @@
             font-weight: bold;
         }
 
-        /* Premium Button - Responsive */
+        /* Premium Button */
         .upgrade-btn {
             background: linear-gradient(135deg, var(--gold), #ffed4e);
             color: #000;
@@ -199,7 +234,7 @@
             50% { box-shadow: 0 4px 25px rgba(255, 215, 0, 0.8); }
         }
 
-        /* Navigation - Responsive */
+        /* Navigation */
         nav {
             background: rgba(15, 23, 42, 0.8);
             backdrop-filter: blur(10px);
@@ -208,6 +243,10 @@
             top: 0;
             z-index: 1000;
             border-bottom: 1px solid var(--glass);
+        }
+
+        body.light-mode nav {
+            background: rgba(255, 255, 255, 0.8);
         }
 
         .nav-container {
@@ -229,16 +268,6 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            white-space: nowrap;
-        }
-
-        @media (max-width: 480px) {
-            .logo {
-                font-size: 1rem;
-            }
-            .logo i {
-                font-size: 1.2rem;
-            }
         }
 
         .nav-links {
@@ -257,24 +286,6 @@
             padding: 0.4rem 0.8rem;
             border-radius: 0.5rem;
             font-size: 0.9rem;
-            white-space: nowrap;
-        }
-
-        @media (max-width: 640px) {
-            .nav-links a {
-                padding: 0.3rem 0.6rem;
-                font-size: 0.8rem;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .nav-links {
-                gap: 0.5rem;
-            }
-            .nav-links a {
-                padding: 0.2rem 0.4rem;
-                font-size: 0.7rem;
-            }
         }
 
         .nav-links a:hover {
@@ -288,23 +299,11 @@
             padding: 1.5rem;
         }
 
-        @media (max-width: 768px) {
-            .container {
-                padding: 1rem;
-            }
-        }
-
-        /* Hero Section - Responsive */
+        /* Hero Section */
         .hero {
             text-align: center;
             padding: 3rem 1rem;
             animation: fadeInUp 0.8s ease-out;
-        }
-
-        @media (max-width: 768px) {
-            .hero {
-                padding: 2rem 1rem;
-            }
         }
 
         @keyframes fadeInUp {
@@ -330,7 +329,7 @@
             margin-right: auto;
         }
 
-        /* Stats Bar - Responsive Grid */
+        /* Stats Bar */
         .stats-bar {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
@@ -368,7 +367,18 @@
             margin-top: 0.25rem;
         }
 
-        /* Upload Section - Responsive */
+        /* Progress Dashboard */
+        .progress-dashboard {
+            margin: 2rem auto;
+            max-width: 600px;
+        }
+
+        .progress-dashboard h3 {
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        /* Upload Section */
         .upload-section {
             background: var(--glass);
             backdrop-filter: blur(10px);
@@ -380,18 +390,11 @@
             display: none;
         }
 
-        @media (max-width: 768px) {
-            .upload-section {
-                padding: 1rem;
-            }
-        }
-
         .upload-section.active {
             display: block;
             animation: fadeIn 0.5s ease;
         }
 
-        /* Upload Tabs - Responsive */
         .upload-tabs {
             display: flex;
             gap: 0.8rem;
@@ -410,23 +413,12 @@
             font-size: 0.9rem;
         }
 
-        @media (max-width: 480px) {
-            .upload-tab {
-                padding: 0.4rem 0.8rem;
-                font-size: 0.8rem;
-            }
-        }
-
-        .upload-tab:hover {
-            background: var(--primary);
-        }
-
+        .upload-tab:hover,
         .upload-tab.active {
             background: var(--primary);
             box-shadow: 0 0 15px rgba(99, 102, 241, 0.5);
         }
 
-        /* Upload Area */
         .upload-area {
             border: 2px dashed var(--glass);
             border-radius: var(--border-radius);
@@ -442,7 +434,7 @@
             margin-bottom: 0.5rem;
         }
 
-        /* Drawing Canvas - Responsive */
+        /* Drawing Canvas */
         .drawing-canvas-container {
             background: rgba(0, 0, 0, 0.3);
             border-radius: var(--border-radius);
@@ -479,6 +471,10 @@
             gap: 0.3rem;
         }
 
+        .drawing-tool:hover {
+            background: var(--primary);
+        }
+
         .color-picker {
             width: 32px;
             height: 32px;
@@ -487,7 +483,7 @@
             border: 2px solid white;
         }
 
-        /* Document List - Responsive */
+        /* Document List */
         .document-list {
             margin-top: 1rem;
             max-height: 400px;
@@ -511,16 +507,11 @@
             align-items: center;
             gap: 0.8rem;
             flex: 1;
-            min-width: 150px;
         }
 
         .document-info i {
             font-size: 1.2rem;
             color: var(--accent);
-        }
-
-        .document-info strong {
-            font-size: 0.9rem;
         }
 
         .document-actions {
@@ -535,10 +526,9 @@
             cursor: pointer;
             padding: 0.4rem;
             border-radius: 0.4rem;
-            transition: all 0.3s;
         }
 
-        /* Subjects Grid - Responsive */
+        /* Subjects Grid */
         .subjects-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -579,7 +569,7 @@
             font-size: 0.8rem;
         }
 
-        /* Chat Section - Responsive */
+        /* Chat Section */
         .chat-section {
             background: var(--glass);
             backdrop-filter: blur(10px);
@@ -588,12 +578,6 @@
             margin: 1.5rem 0;
             border: 1px solid rgba(255, 255, 255, 0.1);
             display: none;
-        }
-
-        @media (max-width: 768px) {
-            .chat-section {
-                padding: 0.8rem;
-            }
         }
 
         .chat-section.active {
@@ -618,14 +602,11 @@
             cursor: pointer;
             transition: all 0.3s;
             font-size: 0.75rem;
-            font-weight: 500;
         }
 
-        @media (max-width: 480px) {
-            .subject-chip {
-                padding: 0.3rem 0.6rem;
-                font-size: 0.7rem;
-            }
+        .subject-chip:hover,
+        .subject-chip.active {
+            background: var(--primary);
         }
 
         .chat-container {
@@ -646,15 +627,16 @@
         .message {
             margin-bottom: 0.8rem;
             display: flex;
+            animation: messageSlide 0.3s ease;
         }
 
-        .message.user {
-            justify-content: flex-end;
+        @keyframes messageSlide {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        .message.assistant {
-            justify-content: flex-start;
-        }
+        .message.user { justify-content: flex-end; }
+        .message.assistant { justify-content: flex-start; }
 
         .message-content {
             max-width: 85%;
@@ -664,14 +646,6 @@
             white-space: pre-wrap;
             line-height: 1.4;
             font-size: 0.9rem;
-        }
-
-        @media (max-width: 480px) {
-            .message-content {
-                max-width: 90%;
-                padding: 0.6rem 0.8rem;
-                font-size: 0.85rem;
-            }
         }
 
         .message.user .message-content {
@@ -712,13 +686,6 @@
             font-family: inherit;
         }
 
-        @media (max-width: 480px) {
-            .chat-input {
-                padding: 0.6rem;
-                font-size: 0.85rem;
-            }
-        }
-
         .btn {
             background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             color: white;
@@ -732,14 +699,11 @@
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            white-space: nowrap;
         }
 
-        @media (max-width: 480px) {
-            .btn {
-                padding: 0.5rem 0.8rem;
-                font-size: 0.8rem;
-            }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
         }
 
         .btn-secondary {
@@ -751,7 +715,7 @@
             color: #000;
         }
 
-        /* Quick Actions - Responsive */
+        /* Quick Actions */
         .quick-actions {
             display: flex;
             gap: 0.5rem;
@@ -769,28 +733,61 @@
             transition: all 0.3s;
         }
 
+        .quick-action:hover {
+            background: var(--primary);
+            transform: scale(1.05);
+        }
+
         /* Toast Notification */
         .toast {
             position: fixed;
             bottom: 20px;
-            right: 20px;
+            left: 50%;
+            transform: translateX(-50%);
             background: var(--success);
             color: white;
             padding: 0.8rem 1.2rem;
             border-radius: 0.8rem;
-            animation: slideIn 0.3s ease;
+            animation: slideUp 0.3s ease;
             z-index: 1000;
             box-shadow: 0 4px 12px rgba(0,0,0,0.2);
             font-size: 0.85rem;
-            max-width: 90%;
+            white-space: nowrap;
         }
 
-        @keyframes slideIn {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
+        @media (max-width: 480px) {
+            .toast { white-space: normal; max-width: 90%; text-align: center; }
         }
 
-        /* Analysis Result */
+        /* Loading Skeleton */
+        .skeleton {
+            background: linear-gradient(90deg, rgba(255,255,255,0.1) 25%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0.1) 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+            border-radius: 4px;
+        }
+
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        .message-skeleton {
+            padding: 1rem;
+            margin: 0.5rem 0;
+            width: 60%;
+            height: 60px;
+        }
+
+        .message-skeleton.user {
+            margin-left: auto;
+            width: 40%;
+        }
+
+        .message-skeleton.assistant {
+            margin-right: auto;
+        }
+
         .analysis-result {
             background: rgba(0, 0, 0, 0.3);
             border-radius: var(--border-radius);
@@ -799,15 +796,8 @@
             text-align: left;
             max-height: 300px;
             overflow-y: auto;
-            font-size: 0.85rem;
         }
 
-        .analysis-result h4 {
-            color: var(--accent);
-            margin-bottom: 0.5rem;
-        }
-
-        /* Email Capture - Responsive */
         .email-capture {
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             padding: 1.5rem;
@@ -828,15 +818,6 @@
             color: #333;
         }
 
-        @media (max-width: 560px) {
-            .email-input {
-                width: 100%;
-                margin-right: 0;
-                margin-bottom: 0.5rem;
-            }
-        }
-
-        /* Streak Badge - Responsive */
         .streak-badge {
             position: fixed;
             top: 1rem;
@@ -852,23 +833,13 @@
             font-size: 0.8rem;
         }
 
-        @media (max-width: 768px) {
-            .streak-badge {
-                top: 0.75rem;
-                left: 0.75rem;
-                padding: 0.4rem 0.6rem;
-                font-size: 0.7rem;
-            }
-        }
-
-        /* Progress Bar */
         .progress-bar {
             width: 100%;
             height: 4px;
             background: rgba(255,255,255,0.2);
             border-radius: 2px;
             overflow: hidden;
-            margin-top: 1rem;
+            margin-top: 0.5rem;
         }
 
         .progress-fill {
@@ -941,11 +912,10 @@
             color: #ef4444;
         }
 
-        /* Hide elements on mobile when needed */
-        @media (max-width: 480px) {
-            .hide-on-mobile {
-                display: none;
-            }
+        @media (max-width: 768px) {
+            .container { padding: 1rem; }
+            .subject-chip { font-size: 0.7rem; }
+            .btn { padding: 0.5rem 1rem; font-size: 0.85rem; }
         }
     </style>
 </head>
@@ -961,7 +931,7 @@
     </div>
 
     <button class="upgrade-btn" onclick="showPremiumModal()">
-        <i class="fas fa-crown"></i> <span class="hide-on-mobile">Upgrade to Pro</span> <span class="show-on-mobile">Pro</span> - $9.99
+        <i class="fas fa-crown"></i> Pro - $9.99
     </button>
 
     <div class="streak-badge" id="streakBadge">
@@ -977,10 +947,10 @@
                 <span>AI Tutor Pro</span>
             </div>
             <ul class="nav-links">
-                <li><a onclick="showSection('home')"><i class="fas fa-home"></i> <span class="hide-on-mobile">Home</span></a></li>
-                <li><a onclick="showSection('upload')"><i class="fas fa-upload"></i> <span class="hide-on-mobile">Upload</span></a></li>
-                <li><a onclick="showSection('chat')"><i class="fas fa-comment-dots"></i> <span class="hide-on-mobile">Chat</span></a></li>
-                <li><a onclick="showSection('subjects')"><i class="fas fa-book"></i> <span class="hide-on-mobile">Subjects</span></a></li>
+                <li><a onclick="showSection('home')"><i class="fas fa-home"></i> Home</a></li>
+                <li><a onclick="showSection('upload')"><i class="fas fa-upload"></i> Upload</a></li>
+                <li><a onclick="showSection('chat')"><i class="fas fa-comment-dots"></i> Chat</a></li>
+                <li><a onclick="showSection('subjects')"><i class="fas fa-book"></i> Subjects</a></li>
             </ul>
         </div>
     </nav>
@@ -988,32 +958,35 @@
     <div class="container">
         <section id="home" class="hero">
             <h1><i class="fas fa-robot"></i> Your Personal AI Tutor</h1>
-            <p>Upload past papers, draw geometry, and get AI-powered help for any subject</p>
+            <p>Upload papers, draw geometry, use voice input, and get AI-powered help for any subject</p>
             <div class="stats-bar">
-                <div class="stat-item">
-                    <div class="stat-value" id="totalQuestions">0</div>
-                    <div class="stat-label">Questions</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-value" id="sessionsLeft">0</div>
-                    <div class="stat-label">Free Sessions</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-value" id="documentsCount">0</div>
-                    <div class="stat-label">Documents</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-value" id="streakDisplay">0</div>
-                    <div class="stat-label">Day Streak</div>
+                <div class="stat-item"><div class="stat-value" id="totalQuestions">0</div><div class="stat-label">Questions</div></div>
+                <div class="stat-item"><div class="stat-value" id="sessionsLeft">0</div><div class="stat-label">Free Sessions</div></div>
+                <div class="stat-item"><div class="stat-value" id="documentsCount">0</div><div class="stat-label">Documents</div></div>
+                <div class="stat-item"><div class="stat-value" id="streakDisplay">0</div><div class="stat-label">Day Streak</div></div>
+            </div>
+
+            <!-- Progress Dashboard -->
+            <div class="progress-dashboard">
+                <h3><i class="fas fa-chart-line"></i> Your Learning Progress</h3>
+                <div style="background: var(--glass); border-radius: 1rem; padding: 1rem;">
+                    <div style="margin-bottom: 1rem;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.3rem;">
+                            <span>Overall Mastery</span>
+                            <span id="masteryPercent">0%</span>
+                        </div>
+                        <div class="progress-bar" style="height: 8px;">
+                            <div class="progress-fill" id="masteryBar" style="width: 0%;"></div>
+                        </div>
+                    </div>
+                    <div id="subjectProgressList"></div>
                 </div>
             </div>
+
             <div style="margin-top: 1.5rem; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-                <button class="btn" onclick="showSection('upload')">
-                    <i class="fas fa-upload"></i> Upload / Draw
-                </button>
-                <button class="btn" onclick="showSection('chat')">
-                    <i class="fas fa-play"></i> Start Learning
-                </button>
+                <button class="btn" onclick="showSection('upload')"><i class="fas fa-upload"></i> Upload</button>
+                <button class="btn" onclick="showSection('chat')"><i class="fas fa-play"></i> Start Learning</button>
+                <button class="btn btn-secondary" onclick="getStudyRecommendations()"><i class="fas fa-lightbulb"></i> Study Tips</button>
             </div>
         </section>
 
@@ -1026,34 +999,23 @@
                 <button type="submit" class="btn" id="subscribeBtn"><i class="fas fa-envelope"></i> Get Free Access</button>
             </form>
             <div id="emailStatus" style="margin-top: 0.8rem; display: none;"></div>
-            <p style="font-size:0.75rem;opacity:0.8;margin-top:0.5rem;">
-                <i class="fas fa-lock"></i> No spam. Unsubscribe anytime.
-            </p>
         </div>
 
         <!-- Upload Section -->
         <section id="upload" class="upload-section">
             <h2 style="font-size: 1.3rem;"><i class="fas fa-upload"></i> Upload or Draw</h2>
-            
             <div class="upload-tabs">
                 <div class="upload-tab active" onclick="switchUploadTab('file')"><i class="fas fa-file-alt"></i> File</div>
                 <div class="upload-tab" onclick="switchUploadTab('draw')"><i class="fas fa-draw-polygon"></i> Draw</div>
             </div>
-
-            <!-- File Upload Tab -->
             <div id="fileUploadTab">
                 <div class="upload-area" onclick="document.getElementById('fileInput').click()">
                     <i class="fas fa-cloud-upload-alt upload-icon"></i>
                     <p>Click or drag & drop PDF/TXT files</p>
-                    <p style="font-size: 0.75rem; opacity: 0.7;">Max 10MB</p>
-                    <div id="uploadProgress" class="progress-bar" style="display: none;">
-                        <div class="progress-fill" id="progressFill"></div>
-                    </div>
+                    <div id="uploadProgress" class="progress-bar" style="display: none;"><div class="progress-fill" id="progressFill"></div></div>
                     <input type="file" id="fileInput" class="file-input" accept=".pdf,.txt">
                 </div>
             </div>
-
-            <!-- Drawing Tab -->
             <div id="drawTab" style="display: none;">
                 <div class="drawing-canvas-container">
                     <canvas id="geometryCanvas" class="drawing-canvas" width="600" height="400" style="width:100%; height:auto; max-width:600px; margin:0 auto; display:block;"></canvas>
@@ -1072,32 +1034,17 @@
                     </div>
                 </div>
             </div>
-
             <div class="document-list" id="documentList"></div>
-
-            <div id="analysisPanel" style="display: none;">
-                <div class="analysis-result" id="analysisResult"></div>
-            </div>
-
-            <div id="quizPanel" class="quiz-panel" style="display: none;">
-                <h3><i class="fas fa-question-circle"></i> Practice Quiz</h3>
-                <div id="quizQuestions"></div>
-                <div id="quizResult"></div>
-                <button class="btn btn-secondary" onclick="generateNewQuiz()" style="margin-top: 0.8rem;"><i class="fas fa-sync-alt"></i> New Quiz</button>
-            </div>
-
-            <div style="margin-top: 1rem;">
-                <button class="btn btn-secondary" onclick="showSection('home')"><i class="fas fa-home"></i> Back</button>
-            </div>
+            <div id="analysisPanel" style="display: none;"><div class="analysis-result" id="analysisResult"></div></div>
+            <div style="margin-top: 1rem;"><button class="btn btn-secondary" onclick="showSection('home')"><i class="fas fa-home"></i> Back</button></div>
         </section>
 
         <section id="subjects" class="subjects-grid" style="display: none;">
             <div class="subject-card" onclick="startChat('Mathematics')"><div class="subject-icon">📐</div><h3>Mathematics</h3><p class="subject-desc">Algebra, Calculus, Geometry</p></div>
-            <div class="subject-card" onclick="startChat('Physics')"><div class="subject-icon">⚛️</div><h3>Physics</h3><p class="subject-desc">Mechanics, Quantum, Electricity</p></div>
+            <div class="subject-card" onclick="startChat('Physics')"><div class="subject-icon">⚛️</div><h3>Physics</h3><p class="subject-desc">Mechanics, Quantum</p></div>
             <div class="subject-card" onclick="startChat('Chemistry')"><div class="subject-icon">🧪</div><h3>Chemistry</h3><p class="subject-desc">Organic, Reactions</p></div>
             <div class="subject-card" onclick="startChat('Biology')"><div class="subject-icon">🧬</div><h3>Biology</h3><p class="subject-desc">Genetics, Anatomy</p></div>
             <div class="subject-card" onclick="startChat('Computer Science')"><div class="subject-icon">💻</div><h3>Computer Science</h3><p class="subject-desc">Programming, AI</p></div>
-            <div class="subject-card" onclick="startChat('History')"><div class="subject-icon">📜</div><h3>History</h3><p class="subject-desc">World History</p></div>
         </section>
 
         <section id="chat" class="chat-section">
@@ -1111,12 +1058,7 @@
             </div>
             <div class="chat-container">
                 <div class="chat-messages" id="chatMessages">
-                    <div class="message assistant">
-                        <div class="message-content">
-                            👋 Hi! I'm your AI Tutor.<br><br>
-                            Ask me anything about any subject!
-                        </div>
-                    </div>
+                    <div class="message assistant"><div class="message-content">👋 Hi! I'm your AI Tutor.<br><br>Ask me anything! Use voice input by clicking the microphone button.</div></div>
                 </div>
                 <div class="quick-actions">
                     <span class="quick-action" onclick="setQuickQuestion('Explain quantum physics')">🔬 Quantum</span>
@@ -1125,12 +1067,14 @@
                     <span class="quick-action" onclick="setQuickQuestion('Photosynthesis?')">🌱 Photosynthesis</span>
                 </div>
                 <div class="chat-input-area">
-                    <textarea class="chat-input" id="chatInput" placeholder="Ask me anything..." rows="1" onkeypress="if(event.key==='Enter' && !event.shiftKey){event.preventDefault();sendMessage();}"></textarea>
+                    <textarea class="chat-input" id="chatInput" placeholder="Ask me anything... (Ctrl+Enter to send)" rows="1" onkeypress="if(event.key==='Enter' && !event.shiftKey){event.preventDefault();sendMessage();}"></textarea>
+                    <button id="micBtn" class="btn btn-secondary" onclick="toggleSpeechRecognition()" style="padding: 0.8rem;"><i class="fas fa-microphone"></i></button>
                     <button class="btn" onclick="sendMessage()"><i class="fas fa-paper-plane"></i> Send</button>
                 </div>
             </div>
             <div style="margin-top: 0.8rem; text-align: center; display: flex; gap: 0.8rem; justify-content: center; flex-wrap: wrap;">
                 <button class="btn btn-secondary" onclick="clearChat()"><i class="fas fa-trash"></i> Clear</button>
+                <button class="btn btn-secondary" onclick="exportAsPDF()"><i class="fas fa-file-pdf"></i> Export PDF</button>
                 <button class="btn btn-secondary" onclick="showSection('home')"><i class="fas fa-home"></i> Back</button>
             </div>
         </section>
@@ -1149,743 +1093,280 @@
         let userEmail = localStorage.getItem('userEmail') || '';
         let remainingSessions = parseInt(localStorage.getItem('remainingSessions')) || 0;
         let emailVerified = localStorage.getItem('emailVerified') === 'true';
-        
         let uploadedDocuments = JSON.parse(localStorage.getItem('uploadedDocuments')) || [];
+        
+        // Progress Tracking
+        let subjectProgress = JSON.parse(localStorage.getItem('subjectProgress')) || {
+            mathematics: { questions: 0, correct: 0 },
+            physics: { questions: 0, correct: 0 },
+            chemistry: { questions: 0, correct: 0 },
+            biology: { questions: 0, correct: 0 },
+            general: { questions: 0, correct: 0 }
+        };
+
+        // ==================== VOICE INPUT ====================
+        let recognition = null;
+        let isListening = false;
+
+        function initSpeechRecognition() {
+            if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+                const SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition;
+                recognition = new SpeechRecognition();
+                recognition.continuous = false;
+                recognition.interimResults = false;
+                recognition.lang = 'en-US';
+                
+                recognition.onstart = () => {
+                    isListening = true;
+                    const micBtn = document.getElementById('micBtn');
+                    if (micBtn) {
+                        micBtn.style.background = '#ef4444';
+                        micBtn.innerHTML = '<i class="fas fa-microphone-slash"></i>';
+                        showToast('Listening... Speak your question', 'info');
+                    }
+                };
+                
+                recognition.onend = () => {
+                    isListening = false;
+                    const micBtn = document.getElementById('micBtn');
+                    if (micBtn) {
+                        micBtn.style.background = 'rgba(255, 255, 255, 0.1)';
+                        micBtn.innerHTML = '<i class="fas fa-microphone"></i>';
+                    }
+                };
+                
+                recognition.onresult = (event) => {
+                    const transcript = event.results[0][0].transcript;
+                    document.getElementById('chatInput').value = transcript;
+                    showToast(`Recognized: "${transcript}"`, 'success');
+                };
+                
+                recognition.onerror = (event) => {
+                    showToast('Error: ' + event.error, 'error');
+                    isListening = false;
+                };
+            } else {
+                showToast('Speech recognition not supported in this browser', 'warning');
+            }
+        }
+
+        function toggleSpeechRecognition() {
+            if (!recognition) initSpeechRecognition();
+            if (isListening) recognition.stop();
+            else recognition.start();
+        }
+
+        // ==================== THEME TOGGLE ====================
+        function initTheme() {
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            if (savedTheme === 'light') document.body.classList.add('light-mode');
+            
+            const themeBtn = document.createElement('div');
+            themeBtn.className = 'theme-toggle';
+            themeBtn.innerHTML = '<i class="fas fa-moon"></i>';
+            themeBtn.onclick = toggleTheme;
+            document.body.appendChild(themeBtn);
+            updateThemeIcon();
+        }
+
+        function toggleTheme() {
+            document.body.classList.toggle('light-mode');
+            localStorage.setItem('theme', document.body.classList.contains('light-mode') ? 'light' : 'dark');
+            updateThemeIcon();
+        }
+
+        function updateThemeIcon() {
+            const themeBtn = document.querySelector('.theme-toggle');
+            if (themeBtn) {
+                const isLight = document.body.classList.contains('light-mode');
+                themeBtn.innerHTML = isLight ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+            }
+        }
+
+        // ==================== PROGRESS TRACKING ====================
+        function updateProgress(question, wasCorrect) {
+            const subject = currentSubject.toLowerCase();
+            if (subjectProgress[subject]) {
+                subjectProgress[subject].questions++;
+                if (wasCorrect) subjectProgress[subject].correct++;
+            } else {
+                subjectProgress.general.questions++;
+                if (wasCorrect) subjectProgress.general.correct++;
+            }
+            localStorage.setItem('subjectProgress', JSON.stringify(subjectProgress));
+            renderProgressDashboard();
+        }
+
+        function renderProgressDashboard() {
+            const container = document.getElementById('subjectProgressList');
+            if (!container) return;
+            
+            let totalCorrect = 0;
+            let totalQuestions = 0;
+            
+            container.innerHTML = Object.entries(subjectProgress).map(([subject, data]) => {
+                const percent = data.questions > 0 ? Math.round((data.correct / data.questions) * 100) : 0;
+                totalCorrect += data.correct;
+                totalQuestions += data.questions;
+                if (data.questions === 0) return '';
+                return `
+                    <div style="margin-bottom: 0.8rem;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.2rem;">
+                            <span style="text-transform: capitalize;">${subject}</span>
+                            <span>${data.correct}/${data.questions} (${percent}%)</span>
+                        </div>
+                        <div class="progress-bar" style="height: 4px;">
+                            <div class="progress-fill" style="width: ${percent}%;"></div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            const overallPercent = totalQuestions > 0 ? Math.round((totalCorrect / totalQuestions) * 100) : 0;
+            document.getElementById('masteryPercent').textContent = `${overallPercent}%`;
+            document.getElementById('masteryBar').style.width = `${overallPercent}%`;
+        }
+
+        function getWeakestSubject() {
+            let weakest = null;
+            let lowestPercent = 100;
+            Object.entries(subjectProgress).forEach(([subject, data]) => {
+                if (data.questions > 0) {
+                    const percent = (data.correct / data.questions) * 100;
+                    if (percent < lowestPercent) {
+                        lowestPercent = percent;
+                        weakest = subject;
+                    }
+                }
+            });
+            return weakest ? `${weakest} (${Math.round(lowestPercent)}% accuracy)` : null;
+        }
+
+        async function getStudyRecommendations() {
+            showToast('Getting personalized recommendations...', 'info');
+            const weakest = getWeakestSubject();
+            const prompt = `Based on my learning data:\n- Total questions: ${totalQuestions}\n- Weakest area: ${weakest || 'None yet'}\n- Documents uploaded: ${uploadedDocuments.length}\n\nProvide 3 personalized study tips and recommended topics to focus on.`;
+            try {
+                const response = await fetch(`${BACKEND_URL}/api/tutor`, {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: prompt, subject: 'Study Strategy', email: userEmail })
+                });
+                const data = await response.json();
+                if (data.reply) {
+                    addMessage('assistant', `📚 **Personalized Study Plan:**\n\n${data.reply}`);
+                    showSection('chat');
+                }
+            } catch (error) { showToast('Failed to get recommendations', 'error'); }
+        }
+
+        // ==================== PDF EXPORT ====================
+        async function exportAsPDF() {
+            if (chatHistory.length === 0) { showToast('No conversation to export', 'warning'); return; }
+            showToast('Generating export...', 'info');
+            let content = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>AI Tutor Pro - Study Notes</title><style>body{font-family:Arial;padding:40px;line-height:1.6;} h1{color:#6366f1;} .message{margin:20px 0;padding:15px;border-radius:10px;} .user{background:#f0f0f0;border-left:4px solid #6366f1;} .assistant{background:#e8f4f8;border-left:4px solid #10b981;} .date{color:#666;font-size:12px;}</style></head><body><h1>🤖 AI Tutor Pro - Study Notes</h1><div class="date">Generated: ${new Date().toLocaleString()}</div><div><p><strong>Total Questions:</strong> ${totalQuestions}</p><p><strong>Documents Uploaded:</strong> ${uploadedDocuments.length}</p><p><strong>Day Streak:</strong> ${streak} days</p></div><hr>`;
+            chatHistory.forEach(msg => {
+                const date = new Date(msg.timestamp).toLocaleString();
+                content += `<div class="message ${msg.role}"><strong>${msg.role === 'user' ? '👤 You' : '🤖 AI Tutor'}</strong><div style="margin-top:5px;">${msg.content.replace(/\n/g, '<br>')}</div><div style="font-size:10px;color:#999;margin-top:5px;">${date}</div></div>`;
+            });
+            content += `<div class="footer">Generated by AI Tutor Pro</div></body></html>`;
+            const blob = new Blob([content], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `AI-Tutor-Notes-${new Date().toISOString().slice(0,19)}.html`;
+            a.click();
+            URL.revokeObjectURL(url);
+            showToast('Study notes exported!', 'success');
+        }
+
+        // ==================== KEYBOARD SHORTCUTS ====================
+        function initKeyboardShortcuts() {
+            document.addEventListener('keydown', (e) => {
+                if (e.ctrlKey && e.key === 'Enter') { e.preventDefault(); sendMessage(); }
+                if (e.altKey && e.key === 'c') { e.preventDefault(); clearChat(); }
+                if (e.altKey && e.key === 'h') { e.preventDefault(); showSection('home'); }
+                if (e.key === 'Escape') { document.querySelector('.modal-overlay')?.remove(); }
+                if (e.key === '/' && document.activeElement !== document.getElementById('chatInput')) {
+                    e.preventDefault(); document.getElementById('chatInput').focus(); showToast('Type your question...', 'info');
+                }
+            });
+        }
 
         // ==================== DRAWING CANVAS ====================
-        let canvas = null;
-        let ctx = null;
-        let drawing = false;
-        let currentTool = 'pen';
-        let currentColor = '#6366f1';
-        let lastX = 0, lastY = 0;
+        let canvas = null, ctx = null, drawing = false, currentTool = 'pen', currentColor = '#6366f1', lastX = 0, lastY = 0;
 
         function initCanvas() {
             canvas = document.getElementById('geometryCanvas');
             if (!canvas) return;
             ctx = canvas.getContext('2d');
-            canvas.width = 600;
-            canvas.height = 400;
-            ctx.fillStyle = 'white';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.strokeStyle = currentColor;
-            ctx.fillStyle = currentColor;
-            ctx.lineWidth = 3;
-            ctx.lineCap = 'round';
-            
-            canvas.addEventListener('mousedown', startDrawing);
-            canvas.addEventListener('mousemove', draw);
-            canvas.addEventListener('mouseup', stopDrawing);
-            canvas.addEventListener('mouseleave', stopDrawing);
-            
-            canvas.addEventListener('touchstart', handleTouchStart);
-            canvas.addEventListener('touchmove', handleTouchMove);
+            canvas.width = 600; canvas.height = 400;
+            ctx.fillStyle = 'white'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.strokeStyle = currentColor; ctx.fillStyle = currentColor; ctx.lineWidth = 3; ctx.lineCap = 'round';
+            canvas.addEventListener('mousedown', startDrawing); canvas.addEventListener('mousemove', draw);
+            canvas.addEventListener('mouseup', stopDrawing); canvas.addEventListener('mouseleave', stopDrawing);
+            canvas.addEventListener('touchstart', handleTouchStart); canvas.addEventListener('touchmove', handleTouchMove);
             canvas.addEventListener('touchend', stopDrawing);
         }
 
-        function startDrawing(e) {
-            drawing = true;
-            const pos = getMousePos(e);
-            lastX = pos.x;
-            lastY = pos.y;
-            ctx.beginPath();
-            ctx.moveTo(lastX, lastY);
+        function startDrawing(e) { drawing = true; const pos = getMousePos(e); lastX = pos.x; lastY = pos.y; ctx.beginPath(); ctx.moveTo(lastX, lastY); }
+        function draw(e) { if (!drawing) return; const pos = getMousePos(e); const cx = pos.x, cy = pos.y;
+            if (currentTool === 'pen') { ctx.lineTo(cx, cy); ctx.stroke(); ctx.beginPath(); ctx.moveTo(cx, cy); }
+            else if (currentTool === 'line') { ctx.beginPath(); ctx.moveTo(lastX, lastY); ctx.lineTo(cx, cy); ctx.stroke(); drawing = false; }
+            else if (currentTool === 'circle') { const r = Math.sqrt(Math.pow(cx - lastX, 2) + Math.pow(cy - lastY, 2)); ctx.beginPath(); ctx.arc(lastX, lastY, r, 0, 2 * Math.PI); ctx.stroke(); drawing = false; }
+            else if (currentTool === 'rectangle') { ctx.strokeRect(lastX, lastY, cx - lastX, cy - lastY); drawing = false; }
+            else if (currentTool === 'eraser') { ctx.clearRect(cx - 10, cy - 10, 20, 20); ctx.fillStyle = 'white'; ctx.fillRect(cx - 10, cy - 10, 20, 20); ctx.fillStyle = currentColor; }
+            lastX = cx; lastY = cy;
         }
+        function stopDrawing() { drawing = false; ctx.beginPath(); }
+        function getMousePos(e) { const rect = canvas.getBoundingClientRect(); const scaleX = canvas.width / rect.width, scaleY = canvas.height / rect.height; let cx, cy; if (e.touches) { cx = e.touches[0].clientX; cy = e.touches[0].clientY; } else { cx = e.clientX; cy = e.clientY; } return { x: (cx - rect.left) * scaleX, y: (cy - rect.top) * scaleY }; }
+        function handleTouchStart(e) { e.preventDefault(); startDrawing(e); }
+        function handleTouchMove(e) { e.preventDefault(); draw(e); }
+        function setDrawingTool(tool) { currentTool = tool; if (tool === 'eraser') ctx.globalCompositeOperation = 'destination-out'; else { ctx.globalCompositeOperation = 'source-over'; ctx.strokeStyle = document.getElementById('drawColor').value; ctx.fillStyle = document.getElementById('drawColor').value; currentColor = document.getElementById('drawColor').value; } }
+        function clearCanvas() { ctx.fillStyle = 'white'; ctx.fillRect(0, 0, canvas.width, canvas.height); ctx.fillStyle = currentColor; showToast('Canvas cleared', 'success'); }
+        function saveDrawing() { const imageData = canvas.toDataURL('image/png'); uploadedDocuments.push({ id: Date.now(), name: `Drawing_${new Date().toLocaleDateString()}.png`, type: 'image/png', size: imageData.length, content: imageData, uploadedAt: new Date().toISOString(), isDrawing: true }); localStorage.setItem('uploadedDocuments', JSON.stringify(uploadedDocuments)); renderDocumentList(); updateStats(); showToast('Drawing saved!', 'success'); }
+        async function analyzeDrawing() { const imageData = canvas.toDataURL('image/png'); showToast('Analyzing geometry...', 'info'); const prompt = `Analyze this geometry diagram. Describe shapes, geometric properties, and concepts.`; try { const response = await fetch(`${BACKEND_URL}/api/tutor`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: prompt + `\n\n[Image data: ${imageData.substring(0, 500)}]`, subject: 'Geometry', email: userEmail }) }); const data = await response.json(); if (data.reply) { document.getElementById('analysisResult').innerHTML = `<h4>Geometry Analysis</h4><div>${data.reply}</div>`; document.getElementById('analysisPanel').style.display = 'block'; addMessage('assistant', `📐 **Geometry Analysis:**\n\n${data.reply}`); } } catch (error) { showToast('Analysis failed', 'error'); } }
 
-        function draw(e) {
-            if (!drawing) return;
-            const pos = getMousePos(e);
-            const currentX = pos.x;
-            const currentY = pos.y;
-            
-            if (currentTool === 'pen') {
-                ctx.lineTo(currentX, currentY);
-                ctx.stroke();
-                ctx.beginPath();
-                ctx.moveTo(currentX, currentY);
-            } else if (currentTool === 'line') {
-                ctx.beginPath();
-                ctx.moveTo(lastX, lastY);
-                ctx.lineTo(currentX, currentY);
-                ctx.stroke();
-                drawing = false;
-            } else if (currentTool === 'circle') {
-                const radius = Math.sqrt(Math.pow(currentX - lastX, 2) + Math.pow(currentY - lastY, 2));
-                ctx.beginPath();
-                ctx.arc(lastX, lastY, radius, 0, 2 * Math.PI);
-                ctx.stroke();
-                drawing = false;
-            } else if (currentTool === 'rectangle') {
-                const width = currentX - lastX;
-                const height = currentY - lastY;
-                ctx.strokeRect(lastX, lastY, width, height);
-                drawing = false;
-            } else if (currentTool === 'eraser') {
-                ctx.clearRect(currentX - 10, currentY - 10, 20, 20);
-                ctx.fillStyle = 'white';
-                ctx.fillRect(currentX - 10, currentY - 10, 20, 20);
-                ctx.fillStyle = currentColor;
-            }
-            
-            lastX = currentX;
-            lastY = currentY;
-        }
-
-        function stopDrawing() {
-            drawing = false;
-            ctx.beginPath();
-        }
-
-        function getMousePos(e) {
-            const rect = canvas.getBoundingClientRect();
-            const scaleX = canvas.width / rect.width;
-            const scaleY = canvas.height / rect.height;
-            let clientX, clientY;
-            
-            if (e.touches) {
-                clientX = e.touches[0].clientX;
-                clientY = e.touches[0].clientY;
-            } else {
-                clientX = e.clientX;
-                clientY = e.clientY;
-            }
-            
-            return {
-                x: (clientX - rect.left) * scaleX,
-                y: (clientY - rect.top) * scaleY
-            };
-        }
-
-        function handleTouchStart(e) {
-            e.preventDefault();
-            startDrawing(e);
-        }
-
-        function handleTouchMove(e) {
-            e.preventDefault();
-            draw(e);
-        }
-
-        function setDrawingTool(tool) {
-            currentTool = tool;
-            document.querySelectorAll('.drawing-tool').forEach(t => t.classList.remove('active'));
-            if (event && event.target) event.target.classList.add('active');
-            if (tool === 'eraser') {
-                ctx.globalCompositeOperation = 'destination-out';
-            } else {
-                ctx.globalCompositeOperation = 'source-over';
-                ctx.strokeStyle = document.getElementById('drawColor').value;
-                ctx.fillStyle = document.getElementById('drawColor').value;
-                currentColor = document.getElementById('drawColor').value;
-            }
-        }
-
-        function clearCanvas() {
-            ctx.fillStyle = 'white';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = currentColor;
-            showToast('Canvas cleared', 'success');
-        }
-
-        function saveDrawing() {
-            const imageData = canvas.toDataURL('image/png');
-            const newDoc = {
-                id: Date.now(),
-                name: `Drawing_${new Date().toLocaleDateString()}.png`,
-                type: 'image/png',
-                size: imageData.length,
-                content: imageData,
-                uploadedAt: new Date().toISOString(),
-                isDrawing: true
-            };
-            uploadedDocuments.push(newDoc);
-            localStorage.setItem('uploadedDocuments', JSON.stringify(uploadedDocuments));
-            renderDocumentList();
-            updateStats();
-            showToast('Drawing saved!', 'success');
-        }
-
-        async function analyzeDrawing() {
-            const imageData = canvas.toDataURL('image/png');
-            showToast('Analyzing geometry...', 'info');
-            
-            const prompt = `Please analyze this geometry diagram. Describe what shapes you see, identify geometric properties, and provide a detailed analysis. This is a drawing of a geometry diagram.`;
-
-            try {
-                const response = await fetch(`${BACKEND_URL}/api/tutor`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        message: prompt + `\n\n[Image data: ${imageData.substring(0, 500)}]`,
-                        subject: 'Geometry',
-                        email: userEmail
-                    })
-                });
-                
-                const data = await response.json();
-                if (data.reply) {
-                    const analysisDiv = document.getElementById('analysisResult');
-                    analysisDiv.innerHTML = `
-                        <h4><i class="fas fa-chart-line"></i> Geometry Analysis</h4>
-                        <div style="white-space: pre-wrap;">${data.reply}</div>
-                    `;
-                    document.getElementById('analysisPanel').style.display = 'block';
-                    showToast('Analysis complete!', 'success');
-                    addMessage('assistant', `📐 **Geometry Analysis:**\n\n${data.reply}`);
-                }
-            } catch (error) {
-                showToast('Analysis failed', 'error');
-            }
-        }
-
-        // ==================== TAB SWITCHING ====================
-        function switchUploadTab(tab) {
-            document.querySelectorAll('.upload-tab').forEach(t => t.classList.remove('active'));
-            if (event && event.target) event.target.classList.add('active');
-            
-            document.getElementById('fileUploadTab').style.display = tab === 'file' ? 'block' : 'none';
-            document.getElementById('drawTab').style.display = tab === 'draw' ? 'block' : 'none';
-            
-            if (tab === 'draw') {
-                setTimeout(() => initCanvas(), 100);
-            }
-        }
-
-        // ==================== PDF EXTRACTION ====================
-        async function extractTextFromPDF(file) {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.onload = async function(e) {
-                    const typedarray = new Uint8Array(e.target.result);
-                    try {
-                        const pdf = await pdfjsLib.getDocument(typedarray).promise;
-                        let fullText = '';
-                        for (let i = 1; i <= pdf.numPages; i++) {
-                            const page = await pdf.getPage(i);
-                            const textContent = await page.getTextContent();
-                            const pageText = textContent.items.map(item => item.str).join(' ');
-                            fullText += pageText + '\n';
-                            const progress = (i / pdf.numPages) * 100;
-                            if (document.getElementById('progressFill')) {
-                                document.getElementById('progressFill').style.width = progress + '%';
-                            }
-                        }
-                        resolve(fullText);
-                    } catch (error) {
-                        reject(error);
-                    }
-                };
-                reader.onerror = reject;
-                reader.readAsArrayBuffer(file);
-            });
-        }
-
-        async function handleFiles(files) {
-            for (let file of files) {
-                if (file.size > 10 * 1024 * 1024) {
-                    showToast(`${file.name} is too large (max 10MB)`, 'warning');
-                    continue;
-                }
-                
-                showToast(`Processing ${file.name}...`, 'info');
-                const progressBar = document.getElementById('uploadProgress');
-                if (progressBar) progressBar.style.display = 'block';
-                
-                let extractedText = '';
-                
-                try {
-                    if (file.name.endsWith('.pdf')) {
-                        extractedText = await extractTextFromPDF(file);
-                    } else {
-                        extractedText = await new Promise((resolve) => {
-                            const reader = new FileReader();
-                            reader.onload = (e) => resolve(e.target.result);
-                            reader.readAsText(file);
-                        });
-                    }
-                    
-                    const newDoc = {
-                        id: Date.now(),
-                        name: file.name,
-                        type: file.type,
-                        size: file.size,
-                        content: extractedText.substring(0, 8000),
-                        uploadedAt: new Date().toISOString()
-                    };
-                    
-                    uploadedDocuments.push(newDoc);
-                    localStorage.setItem('uploadedDocuments', JSON.stringify(uploadedDocuments));
-                    renderDocumentList();
-                    updateStats();
-                    if (progressBar) progressBar.style.display = 'none';
-                    showToast(`${file.name} uploaded!`, 'success');
-                    await analyzeDocument(newDoc);
-                } catch (error) {
-                    showToast(`Failed to process ${file.name}`, 'error');
-                    if (progressBar) progressBar.style.display = 'none';
-                }
-            }
-        }
-
-        async function analyzeDocument(doc) {
-            showToast(`Analyzing ${doc.name}...`, 'info');
-            const analysisDiv = document.getElementById('analysisResult');
-            analysisDiv.innerHTML = `<div class="loader"></div> Analyzing...`;
-            document.getElementById('analysisPanel').style.display = 'block';
-            
-            try {
-                const prompt = `Please analyze this study document and provide:
-1. Brief Summary
-2. Key Concepts (3-5)
-3. Study Recommendations
-
-Document: "${doc.name}"
-Content: ${doc.content.substring(0, 3000)}`;
-
-                const response = await fetch(`${BACKEND_URL}/api/tutor`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        message: prompt,
-                        subject: 'General',
-                        email: userEmail
-                    })
-                });
-                
-                const data = await response.json();
-                if (data.reply) {
-                    analysisDiv.innerHTML = `
-                        <h4>Analysis: ${doc.name}</h4>
-                        <div style="white-space: pre-wrap;">${data.reply}</div>
-                    `;
-                }
-            } catch (error) {
-                analysisDiv.innerHTML = `<p>Analysis failed. You can still ask questions about it in chat!</p>`;
-            }
-        }
-
-        function renderDocumentList() {
-            const container = document.getElementById('documentList');
-            if (!container) return;
-            
-            if (uploadedDocuments.length === 0) {
-                container.innerHTML = '<p style="text-align: center;"><i class="fas fa-folder-open"></i> No documents yet</p>';
-                return;
-            }
-            
-            container.innerHTML = uploadedDocuments.map(doc => `
-                <div class="document-item">
-                    <div class="document-info">
-                        <i class="fas fa-${doc.isDrawing ? 'draw-polygon' : 'file-alt'}"></i>
-                        <div>
-                            <strong>${doc.name.substring(0, 35)}</strong>
-                        </div>
-                    </div>
-                    <div class="document-actions">
-                        <button onclick="askAboutDocument('${doc.id}')"><i class="fas fa-comment"></i></button>
-                        <button onclick="deleteDocument('${doc.id}')"><i class="fas fa-trash"></i></button>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        async function askAboutDocument(docId) {
-            const doc = uploadedDocuments.find(d => d.id == docId);
-            if (!doc) return;
-            showSection('chat');
-            setTimeout(() => {
-                document.getElementById('chatInput').value = `I uploaded "${doc.name}". Can you help me understand it?`;
-                sendMessage();
-            }, 500);
-        }
-
-        function deleteDocument(docId) {
-            uploadedDocuments = uploadedDocuments.filter(d => d.id != docId);
-            localStorage.setItem('uploadedDocuments', JSON.stringify(uploadedDocuments));
-            renderDocumentList();
-            updateStats();
-            showToast('Document deleted', 'success');
-        }
-
-        function generateNewQuiz() {
-            if (uploadedDocuments.length > 0) {
-                showToast('Quiz generation coming soon!', 'info');
-            } else {
-                showToast('Upload a document first!', 'warning');
-            }
-        }
+        // ==================== FILE HANDLING ====================
+        function switchUploadTab(tab) { document.querySelectorAll('.upload-tab').forEach(t => t.classList.remove('active')); if (event?.target) event.target.classList.add('active'); document.getElementById('fileUploadTab').style.display = tab === 'file' ? 'block' : 'none'; document.getElementById('drawTab').style.display = tab === 'draw' ? 'block' : 'none'; if (tab === 'draw') setTimeout(() => initCanvas(), 100); }
+        async function extractTextFromPDF(file) { return new Promise((resolve, reject) => { const reader = new FileReader(); reader.onload = async function(e) { const typedarray = new Uint8Array(e.target.result); try { const pdf = await pdfjsLib.getDocument(typedarray).promise; let fullText = ''; for (let i = 1; i <= pdf.numPages; i++) { const page = await pdf.getPage(i); const textContent = await page.getTextContent(); fullText += textContent.items.map(item => item.str).join(' ') + '\n'; if (document.getElementById('progressFill')) document.getElementById('progressFill').style.width = (i / pdf.numPages) * 100 + '%'; } resolve(fullText); } catch (error) { reject(error); } }; reader.onerror = reject; reader.readAsArrayBuffer(file); }); }
+        async function handleFiles(files) { for (let file of files) { if (file.size > 10 * 1024 * 1024) { showToast(`${file.name} too large`, 'warning'); continue; } showToast(`Processing ${file.name}...`, 'info'); if (document.getElementById('uploadProgress')) document.getElementById('uploadProgress').style.display = 'block'; let extractedText = ''; try { if (file.name.endsWith('.pdf')) extractedText = await extractTextFromPDF(file); else extractedText = await new Promise(resolve => { const reader = new FileReader(); reader.onload = e => resolve(e.target.result); reader.readAsText(file); }); const newDoc = { id: Date.now(), name: file.name, type: file.type, size: file.size, content: extractedText.substring(0, 8000), uploadedAt: new Date().toISOString() }; uploadedDocuments.push(newDoc); localStorage.setItem('uploadedDocuments', JSON.stringify(uploadedDocuments)); renderDocumentList(); updateStats(); if (document.getElementById('uploadProgress')) document.getElementById('uploadProgress').style.display = 'none'; showToast(`${file.name} uploaded!`, 'success'); await analyzeDocument(newDoc); } catch (error) { showToast(`Failed to process ${file.name}`, 'error'); if (document.getElementById('uploadProgress')) document.getElementById('uploadProgress').style.display = 'none'; } } }
+        async function analyzeDocument(doc) { showToast(`Analyzing ${doc.name}...`, 'info'); const analysisDiv = document.getElementById('analysisResult'); analysisDiv.innerHTML = `<div class="loader"></div> Analyzing...`; document.getElementById('analysisPanel').style.display = 'block'; try { const response = await fetch(`${BACKEND_URL}/api/tutor`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: `Analyze this document:\nDocument: "${doc.name}"\nContent: ${doc.content.substring(0, 3000)}\n\nProvide summary and key concepts.`, subject: 'General', email: userEmail }) }); const data = await response.json(); if (data.reply) analysisDiv.innerHTML = `<h4>Analysis: ${doc.name}</h4><div>${data.reply}</div>`; } catch (error) { analysisDiv.innerHTML = `<p>Analysis failed. Ask about it in chat!</p>`; } }
+        function renderDocumentList() { const container = document.getElementById('documentList'); if (!container) return; if (uploadedDocuments.length === 0) { container.innerHTML = '<p style="text-align: center;"><i class="fas fa-folder-open"></i> No documents yet</p>'; return; } container.innerHTML = uploadedDocuments.map(doc => `<div class="document-item"><div class="document-info"><i class="fas fa-${doc.isDrawing ? 'draw-polygon' : 'file-alt'}"></i><div><strong>${doc.name.substring(0, 35)}</strong></div></div><div class="document-actions"><button onclick="askAboutDocument('${doc.id}')"><i class="fas fa-comment"></i></button><button onclick="deleteDocument('${doc.id}')"><i class="fas fa-trash"></i></button></div></div>`).join(''); }
+        function askAboutDocument(docId) { const doc = uploadedDocuments.find(d => d.id == docId); if (!doc) return; showSection('chat'); setTimeout(() => { document.getElementById('chatInput').value = `I uploaded "${doc.name}". Can you help me understand it?`; sendMessage(); }, 500); }
+        function deleteDocument(docId) { uploadedDocuments = uploadedDocuments.filter(d => d.id != docId); localStorage.setItem('uploadedDocuments', JSON.stringify(uploadedDocuments)); renderDocumentList(); updateStats(); showToast('Document deleted', 'success'); }
 
         // ==================== CHAT FUNCTIONS ====================
-        function setQuickQuestion(question) {
-            document.getElementById('chatInput').value = question;
-            document.getElementById('chatInput').focus();
-        }
+        function setQuickQuestion(q) { document.getElementById('chatInput').value = q; document.getElementById('chatInput').focus(); }
+        function showToast(msg, type = 'success') { const toast = document.createElement('div'); toast.className = 'toast'; toast.style.background = type === 'success' ? '#10b981' : type === 'warning' ? '#f59e0b' : '#ef4444'; toast.innerHTML = `<i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-triangle'}"></i> ${msg}`; document.body.appendChild(toast); setTimeout(() => toast.remove(), 3000); }
+        function loadChatHistory() { const saved = localStorage.getItem('chatHistory'); if (saved) try { chatHistory = JSON.parse(saved); renderMessages(); } catch(e) {} }
+        function saveChatHistory() { localStorage.setItem('chatHistory', JSON.stringify(chatHistory)); }
+        function renderMessages() { const container = document.getElementById('chatMessages'); if (!container) return; container.innerHTML = ''; chatHistory.forEach(msg => { const div = document.createElement('div'); div.className = `message ${msg.role}`; const time = new Date(msg.timestamp).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}); div.innerHTML = `<div class="message-content">${msg.content.replace(/\n/g, '<br>')}<div class="message-time">${time}</div></div>`; container.appendChild(div); }); container.scrollTop = container.scrollHeight; }
+        function clearChat() { if (confirm('Clear chat history?')) { chatHistory = []; saveChatHistory(); renderMessages(); addMessage('assistant', '👋 Hi! Ready to learn?'); showToast('Chat cleared', 'success'); } }
+        async function sendMessage() { const input = document.getElementById('chatInput'); const message = input.value.trim(); if (!message) return; if (!emailVerified && !isPremium) { showToast('Please verify your email first!', 'warning'); return; } if (!isPremium && remainingSessions <= 0) { showToast('Free sessions used up! Upgrade to Pro.', 'warning'); showPremiumModal(); return; } addMessage('user', message); input.value = ''; const typingDiv = document.createElement('div'); typingDiv.className = 'message assistant'; typingDiv.id = 'typingIndicator'; typingDiv.innerHTML = `<div class="message-content"><div class="typing-indicator"><span></span><span></span><span></span></div></div>`; document.getElementById('chatMessages').appendChild(typingDiv); document.getElementById('chatMessages').scrollTop = document.getElementById('chatMessages').scrollHeight; let contextMessage = message; if (uploadedDocuments.length > 0) contextMessage = `${message}\n\n[Context: ${uploadedDocuments.length} document(s)]`; try { const response = await fetch(`${BACKEND_URL}/api/tutor`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: contextMessage, subject: currentSubject, conversationHistory: chatHistory.slice(-10), email: userEmail }) }); const data = await response.json(); document.getElementById('typingIndicator')?.remove(); if (data.reply) { addMessage('assistant', data.reply); totalQuestions++; localStorage.setItem('totalQuestions', totalQuestions); if (!isPremium && remainingSessions > 0) { remainingSessions--; localStorage.setItem('remainingSessions', remainingSessions); updateStats(); } updateStats(); } else { addMessage('assistant', `⚠️ ${data.error || 'Something went wrong'}`); } } catch (error) { document.getElementById('typingIndicator')?.remove(); addMessage('assistant', '⚠️ Network error. Please try again.'); } }
+        function addMessage(role, content) { chatHistory.push({ role, content, timestamp: Date.now() }); saveChatHistory(); renderMessages(); }
+        function changeSubject(subject) { currentSubject = subject; document.querySelectorAll('.subject-chip').forEach(chip => chip.classList.remove('active')); if (event?.target) event.target.classList.add('active'); addMessage('assistant', `📚 I'll help you with ${subject}. What would you like to learn?`); }
+        function startChat(subject) { if (!emailVerified && !isPremium) { showToast('Please verify your email first!', 'warning'); showSection('home'); return; } currentSubject = subject; changeSubject(subject); showSection('chat'); }
 
-        function showToast(message, type = 'success') {
-            const toast = document.createElement('div');
-            toast.className = 'toast';
-            toast.style.background = type === 'success' ? '#10b981' : type === 'warning' ? '#f59e0b' : '#ef4444';
-            toast.innerHTML = `<i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-triangle'}"></i> ${message}`;
-            document.body.appendChild(toast);
-            setTimeout(() => toast.remove(), 3000);
-        }
-
-        function loadChatHistory() {
-            const saved = localStorage.getItem('chatHistory');
-            if (saved) {
-                try {
-                    chatHistory = JSON.parse(saved);
-                    renderMessages();
-                } catch(e) {}
-            }
-        }
-        
-        function saveChatHistory() {
-            localStorage.setItem('chatHistory', JSON.stringify(chatHistory));
-        }
-        
-        function renderMessages() {
-            const container = document.getElementById('chatMessages');
-            if (!container) return;
-            container.innerHTML = '';
-            chatHistory.forEach(msg => {
-                const div = document.createElement('div');
-                div.className = `message ${msg.role}`;
-                const time = new Date(msg.timestamp).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
-                div.innerHTML = `<div class="message-content">${msg.content.replace(/\n/g, '<br>')}<div class="message-time">${time}</div></div>`;
-                container.appendChild(div);
-            });
-            container.scrollTop = container.scrollHeight;
-        }
-        
-        function clearChat() {
-            if (confirm('Clear chat history?')) {
-                chatHistory = [];
-                saveChatHistory();
-                renderMessages();
-                addMessage('assistant', '👋 Hi! Ready to learn?');
-                showToast('Chat cleared', 'success');
-            }
-        }
-        
-        async function sendMessage() {
-            const input = document.getElementById('chatInput');
-            const message = input.value.trim();
-            if (!message) return;
-            
-            if (!emailVerified && !isPremium) {
-                showToast('Please verify your email first!', 'warning');
-                return;
-            }
-            
-            if (!isPremium && remainingSessions <= 0) {
-                showToast('Free sessions used up! Upgrade to Pro.', 'warning');
-                showPremiumModal();
-                return;
-            }
-            
-            addMessage('user', message);
-            input.value = '';
-            
-            const typingDiv = document.createElement('div');
-            typingDiv.className = 'message assistant';
-            typingDiv.id = 'typingIndicator';
-            typingDiv.innerHTML = `<div class="message-content"><div class="typing-indicator"><span></span><span></span><span></span></div></div>`;
-            document.getElementById('chatMessages').appendChild(typingDiv);
-            document.getElementById('chatMessages').scrollTop = document.getElementById('chatMessages').scrollHeight;
-            
-            let contextMessage = message;
-            if (uploadedDocuments.length > 0) {
-                const docContext = uploadedDocuments.map(doc => `[Document: ${doc.name}]`).join(', ');
-                contextMessage = `${message}\n\n[Context: ${uploadedDocuments.length} document(s): ${docContext}]`;
-            }
-            
-            try {
-                const response = await fetch(`${BACKEND_URL}/api/tutor`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        message: contextMessage,
-                        subject: currentSubject,
-                        conversationHistory: chatHistory.slice(-10),
-                        email: userEmail
-                    })
-                });
-                
-                const data = await response.json();
-                document.getElementById('typingIndicator')?.remove();
-                
-                if (data.reply) {
-                    addMessage('assistant', data.reply);
-                    totalQuestions++;
-                    localStorage.setItem('totalQuestions', totalQuestions);
-                    
-                    if (!isPremium && remainingSessions > 0) {
-                        remainingSessions--;
-                        localStorage.setItem('remainingSessions', remainingSessions);
-                        updateStats();
-                    }
-                    updateStats();
-                } else {
-                    addMessage('assistant', `⚠️ ${data.error || 'Something went wrong'}`);
-                }
-            } catch (error) {
-                document.getElementById('typingIndicator')?.remove();
-                addMessage('assistant', '⚠️ Network error. Please try again.');
-            }
-        }
-        
-        function addMessage(role, content) {
-            chatHistory.push({ role, content, timestamp: Date.now() });
-            saveChatHistory();
-            renderMessages();
-        }
-        
-        function changeSubject(subject) {
-            currentSubject = subject;
-            document.querySelectorAll('.subject-chip').forEach(chip => {
-                chip.classList.remove('active');
-                if (chip.textContent.includes(subject) || chip.textContent === subject) {
-                    chip.classList.add('active');
-                }
-            });
-            addMessage('assistant', `📚 I'll help you with ${subject}. What would you like to learn?`);
-        }
-        
-        function startChat(subject) {
-            if (!emailVerified && !isPremium) {
-                showToast('Please verify your email first!', 'warning');
-                showSection('home');
-                return;
-            }
-            currentSubject = subject;
-            changeSubject(subject);
-            showSection('chat');
-        }
-
-        // ==================== PAYMENT FUNCTIONS ====================
-        function startPayPalCheckout() {
-            const email = localStorage.getItem('userEmail') || document.getElementById('userEmail')?.value;
-            if (!email) {
-                showToast('Enter your email first', 'warning');
-                return;
-            }
-            localStorage.setItem('paymentEmail', email);
-            const paypalUrl = `https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=${encodeURIComponent(PAYPAL_EMAIL)}&item_name=AI Tutor Pro&amount=9.99&currency_code=USD&return=https://innocent200509.github.io/Universal-AI-Tutor/success.html&cancel_return=https://innocent200509.github.io/Universal-AI-Tutor/&custom=${encodeURIComponent(email)}`;
-            window.open(paypalUrl, '_blank');
-            showToast('PayPal opened. Complete payment.', 'info');
-        }
-        
-        function manualActivatePremium() {
-            const email = localStorage.getItem('paymentEmail') || localStorage.getItem('userEmail');
-            if (email && confirm('Completed payment?')) {
-                localStorage.setItem('aiTutorPremium', 'true');
-                isPremium = true;
-                remainingSessions = Infinity;
-                localStorage.setItem('remainingSessions', 'unlimited');
-                updateStats();
-                document.querySelector('.upgrade-btn')?.remove();
-                showToast('🎉 Premium activated!', 'success');
-            }
-        }
-
-        // ==================== EMAIL VERIFICATION ====================
-        async function subscribeWithVerification(event) {
-            event.preventDefault();
-            const email = document.getElementById('userEmail').value;
-            if (!email || !email.includes('@')) {
-                showToast('Enter a valid email', 'warning');
-                return;
-            }
-            
-            const subscribeBtn = document.getElementById('subscribeBtn');
-            subscribeBtn.disabled = true;
-            subscribeBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-            
-            try {
-                const response = await fetch(`${BACKEND_URL}/api/subscribe`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email, source: 'ai-tutor-web' })
-                });
-                
-                const data = await response.json();
-                
-                if (response.ok) {
-                    localStorage.setItem('pendingEmail', email);
-                    showToast('Verification email sent!', 'success');
-                    document.getElementById('emailForm').style.display = 'none';
-                } else if (data.alreadyVerified) {
-                    showToast('Email already verified!', 'success');
-                    document.getElementById('emailCapture').style.display = 'none';
-                    userEmail = email;
-                    localStorage.setItem('userEmail', email);
-                    localStorage.setItem('emailVerified', 'true');
-                    remainingSessions = 10;
-                    emailVerified = true;
-                    updateStats();
-                } else {
-                    showToast(data.error || 'Failed to send', 'error');
-                }
-            } catch (error) {
-                showToast('Network error', 'error');
-            } finally {
-                subscribeBtn.disabled = false;
-                subscribeBtn.innerHTML = '<i class="fas fa-envelope"></i> Get Access';
-            }
-        }
-        
-        async function checkEmailVerification() {
-            const email = localStorage.getItem('pendingEmail') || localStorage.getItem('userEmail');
-            if (!email) return;
-            
-            try {
-                const response = await fetch(`${BACKEND_URL}/api/check-verified`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email })
-                });
-                
-                const data = await response.json();
-                
-                if (data.verified) {
-                    localStorage.setItem('emailVerified', 'true');
-                    localStorage.setItem('userEmail', email);
-                    localStorage.setItem('remainingSessions', data.remainingSessions || 10);
-                    userEmail = email;
-                    remainingSessions = data.remainingSessions || 10;
-                    emailVerified = true;
-                    isPremium = data.isPremium || false;
-                    if (isPremium) {
-                        localStorage.setItem('aiTutorPremium', 'true');
-                        document.querySelector('.upgrade-btn')?.remove();
-                    }
-                    document.getElementById('emailCapture').style.display = 'none';
-                    updateStats();
-                    showToast('Email verified!', 'success');
-                }
-            } catch(e) {}
-        }
+        // ==================== PAYMENT & AUTH ====================
+        function startPayPalCheckout() { const email = localStorage.getItem('userEmail') || document.getElementById('userEmail')?.value; if (!email) { showToast('Enter your email first', 'warning'); return; } localStorage.setItem('paymentEmail', email); window.open(`https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=${encodeURIComponent(PAYPAL_EMAIL)}&item_name=AI Tutor Pro&amount=9.99&currency_code=USD&return=https://innocent200509.github.io/Universal-AI-Tutor/success.html&cancel_return=https://innocent200509.github.io/Universal-AI-Tutor/&custom=${encodeURIComponent(email)}`, '_blank'); showToast('PayPal opened. Complete payment.', 'info'); }
+        function manualActivatePremium() { const email = localStorage.getItem('paymentEmail') || localStorage.getItem('userEmail'); if (email && confirm('Completed payment?')) { localStorage.setItem('aiTutorPremium', 'true'); isPremium = true; remainingSessions = Infinity; localStorage.setItem('remainingSessions', 'unlimited'); updateStats(); document.querySelector('.upgrade-btn')?.remove(); showToast('🎉 Premium activated!', 'success'); } }
+        async function subscribeWithVerification(event) { event.preventDefault(); const email = document.getElementById('userEmail').value; if (!email || !email.includes('@')) { showToast('Enter valid email', 'warning'); return; } const btn = document.getElementById('subscribeBtn'); btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>'; try { const response = await fetch(`${BACKEND_URL}/api/subscribe`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, source: 'ai-tutor-web' }) }); const data = await response.json(); if (response.ok) { localStorage.setItem('pendingEmail', email); showToast('Verification email sent!', 'success'); document.getElementById('emailForm').style.display = 'none'; } else if (data.alreadyVerified) { showToast('Email already verified!', 'success'); document.getElementById('emailCapture').style.display = 'none'; userEmail = email; localStorage.setItem('userEmail', email); localStorage.setItem('emailVerified', 'true'); remainingSessions = 10; emailVerified = true; updateStats(); } else { showToast(data.error || 'Failed', 'error'); } } catch (error) { showToast('Network error', 'error'); } finally { btn.disabled = false; btn.innerHTML = '<i class="fas fa-envelope"></i> Get Access'; } }
+        async function checkEmailVerification() { const email = localStorage.getItem('pendingEmail') || localStorage.getItem('userEmail'); if (!email) return; try { const response = await fetch(`${BACKEND_URL}/api/check-verified`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email }) }); const data = await response.json(); if (data.verified) { localStorage.setItem('emailVerified', 'true'); localStorage.setItem('userEmail', email); localStorage.setItem('remainingSessions', data.remainingSessions || 10); userEmail = email; remainingSessions = data.remainingSessions || 10; emailVerified = true; isPremium = data.isPremium || false; if (isPremium) { localStorage.setItem('aiTutorPremium', 'true'); document.querySelector('.upgrade-btn')?.remove(); } document.getElementById('emailCapture').style.display = 'none'; updateStats(); showToast('Email verified!', 'success'); } } catch(e) {} }
 
         // ==================== UI FUNCTIONS ====================
-        function showPremiumModal() {
-            const modal = document.createElement('div');
-            modal.className = 'modal-overlay';
-            modal.innerHTML = `
-                <div class="modal-content">
-                    <button class="close-btn" onclick="this.closest('.modal-overlay').remove()">×</button>
-                    <i class="fas fa-crown" style="font-size: 2.5rem; color: var(--gold);"></i>
-                    <h2>Upgrade to Pro</h2>
-                    <div class="price-tag">$9.99<span style="font-size:0.9rem;">/month</span></div>
-                    <ul class="feature-list">
-                        <li>✅ Unlimited questions</li>
-                        <li>✅ Unlimited document uploads</li>
-                        <li>✅ Draw and analyze geometry</li>
-                        <li>✅ Generate practice quizzes</li>
-                        <li>✅ Cancel anytime</li>
-                    </ul>
-                    <button onclick="startPayPalCheckout()" class="btn btn-gold" style="width:100%;margin-bottom:0.5rem;">
-                        <i class="fab fa-paypal"></i> Pay with PayPal
-                    </button>
-                    <button onclick="manualActivatePremium()" class="btn btn-secondary" style="width:100%;">
-                        <i class="fas fa-check"></i> Already Paid
-                    </button>
-                </div>
-            `;
-            document.body.appendChild(modal);
-        }
-        
-        function showSection(section) {
-            document.getElementById('home').style.display = 'none';
-            document.getElementById('subjects').style.display = 'none';
-            document.getElementById('upload').classList.remove('active');
-            document.getElementById('chat').classList.remove('active');
-            document.getElementById('upload').style.display = 'none';
-            document.getElementById('chat').style.display = 'none';
-            
-            if (section === 'home') {
-                document.getElementById('home').style.display = 'block';
-                document.getElementById('subjects').style.display = 'grid';
-            } else if (section === 'chat') {
-                if (!emailVerified && !isPremium) {
-                    showToast('Verify email first!', 'warning');
-                    showSection('home');
-                    return;
-                }
-                document.getElementById('chat').style.display = 'block';
-                setTimeout(() => document.getElementById('chat').classList.add('active'), 10);
-                document.getElementById('chatInput').focus();
-            } else if (section === 'upload') {
-                if (!emailVerified && !isPremium) {
-                    showToast('Verify email first!', 'warning');
-                    showSection('home');
-                    return;
-                }
-                document.getElementById('upload').style.display = 'block';
-                setTimeout(() => document.getElementById('upload').classList.add('active'), 10);
-            } else if (section === 'subjects') {
-                document.getElementById('subjects').style.display = 'grid';
-                document.getElementById('home').style.display = 'block';
-            }
-            window.scrollTo(0, 0);
-        }
-        
-        function updateStats() {
-            document.getElementById('totalQuestions').textContent = totalQuestions;
-            document.getElementById('streakDisplay').textContent = streak;
-            document.getElementById('streakCount').textContent = streak;
-            document.getElementById('documentsCount').textContent = uploadedDocuments.length;
-            
-            if (!isPremium && remainingSessions !== undefined && remainingSessions !== Infinity) {
-                document.getElementById('sessionsLeft').textContent = remainingSessions;
-            } else if (isPremium) {
-                document.getElementById('sessionsLeft').textContent = '∞';
-            } else {
-                document.getElementById('sessionsLeft').textContent = '0';
-            }
-        }
-        
-        function updateStreak() {
-            const lastActive = localStorage.getItem('lastActive');
-            const today = new Date().toDateString();
-            if (lastActive !== today) {
-                const yesterday = new Date();
-                yesterday.setDate(yesterday.getDate() - 1);
-                if (lastActive === yesterday.toDateString()) streak++;
-                else streak = 1;
-                localStorage.setItem('aiTutorStreak', streak);
-                localStorage.setItem('lastActive', today);
-                updateStats();
-            }
-        }
-        
+        function showPremiumModal() { const modal = document.createElement('div'); modal.className = 'modal-overlay'; modal.innerHTML = `<div class="modal-content"><button class="close-btn" onclick="this.closest('.modal-overlay').remove()">×</button><i class="fas fa-crown" style="font-size:2.5rem;color:var(--gold);"></i><h2>Upgrade to Pro</h2><div class="price-tag">$9.99<span style="font-size:0.9rem;">/month</span></div><ul class="feature-list"><li>✅ Unlimited questions</li><li>✅ Unlimited document uploads</li><li>✅ Voice input</li><li>✅ Progress tracking</li><li>✅ PDF export</li><li>✅ Cancel anytime</li></ul><button onclick="startPayPalCheckout()" class="btn btn-gold" style="width:100%;margin-bottom:0.5rem;"><i class="fab fa-paypal"></i> Pay with PayPal</button><button onclick="manualActivatePremium()" class="btn btn-secondary" style="width:100%;"><i class="fas fa-check"></i> Already Paid</button></div>`; document.body.appendChild(modal); }
+        function showSection(section) { document.getElementById('home').style.display = 'none'; document.getElementById('subjects').style.display = 'none'; document.getElementById('upload').classList.remove('active'); document.getElementById('chat').classList.remove('active'); document.getElementById('upload').style.display = 'none'; document.getElementById('chat').style.display = 'none'; if (section === 'home') { document.getElementById('home').style.display = 'block'; document.getElementById('subjects').style.display = 'grid'; } else if (section === 'chat') { if (!emailVerified && !isPremium) { showToast('Verify email first!', 'warning'); showSection('home'); return; } document.getElementById('chat').style.display = 'block'; setTimeout(() => document.getElementById('chat').classList.add('active'), 10); document.getElementById('chatInput').focus(); } else if (section === 'upload') { if (!emailVerified && !isPremium) { showToast('Verify email first!', 'warning'); showSection('home'); return; } document.getElementById('upload').style.display = 'block'; setTimeout(() => document.getElementById('upload').classList.add('active'), 10); } else if (section === 'subjects') { document.getElementById('subjects').style.display = 'grid'; document.getElementById('home').style.display = 'block'; } window.scrollTo(0, 0); }
+        function updateStats() { document.getElementById('totalQuestions').textContent = totalQuestions; document.getElementById('streakDisplay').textContent = streak; document.getElementById('streakCount').textContent = streak; document.getElementById('documentsCount').textContent = uploadedDocuments.length; document.getElementById('sessionsLeft').textContent = !isPremium && remainingSessions !== Infinity ? remainingSessions : isPremium ? '∞' : '0'; renderProgressDashboard(); }
+        function updateStreak() { const lastActive = localStorage.getItem('lastActive'); const today = new Date().toDateString(); if (lastActive !== today) { const yesterday = new Date(); yesterday.setDate(yesterday.getDate() - 1); streak = lastActive === yesterday.toDateString() ? streak + 1 : 1; localStorage.setItem('aiTutorStreak', streak); localStorage.setItem('lastActive', today); updateStats(); } }
+
         // ==================== INITIALIZATION ====================
         document.addEventListener('DOMContentLoaded', async () => {
             await checkEmailVerification();
-            updateStats();
-            updateStreak();
-            loadChatHistory();
-            renderDocumentList();
-            
-            document.getElementById('fileInput').addEventListener('change', (e) => {
-                handleFiles(e.target.files);
-            });
-            
-            document.getElementById('drawColor').addEventListener('change', (e) => {
-                currentColor = e.target.value;
-                if (ctx) {
-                    ctx.strokeStyle = currentColor;
-                    ctx.fillStyle = currentColor;
-                }
-            });
-            
-            if (emailVerified) {
-                document.getElementById('emailCapture').style.display = 'none';
-            }
-            if (isPremium) {
-                document.querySelector('.upgrade-btn')?.remove();
-            }
-            
+            updateStats(); updateStreak(); loadChatHistory(); renderDocumentList(); initTheme(); initKeyboardShortcuts(); initSpeechRecognition();
+            document.getElementById('fileInput').addEventListener('change', e => handleFiles(e.target.files));
+            document.getElementById('drawColor').addEventListener('change', e => { currentColor = e.target.value; if (ctx) { ctx.strokeStyle = currentColor; ctx.fillStyle = currentColor; } });
+            if (emailVerified) document.getElementById('emailCapture').style.display = 'none';
+            if (isPremium) document.querySelector('.upgrade-btn')?.remove();
             switchUploadTab('file');
         });
     </script>
