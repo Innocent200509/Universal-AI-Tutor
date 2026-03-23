@@ -1,7 +1,7 @@
 {
-  "name": "ai-tutor-backend",
+  "name": "universal-smart-ai",
   "version": "1.0.0",
-  "description": "AI Tutor with PayPal Payments",
+  "description": "Universal Smart AI - Personal AI Tutor",
   "type": "module",
   "main": "api.js",
   "scripts": {
@@ -9,9 +9,7 @@
   },
   "dependencies": {
     "@google/generative-ai": "^0.21.0",
-    "@paypal/checkout-server-sdk": "^1.0.3",
     "cors": "^2.8.5",
-    "express": "^4.18.2",
-    "crypto": "^1.0.1"
+    "express": "^4.18.2"
   }
 }

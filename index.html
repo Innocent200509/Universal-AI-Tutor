@@ -4,8 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="theme-color" content="#6366f1">
-    <meta name="description" content="AI Tutor Pro - Your Personal AI Learning Assistant with voice input, progress tracking, and smart study recommendations">
-    <title>AI Tutor Pro - Smart AI Learning Platform</title>
+    <meta name="description" content="Universal Smart AI - Your Personal AI Tutor. Learn any subject with AI-powered help, voice input, flashcards, and quizzes.">
+    <meta name="keywords" content="AI tutor, online learning, homework help, study assistant, math tutor, science tutor">
+    <meta name="author" content="Universal Smart AI">
+    <meta property="og:title" content="Universal Smart AI - Your Personal AI Tutor">
+    <meta property="og:description" content="Learn any subject with AI-powered help. Voice input, flashcards, quizzes, and more!">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://universalsmartai.com">
+    <title>Universal Smart AI - Your Personal AI Tutor</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
@@ -878,7 +884,7 @@
         <div class="nav-container">
             <div class="logo">
                 <i class="fas fa-robot"></i>
-                <span>AI Tutor Pro</span>
+                <span>Universal Smart AI</span>
             </div>
             <ul class="nav-links">
                 <li><a onclick="showSection('home')"><i class="fas fa-home"></i> Home</a></li>
@@ -892,8 +898,8 @@
 
     <div class="container">
         <section id="home" class="hero">
-            <h1><i class="fas fa-robot"></i> Your Personal AI Tutor</h1>
-            <p>Upload papers, draw geometry, take quizzes, create flashcards, and get AI-powered help</p>
+            <h1><i class="fas fa-robot"></i> Universal Smart AI</h1>
+            <p>Your Personal AI Tutor - Learn any subject with AI-powered help, voice input, flashcards, and quizzes</p>
             <div class="stats-bar">
                 <div class="stat-item"><div class="stat-value" id="totalQuestions">0</div><div class="stat-label">Questions</div></div>
                 <div class="stat-item"><div class="stat-value" id="sessionsLeft">0</div><div class="stat-label">Free Sessions</div></div>
@@ -952,7 +958,7 @@
         <div class="email-capture" id="emailCapture">
             <i class="fas fa-gift" style="font-size: 1.8rem; margin-bottom: 0.5rem;"></i>
             <h3>🎁 Get 10 Free Sessions!</h3>
-            <p>Join students learning with AI Tutor Pro</p>
+            <p>Join students learning with Universal Smart AI</p>
             <form id="emailForm" onsubmit="subscribeWithVerification(event)">
                 <input type="email" id="userEmail" class="email-input" placeholder="Enter your email" required>
                 <button type="submit" class="btn" id="subscribeBtn"><i class="fas fa-envelope"></i> Get Free Access</button>
@@ -1049,10 +1055,12 @@
                 <div class="subject-chip" onclick="changeSubject('Chemistry')">🧪 Chem</div>
                 <div class="subject-chip" onclick="changeSubject('Biology')">🧬 Bio</div>
                 <div class="subject-chip" onclick="changeSubject('Computer Science')">💻 CS</div>
+                <div class="subject-chip" onclick="changeSubject('History')">📜 History</div>
+                <div class="subject-chip" onclick="changeSubject('Literature')">📚 Literature</div>
             </div>
             <div class="chat-container">
                 <div class="chat-messages" id="chatMessages">
-                    <div class="message assistant"><div class="message-content">👋 Hi! I'm your AI Tutor.<br><br>Ask me anything! Use voice input by clicking the microphone button, or click the Σ button for math equations.</div></div>
+                    <div class="message assistant"><div class="message-content">👋 Hi! I'm your Universal Smart AI Tutor.<br><br>Ask me anything! Use voice input by clicking the microphone button, or click the Σ button for math equations.</div></div>
                 </div>
                 <div class="quick-actions">
                     <span class="quick-action" onclick="setQuickQuestion('Explain quantum physics')">🔬 Quantum</span>
@@ -1107,6 +1115,7 @@
         // ==================== CONFIGURATION ====================
         const BACKEND_URL = 'https://universal-ai-tutor-2.onrender.com';
         const PAYPAL_EMAIL = 'innocentmbimbili@gmail.com';
+        const SITE_URL = 'https://universalsmartai.com';
         
         let currentSubject = 'General';
         let chatHistory = [];
@@ -1358,9 +1367,6 @@
             }
         }
 
-        // ==================== VOICE INPUT ====================
-        // [Previous voice input code continues...]
-        
         // ==================== PROGRESS & STATS ====================
         function updateProgress(question, wasCorrect) {
             const subject = currentSubject.toLowerCase();
@@ -1458,7 +1464,103 @@
         function startChat(subject) { if (!emailVerified && !isPremium) { showToast('Please verify your email first!', 'warning'); showSection('home'); return; } currentSubject = subject; changeSubject(subject); showSection('chat'); }
 
         // ==================== PDF EXPORT ====================
-        async function exportAsPDF() { if (chatHistory.length === 0) { showToast('No conversation to export', 'warning'); return; } showToast('Generating export...', 'info'); let content = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>AI Tutor Pro - Study Notes</title><style>body{font-family:Arial;padding:40px;} h1{color:#6366f1;} .message{margin:20px 0;padding:15px;border-radius:10px;} .user{background:#f0f0f0;border-left:4px solid #6366f1;} .assistant{background:#e8f4f8;border-left:4px solid #10b981;}</style></head><body><h1>🤖 AI Tutor Pro - Study Notes</h1><div>Generated: ${new Date().toLocaleString()}</div><div><p><strong>Total Questions:</strong> ${totalQuestions}</p><p><strong>Documents Uploaded:</strong> ${uploadedDocuments.length}</p><p><strong>Day Streak:</strong> ${streak} days</p></div><hr>`; chatHistory.forEach(msg => { const date = new Date(msg.timestamp).toLocaleString(); content += `<div class="message ${msg.role}"><strong>${msg.role === 'user' ? '👤 You' : '🤖 AI Tutor'}</strong><div>${msg.content.replace(/\n/g, '<br>')}</div><div style="font-size:10px;color:#999;">${date}</div></div>`; }); content += `</body></html>`; const blob = new Blob([content], { type: 'text/html' }); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = `AI-Tutor-Notes-${new Date().toISOString().slice(0,19)}.html`; a.click(); URL.revokeObjectURL(url); showToast('Study notes exported!', 'success'); }
+        async function exportAsPDF() { if (chatHistory.length === 0) { showToast('No conversation to export', 'warning'); return; } showToast('Generating export...', 'info'); let content = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Universal Smart AI - Study Notes</title><style>body{font-family:Arial;padding:40px;} h1{color:#6366f1;} .message{margin:20px 0;padding:15px;border-radius:10px;} .user{background:#f0f0f0;border-left:4px solid #6366f1;} .assistant{background:#e8f4f8;border-left:4px solid #10b981;}</style></head><body><h1>🤖 Universal Smart AI - Study Notes</h1><div>Generated: ${new Date().toLocaleString()}</div><div><p><strong>Total Questions:</strong> ${totalQuestions}</p><p><strong>Documents Uploaded:</strong> ${uploadedDocuments.length}</p><p><strong>Day Streak:</strong> ${streak} days</p></div><hr>`; chatHistory.forEach(msg => { const date = new Date(msg.timestamp).toLocaleString(); content += `<div class="message ${msg.role}"><strong>${msg.role === 'user' ? '👤 You' : '🤖 AI Tutor'}</strong><div>${msg.content.replace(/\n/g, '<br>')}</div><div style="font-size:10px;color:#999;">${date}</div></div>`; }); content += `</body></html>`; const blob = new Blob([content], { type: 'text/html' }); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = `Universal-Smart-AI-Notes-${new Date().toISOString().slice(0,19)}.html`; a.click(); URL.revokeObjectURL(url); showToast('Study notes exported!', 'success'); }
+
+        // ==================== PAYMENT & AUTH ====================
+        function startPayPalCheckout() {
+            const email = localStorage.getItem('userEmail') || document.getElementById('userEmail')?.value;
+            if (!email) {
+                showToast('Enter your email first', 'warning');
+                return;
+            }
+            localStorage.setItem('paymentEmail', email);
+            const paypalUrl = `https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=${encodeURIComponent(PAYPAL_EMAIL)}&item_name=Universal Smart AI Pro&amount=9.99&currency_code=USD&return=${SITE_URL}/success.html&cancel_return=${SITE_URL}/&custom=${encodeURIComponent(email)}`;
+            window.open(paypalUrl, '_blank');
+            showToast('PayPal opened. Complete payment.', 'info');
+        }
+        
+        function manualActivatePremium() {
+            const email = localStorage.getItem('paymentEmail') || localStorage.getItem('userEmail');
+            if (email && confirm('Completed payment?')) {
+                localStorage.setItem('aiTutorPremium', 'true');
+                isPremium = true;
+                remainingSessions = Infinity;
+                localStorage.setItem('remainingSessions', 'unlimited');
+                updateStats();
+                document.querySelector('.upgrade-btn')?.remove();
+                showToast('🎉 Premium activated!', 'success');
+            }
+        }
+        
+        async function subscribeWithVerification(event) {
+            event.preventDefault();
+            const email = document.getElementById('userEmail').value;
+            if (!email || !email.includes('@')) {
+                showToast('Enter valid email', 'warning');
+                return;
+            }
+            const btn = document.getElementById('subscribeBtn');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+            try {
+                const response = await fetch(`${BACKEND_URL}/api/subscribe`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, source: 'ai-tutor-web' })
+                });
+                const data = await response.json();
+                if (response.ok) {
+                    localStorage.setItem('pendingEmail', email);
+                    showToast('Verification email sent!', 'success');
+                    document.getElementById('emailForm').style.display = 'none';
+                } else if (data.alreadyVerified) {
+                    showToast('Email already verified!', 'success');
+                    document.getElementById('emailCapture').style.display = 'none';
+                    userEmail = email;
+                    localStorage.setItem('userEmail', email);
+                    localStorage.setItem('emailVerified', 'true');
+                    remainingSessions = 10;
+                    emailVerified = true;
+                    updateStats();
+                } else {
+                    showToast(data.error || 'Failed', 'error');
+                }
+            } catch (error) {
+                showToast('Network error', 'error');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-envelope"></i> Get Access';
+            }
+        }
+        
+        async function checkEmailVerification() {
+            const email = localStorage.getItem('pendingEmail') || localStorage.getItem('userEmail');
+            if (!email) return;
+            try {
+                const response = await fetch(`${BACKEND_URL}/api/check-verified`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email })
+                });
+                const data = await response.json();
+                if (data.verified) {
+                    localStorage.setItem('emailVerified', 'true');
+                    localStorage.setItem('userEmail', email);
+                    localStorage.setItem('remainingSessions', data.remainingSessions || 10);
+                    userEmail = email;
+                    remainingSessions = data.remainingSessions || 10;
+                    emailVerified = true;
+                    isPremium = data.isPremium || false;
+                    if (isPremium) {
+                        localStorage.setItem('aiTutorPremium', 'true');
+                        document.querySelector('.upgrade-btn')?.remove();
+                    }
+                    document.getElementById('emailCapture').style.display = 'none';
+                    updateStats();
+                    showToast('Email verified!', 'success');
+                }
+            } catch(e) {}
+        }
 
         // ==================== THEME & KEYBOARD ====================
         function initTheme() { const savedTheme = localStorage.getItem('theme') || 'dark'; if (savedTheme === 'light') document.body.classList.add('light-mode'); const themeBtn = document.createElement('div'); themeBtn.className = 'theme-toggle'; themeBtn.innerHTML = '<i class="fas fa-moon"></i>'; themeBtn.onclick = toggleTheme; document.body.appendChild(themeBtn); updateThemeIcon(); }
@@ -1466,17 +1568,67 @@
         function updateThemeIcon() { const themeBtn = document.querySelector('.theme-toggle'); if (themeBtn) themeBtn.innerHTML = document.body.classList.contains('light-mode') ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>'; }
         function initKeyboardShortcuts() { document.addEventListener('keydown', (e) => { if (e.ctrlKey && e.key === 'Enter') { e.preventDefault(); sendMessage(); } if (e.altKey && e.key === 'c') { e.preventDefault(); clearChat(); } if (e.altKey && e.key === 'h') { e.preventDefault(); showSection('home'); } if (e.key === 'Escape') { document.querySelector('.modal-overlay')?.remove(); closeEquationEditor(); } if (e.key === '/' && document.activeElement !== document.getElementById('chatInput')) { e.preventDefault(); document.getElementById('chatInput').focus(); showToast('Type your question...', 'info'); } }); }
 
-        // ==================== PAYMENT & AUTH ====================
-        function startPayPalCheckout() { const email = localStorage.getItem('userEmail') || document.getElementById('userEmail')?.value; if (!email) { showToast('Enter your email first', 'warning'); return; } localStorage.setItem('paymentEmail', email); window.open(`https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=${encodeURIComponent(PAYPAL_EMAIL)}&item_name=AI Tutor Pro&amount=9.99&currency_code=USD&return=https://innocent200509.github.io/Universal-AI-Tutor/success.html&cancel_return=https://innocent200509.github.io/Universal-AI-Tutor/&custom=${encodeURIComponent(email)}`, '_blank'); showToast('PayPal opened. Complete payment.', 'info'); }
-        function manualActivatePremium() { const email = localStorage.getItem('paymentEmail') || localStorage.getItem('userEmail'); if (email && confirm('Completed payment?')) { localStorage.setItem('aiTutorPremium', 'true'); isPremium = true; remainingSessions = Infinity; localStorage.setItem('remainingSessions', 'unlimited'); updateStats(); document.querySelector('.upgrade-btn')?.remove(); showToast('🎉 Premium activated!', 'success'); } }
-        async function subscribeWithVerification(event) { event.preventDefault(); const email = document.getElementById('userEmail').value; if (!email || !email.includes('@')) { showToast('Enter valid email', 'warning'); return; } const btn = document.getElementById('subscribeBtn'); btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>'; try { const response = await fetch(`${BACKEND_URL}/api/subscribe`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, source: 'ai-tutor-web' }) }); const data = await response.json(); if (response.ok) { localStorage.setItem('pendingEmail', email); showToast('Verification email sent!', 'success'); document.getElementById('emailForm').style.display = 'none'; } else if (data.alreadyVerified) { showToast('Email already verified!', 'success'); document.getElementById('emailCapture').style.display = 'none'; userEmail = email; localStorage.setItem('userEmail', email); localStorage.setItem('emailVerified', 'true'); remainingSessions = 10; emailVerified = true; updateStats(); } else { showToast(data.error || 'Failed', 'error'); } } catch (error) { showToast('Network error', 'error'); } finally { btn.disabled = false; btn.innerHTML = '<i class="fas fa-envelope"></i> Get Access'; } }
-        async function checkEmailVerification() { const email = localStorage.getItem('pendingEmail') || localStorage.getItem('userEmail'); if (!email) return; try { const response = await fetch(`${BACKEND_URL}/api/check-verified`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email }) }); const data = await response.json(); if (data.verified) { localStorage.setItem('emailVerified', 'true'); localStorage.setItem('userEmail', email); localStorage.setItem('remainingSessions', data.remainingSessions || 10); userEmail = email; remainingSessions = data.remainingSessions || 10; emailVerified = true; isPremium = data.isPremium || false; if (isPremium) { localStorage.setItem('aiTutorPremium', 'true'); document.querySelector('.upgrade-btn')?.remove(); } document.getElementById('emailCapture').style.display = 'none'; updateStats(); showToast('Email verified!', 'success'); } } catch(e) {} }
-
         // ==================== UI FUNCTIONS ====================
-        function showPremiumModal() { const modal = document.createElement('div'); modal.className = 'modal-overlay'; modal.innerHTML = `<div class="modal-content"><button class="close-btn" onclick="this.closest('.modal-overlay').remove()">×</button><i class="fas fa-crown" style="font-size:2.5rem;color:var(--gold);"></i><h2>Upgrade to Pro</h2><div class="price-tag">$9.99<span style="font-size:0.9rem;">/month</span></div><ul class="feature-list"><li>✅ Unlimited questions</li><li>✅ Unlimited document uploads</li><li>✅ Voice input & speech</li><li>✅ Progress tracking</li><li>✅ AI Flashcards & Quizzes</li><li>✅ PDF export</li><li>✅ Cancel anytime</li></ul><button onclick="startPayPalCheckout()" class="btn btn-gold" style="width:100%;margin-bottom:0.5rem;"><i class="fab fa-paypal"></i> Pay with PayPal</button><button onclick="manualActivatePremium()" class="btn btn-secondary" style="width:100%;"><i class="fas fa-check"></i> Already Paid</button></div>`; document.body.appendChild(modal); }
-        function showSection(section) { document.getElementById('home').style.display = 'none'; document.getElementById('subjects').style.display = 'none'; document.getElementById('upload').classList.remove('active'); document.getElementById('chat').classList.remove('active'); document.getElementById('quiz').classList.remove('active'); document.getElementById('flashcards').classList.remove('active'); document.getElementById('upload').style.display = 'none'; document.getElementById('chat').style.display = 'none'; document.getElementById('quiz').style.display = 'none'; document.getElementById('flashcards').style.display = 'none'; if (section === 'home') { document.getElementById('home').style.display = 'block'; document.getElementById('subjects').style.display = 'grid'; } else if (section === 'chat') { if (!emailVerified && !isPremium) { showToast('Verify email first!', 'warning'); showSection('home'); return; } document.getElementById('chat').style.display = 'block'; setTimeout(() => document.getElementById('chat').classList.add('active'), 10); document.getElementById('chatInput').focus(); } else if (section === 'upload') { if (!emailVerified && !isPremium) { showToast('Verify email first!', 'warning'); showSection('home'); return; } document.getElementById('upload').style.display = 'block'; setTimeout(() => document.getElementById('upload').classList.add('active'), 10); } else if (section === 'quiz') { document.getElementById('quiz').style.display = 'block'; setTimeout(() => document.getElementById('quiz').classList.add('active'), 10); } else if (section === 'flashcards') { document.getElementById('flashcards').style.display = 'block'; setTimeout(() => document.getElementById('flashcards').classList.add('active'), 10); } else if (section === 'subjects') { document.getElementById('subjects').style.display = 'grid'; document.getElementById('home').style.display = 'block'; } window.scrollTo(0, 0); }
-        function updateStats() { document.getElementById('totalQuestions').textContent = totalQuestions; document.getElementById('streakDisplay').textContent = streak; document.getElementById('streakCount').textContent = streak; document.getElementById('documentsCount').textContent = uploadedDocuments.length; document.getElementById('sessionsLeft').textContent = !isPremium && remainingSessions !== Infinity ? remainingSessions : isPremium ? '∞' : '0'; renderProgressDashboard(); renderAchievements(); }
-        function updateStreak() { const lastActive = localStorage.getItem('lastActive'); const today = new Date().toDateString(); if (lastActive !== today) { const yesterday = new Date(); yesterday.setDate(yesterday.getDate() - 1); streak = lastActive === yesterday.toDateString() ? streak + 1 : 1; localStorage.setItem('aiTutorStreak', streak); localStorage.setItem('lastActive', today); updateStats(); } }
+        function showPremiumModal() { const modal = document.createElement('div'); modal.className = 'modal-overlay'; modal.innerHTML = `<div class="modal-content"><button class="close-btn" onclick="this.closest('.modal-overlay').remove()">×</button><i class="fas fa-crown" style="font-size:2.5rem;color:var(--gold);"></i><h2>Upgrade to Universal Smart AI Pro</h2><div class="price-tag">$9.99<span style="font-size:0.9rem;">/month</span></div><ul class="feature-list"><li>✅ Unlimited questions</li><li>✅ Unlimited document uploads</li><li>✅ Voice input & speech</li><li>✅ Progress tracking</li><li>✅ AI Flashcards & Quizzes</li><li>✅ PDF export</li><li>✅ Cancel anytime</li></ul><button onclick="startPayPalCheckout()" class="btn btn-gold" style="width:100%;margin-bottom:0.5rem;"><i class="fab fa-paypal"></i> Pay with PayPal</button><button onclick="manualActivatePremium()" class="btn btn-secondary" style="width:100%;"><i class="fas fa-check"></i> Already Paid</button></div>`; document.body.appendChild(modal); }
+        
+        function showSection(section) {
+            document.getElementById('home').style.display = 'none';
+            document.getElementById('subjects').style.display = 'none';
+            document.getElementById('upload').classList.remove('active');
+            document.getElementById('chat').classList.remove('active');
+            document.getElementById('quiz').classList.remove('active');
+            document.getElementById('flashcards').classList.remove('active');
+            document.getElementById('upload').style.display = 'none';
+            document.getElementById('chat').style.display = 'none';
+            document.getElementById('quiz').style.display = 'none';
+            document.getElementById('flashcards').style.display = 'none';
+            if (section === 'home') {
+                document.getElementById('home').style.display = 'block';
+                document.getElementById('subjects').style.display = 'grid';
+            } else if (section === 'chat') {
+                if (!emailVerified && !isPremium) { showToast('Verify email first!', 'warning'); showSection('home'); return; }
+                document.getElementById('chat').style.display = 'block';
+                setTimeout(() => document.getElementById('chat').classList.add('active'), 10);
+                document.getElementById('chatInput').focus();
+            } else if (section === 'upload') {
+                if (!emailVerified && !isPremium) { showToast('Verify email first!', 'warning'); showSection('home'); return; }
+                document.getElementById('upload').style.display = 'block';
+                setTimeout(() => document.getElementById('upload').classList.add('active'), 10);
+            } else if (section === 'quiz') {
+                document.getElementById('quiz').style.display = 'block';
+                setTimeout(() => document.getElementById('quiz').classList.add('active'), 10);
+            } else if (section === 'flashcards') {
+                document.getElementById('flashcards').style.display = 'block';
+                setTimeout(() => document.getElementById('flashcards').classList.add('active'), 10);
+            } else if (section === 'subjects') {
+                document.getElementById('subjects').style.display = 'grid';
+                document.getElementById('home').style.display = 'block';
+            }
+            window.scrollTo(0, 0);
+        }
+        
+        function updateStats() {
+            document.getElementById('totalQuestions').textContent = totalQuestions;
+            document.getElementById('streakDisplay').textContent = streak;
+            document.getElementById('streakCount').textContent = streak;
+            document.getElementById('documentsCount').textContent = uploadedDocuments.length;
+            document.getElementById('sessionsLeft').textContent = !isPremium && remainingSessions !== Infinity ? remainingSessions : isPremium ? '∞' : '0';
+            renderProgressDashboard();
+            renderAchievements();
+        }
+        
+        function updateStreak() {
+            const lastActive = localStorage.getItem('lastActive');
+            const today = new Date().toDateString();
+            if (lastActive !== today) {
+                const yesterday = new Date();
+                yesterday.setDate(yesterday.getDate() - 1);
+                streak = lastActive === yesterday.toDateString() ? streak + 1 : 1;
+                localStorage.setItem('aiTutorStreak', streak);
+                localStorage.setItem('lastActive', today);
+                updateStats();
+            }
+        }
 
         // ==================== INITIALIZATION ====================
         document.addEventListener('DOMContentLoaded', async () => {
