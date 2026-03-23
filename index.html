@@ -1640,6 +1640,43 @@
             if (isPremium) document.querySelector('.upgrade-btn')?.remove();
             switchUploadTab('file');
         });
+        // Fix for undefined functions - add at the end of your script
+// Make all functions globally available
+window.showSection = showSection;
+window.startChat = startChat;
+window.changeSubject = changeSubject;
+window.sendMessage = sendMessage;
+window.clearChat = clearChat;
+window.setQuickQuestion = setQuickQuestion;
+window.showEquationEditor = showEquationEditor;
+window.closeEquationEditor = closeEquationEditor;
+window.insertMath = insertMath;
+window.insertEquation = insertEquation;
+window.generateFlashcards = generateFlashcards;
+window.generateQuiz = generateQuiz;
+window.startTimer = startTimer;
+window.pauseTimer = pauseTimer;
+window.resetTimer = resetTimer;
+window.setTimer = setTimer;
+window.getStudyRecommendations = getStudyRecommendations;
+window.generateShareLink = generateShareLink;
+window.speakLastAnswer = speakLastAnswer;
+window.toggleSpeechRecognition = toggleSpeechRecognition;
+window.exportAsPDF = exportAsPDF;
+window.showPremiumModal = showPremiumModal;
+window.startPayPalCheckout = startPayPalCheckout;
+window.manualActivatePremium = manualActivatePremium;
+window.subscribeWithVerification = subscribeWithVerification;
+window.switchUploadTab = switchUploadTab;
+window.setDrawingTool = setDrawingTool;
+window.clearCanvas = clearCanvas;
+window.saveDrawing = saveDrawing;
+window.analyzeDrawing = analyzeDrawing;
+window.askAboutDocument = askAboutDocument;
+window.deleteDocument = deleteDocument;
+window.selectQuizAnswer = selectQuizAnswer;
+window.submitQuiz = submitQuiz;
+window.toggleTheme = toggleTheme;
     </script>
 </body>
 </html>
