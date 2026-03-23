@@ -15,7 +15,7 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
-// Google Gemini setup
+// Google Gemini setup - Using correct current model
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 let genAI = null;
 
@@ -84,20 +84,21 @@ app.post('/api/tutor', async (req, res) => {
     // Use Gemini if available
     if (genAI) {
         try {
-            // Using gemini-1.5-flash (faster, free)
-            const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+            // CORRECT MODEL: gemini-2.5-flash (current working model)
+            const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
             
             const systemPrompt = `You are a friendly, expert AI tutor. Help students learn ${subject || 'any subject'}.
             
 Rules:
-1. Always answer the student's question directly
+1. Always answer the student's question directly and completely
 2. Use simple, clear language
 3. Give examples when helpful
 4. Be encouraging and use emojis occasionally
-5. Keep answers under 150 words
+5. Keep answers under 200 words
 6. If it's a math problem, show the calculation step by step
+7. Make learning fun and engaging
 
-Remember: You are a helpful tutor. Always provide a complete answer.`;
+Remember: You are a helpful tutor. Always provide a complete, accurate answer.`;
 
             // Build conversation context
             let context = '';
@@ -108,7 +109,7 @@ Remember: You are a helpful tutor. Always provide a complete answer.`;
             
             const prompt = `${systemPrompt}\n\n${context}Student: ${message}\n\nTutor:`;
             
-            console.log(`🤖 Sending to Gemini...`);
+            console.log(`🤖 Sending to Gemini (gemini-2.5-flash)...`);
             
             const result = await model.generateContent(prompt);
             const reply = result.response.text();
@@ -148,6 +149,9 @@ function getSmartFallback(message, subject) {
     }
     if (q.includes('4+4') || q.includes('4 + 4')) {
         return "4 + 4 = 8! Adding 4 and 4 gives you 8. Think of it as 4 plus 4 equals 8. 🎯";
+    }
+    if (q.includes('7+1') || q.includes('7 + 1')) {
+        return "7 + 1 = 8! That's simple addition. 7 plus 1 equals 8. ✨";
     }
     if (q.includes('1+1') || q.includes('1 + 1')) {
         return "1 + 1 = 2! One of the first math facts we learn. If you have one cookie and get another, you have two cookies! 🍪🍪";
@@ -285,6 +289,7 @@ app.get('/api/health', (req, res) => {
     res.json({ 
         status: 'healthy',
         geminiAvailable: !!genAI,
+        model: 'gemini-2.5-flash',
         verifiedEmails: verifiedEmails.size,
         timestamp: new Date().toISOString() 
     });
