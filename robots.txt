@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Sitemap: https://universalsmartai.com/sitemap.xml
+
+# Crawl delay for better performance
+Crawl-delay: 5
+
+# Disallow admin paths (if any)
+# Disallow: /admin/
