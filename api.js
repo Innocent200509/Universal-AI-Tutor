@@ -1,4 +1,3 @@
-// api.js - Updated with Resend email integration
 import express from 'express';
 import cors from 'cors';
 import { GoogleGenerativeAI } from '@google/generative-ai';
@@ -26,18 +25,6 @@ if (GEMINI_API_KEY) {
         console.log('✅ Google Gemini initialized');
     } catch (error) {
         console.log('❌ Failed to initialize Gemini:', error.message);
-    }
-}
-
-// Initialize Resend for emails
-let resend = null;
-if (process.env.RESEND_API_KEY) {
-    try {
-        const { Resend } = await import('resend');
-        resend = new Resend(process.env.RESEND_API_KEY);
-        console.log('✅ Resend email service initialized');
-    } catch (error) {
-        console.log('❌ Failed to initialize Resend:', error.message);
     }
 }
 
@@ -74,155 +61,11 @@ function saveVerifiedEmails() {
     fs.writeFileSync(VERIFIED_FILE, JSON.stringify(data, null, 2));
 }
 
-// ==================== EMAIL SUBSCRIPTION WITH REAL EMAIL ====================
-app.post('/api/subscribe', async (req, res) => {
-    const { email, source } = req.body;
-    
-    if (!email || !email.includes('@')) {
-        return res.status(400).json({ error: 'Valid email address required' });
-    }
-    
-    if (verifiedEmails.has(email)) {
-        return res.status(400).json({ 
-            error: 'Email already verified! You can start learning immediately.',
-            alreadyVerified: true
-        });
-    }
-    
-    // Check for existing pending verification
-    let existingToken = null;
-    for (const [token, data] of pendingVerifications.entries()) {
-        if (data.email === email) {
-            existingToken = token;
-            break;
-        }
-    }
-    
-    const token = existingToken || crypto.randomBytes(32).toString('hex');
-    const expiresAt = Date.now() + 24 * 60 * 60 * 1000;
-    
-    pendingVerifications.set(token, {
-        email,
-        source,
-        createdAt: Date.now(),
-        expiresAt
-    });
-    
-    const baseUrl = process.env.BASE_URL || 'https://universal-ai-tutor-2.onrender.com';
-    const verifyUrl = `${baseUrl}/api/verify-email?token=${token}`;
-    
-    console.log(`\n📧 Verification for: ${email}`);
-    console.log(`🔗 Link: ${verifyUrl}`);
-    console.log(`⏰ Expires in 24 hours\n`);
-    
-    // Send real email if Resend is configured
-    let emailSent = false;
-    if (resend) {
-        try {
-            await resend.emails.send({
-                from: process.env.EMAIL_FROM || 'Universal Smart AI <onboarding@resend.dev>',
-                to: [email],
-                subject: 'Verify Your Email - Universal Smart AI',
-                html: `
-                    <!DOCTYPE html>
-                    <html>
-                    <head>
-                        <meta charset="UTF-8">
-                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                        <title>Verify Your Email</title>
-                        <style>
-                            body {
-                                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-                                line-height: 1.6;
-                                color: #333;
-                                max-width: 600px;
-                                margin: 0 auto;
-                                padding: 20px;
-                                background: #f5f5f5;
-                            }
-                            .container {
-                                background: white;
-                                border-radius: 16px;
-                                padding: 40px;
-                                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-                            }
-                            h1 {
-                                color: #6366f1;
-                                font-size: 28px;
-                                margin-bottom: 20px;
-                                text-align: center;
-                            }
-                            .btn {
-                                display: inline-block;
-                                background: linear-gradient(135deg, #6366f1, #4f46e5);
-                                color: white;
-                                padding: 14px 28px;
-                                text-decoration: none;
-                                border-radius: 8px;
-                                margin: 20px 0;
-                                font-weight: 600;
-                                text-align: center;
-                            }
-                            .btn:hover {
-                                background: linear-gradient(135deg, #4f46e5, #4338ca);
-                            }
-                            .footer {
-                                text-align: center;
-                                margin-top: 30px;
-                                font-size: 12px;
-                                color: #666;
-                            }
-                            .badge {
-                                display: inline-block;
-                                background: #10b981;
-                                color: white;
-                                padding: 4px 12px;
-                                border-radius: 20px;
-                                font-size: 12px;
-                                margin-bottom: 20px;
-                            }
-                        </style>
-                    </head>
-                    <body>
-                        <div class="container">
-                            <div style="text-align: center;">
-                                <div class="badge">🎁 10 FREE SESSIONS</div>
-                            </div>
-                            <h1>Verify Your Email</h1>
-                            <p>Thanks for signing up for <strong>Universal Smart AI</strong>! I'm excited to help you learn any subject.</p>
-                            <p>Click the button below to confirm your email address and activate your <strong>10 free tutoring sessions</strong>.</p>
-                            <div style="text-align: center;">
-                                <a href="${verifyUrl}" class="btn">Confirm Email →</a>
-                            </div>
-                            <p style="font-size: 14px; color: #666;">This link will expire in 24 hours. If you didn't sign up for Universal Smart AI, you can safely ignore this email.</p>
-                            <div class="footer">
-                                <p>Universal Smart AI - Your Personal AI Learning Assistant</p>
-                                <p>Questions? Reply to this email - I'd love to hear from you!</p>
-                            </div>
-                        </div>
-                    </body>
-                    </html>
-                `
-            });
-            emailSent = true;
-            console.log(`✅ Email sent to ${email}`);
-        } catch (emailError) {
-            console.error('Failed to send email:', emailError.message);
-        }
-    }
-    
-    res.json({ 
-        success: true, 
-        message: emailSent ? 'Verification email sent! Check your inbox.' : 'Verification link created. (Email service not configured)',
-        requiresVerification: true,
-        // Only include in development/testing
-        ...(process.env.NODE_ENV !== 'production' && { debugUrl: verifyUrl })
-    });
-});
-
 // ==================== AI TUTOR ENDPOINT ====================
 app.post('/api/tutor', async (req, res) => {
     const { message, subject, conversationHistory, email } = req.body;
+    
+    console.log(`📝 Received message: "${message}" for subject: ${subject}`);
     
     if (!message) {
         return res.status(400).json({ error: 'No message provided' });
@@ -242,27 +85,34 @@ app.post('/api/tutor', async (req, res) => {
     // Use Gemini if available
     if (genAI) {
         try {
+            // Use the correct model - gemini-2.0-flash (faster and works well)
             const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
             
             const systemPrompt = `You are a friendly, patient AI tutor. Help students learn ${subject || 'any subject'}.
                                   Use simple language, give examples, and be encouraging.
                                   Break down complex topics step by step.
                                   Use emojis occasionally to keep it friendly.
-                                  Keep explanations clear and concise.
-                                  If the student is struggling, offer hints.`;
+                                  Keep explanations clear and concise (under 200 words).
+                                  If the student is struggling, offer hints.
+                                  Always provide a direct answer to the student's question.`;
             
+            // Build conversation context
             let context = '';
             if (conversationHistory && conversationHistory.length > 0) {
-                const recentMessages = conversationHistory.slice(-4);
+                const recentMessages = conversationHistory.slice(-6);
                 context = recentMessages.map(msg => `${msg.role === 'user' ? 'Student' : 'Tutor'}: ${msg.content}`).join('\n') + '\n';
             }
             
             const prompt = `${systemPrompt}\n\n${context}Student: ${message}\n\nTutor:`;
             
+            console.log(`🤖 Sending to Gemini: ${prompt.substring(0, 200)}...`);
+            
             const result = await model.generateContent(prompt);
             const reply = result.response.text();
             
-            // Deduct session
+            console.log(`✅ Gemini response: ${reply.substring(0, 100)}...`);
+            
+            // Deduct session for free users
             if (email && verifiedEmails.has(email)) {
                 const userData = verifiedEmails.get(email);
                 if (!userData.premium && userData.remainingSessions > 0) {
@@ -275,32 +125,131 @@ app.post('/api/tutor', async (req, res) => {
             res.json({ reply });
             
         } catch (error) {
-            console.error('Gemini error:', error.message);
+            console.error('❌ Gemini error:', error.message);
+            // Send fallback response
             res.json({ reply: getFallbackResponse(message, subject) });
         }
     } else {
+        console.log('⚠️ No Gemini API key, using fallback');
         const reply = getFallbackResponse(message, subject);
         res.json({ reply });
     }
 });
 
+// Fallback responses (only used if Gemini fails)
 function getFallbackResponse(message, subject) {
     const lowerMsg = message.toLowerCase();
-    const responses = {
-        '2+2': "2 + 2 = 4! That's basic addition.",
-        'pythagorean': "The Pythagorean theorem is a² + b² = c².",
-        'quadratic': "The quadratic formula is x = (-b ± √(b² - 4ac)) / 2a.",
-        'photosynthesis': "Photosynthesis: 6CO₂ + 6H₂O + light → C₆H₁₂O₆ + 6O₂.",
-        'dna': "DNA carries genetic instructions with a double helix structure.",
-        'quantum': "Quantum physics studies the smallest particles in the universe."
-    };
-    for (const [key, value] of Object.entries(responses)) {
-        if (lowerMsg.includes(key)) return value;
+    
+    // Simple math
+    if (lowerMsg.includes('2+2') || lowerMsg.includes('2 + 2')) {
+        return "2 + 2 = 4! That's basic addition. When you have 2 apples and get 2 more, you have 4 apples total. 🍎🍎🍎🍎";
     }
-    return `I'm your AI Tutor! I can help with ${subject || 'any subject'}. Ask me anything!`;
+    
+    if (lowerMsg.includes('1+1') || lowerMsg.includes('1 + 1')) {
+        return "1 + 1 = 2! That's one of the first math facts we learn. If you have one cookie and get another, you have two cookies! 🍪🍪";
+    }
+    
+    if (lowerMsg.includes('pythagorean')) {
+        return "The Pythagorean theorem is a² + b² = c². It's used to find the length of the hypotenuse (the longest side) of a right triangle. For example, if a=3 and b=4, then c=5 because 3² + 4² = 9 + 16 = 25, and √25 = 5.";
+    }
+    
+    if (lowerMsg.includes('quantum')) {
+        return "Quantum physics is the study of matter and energy at the smallest scales - atoms and subatomic particles. It's strange because particles can be in multiple places at once (superposition) and can be instantly connected across space (entanglement)! It's the foundation of modern technology like lasers, computers, and MRI machines.";
+    }
+    
+    if (lowerMsg.includes('photosynthesis')) {
+        return "Photosynthesis is how plants make their own food! They use sunlight, water, and carbon dioxide to create glucose (sugar) and oxygen. The equation is: 6CO₂ + 6H₂O + light → C₆H₁₂O₆ + 6O₂. That's why plants are so important - they produce the oxygen we breathe! 🌱☀️";
+    }
+    
+    return `I'm your AI Tutor! I can help with ${subject || 'any subject'}. Ask me about math, science, history, languages, or anything you're studying! What would you like to learn?`;
 }
 
-// ==================== EMAIL VERIFICATION ENDPOINT ====================
+// ==================== EMAIL SUBSCRIPTION ====================
+app.post('/api/subscribe', async (req, res) => {
+    const { email, source } = req.body;
+    
+    if (!email || !email.includes('@')) {
+        return res.status(400).json({ error: 'Valid email address required' });
+    }
+    
+    if (verifiedEmails.has(email)) {
+        return res.status(400).json({ 
+            error: 'Email already verified! You can start learning immediately.',
+            alreadyVerified: true
+        });
+    }
+    
+    const token = crypto.randomBytes(32).toString('hex');
+    const expiresAt = Date.now() + 24 * 60 * 60 * 1000;
+    
+    pendingVerifications.set(token, {
+        email,
+        source,
+        createdAt: Date.now(),
+        expiresAt
+    });
+    
+    const baseUrl = process.env.BASE_URL || 'https://universal-ai-tutor-2.onrender.com';
+    const verifyUrl = `${baseUrl}/api/verify-email?token=${token}`;
+    
+    console.log(`\n📧 Verification for: ${email}`);
+    console.log(`🔗 Link: ${verifyUrl}`);
+    console.log(`⏰ Expires in 24 hours\n`);
+    
+    // Try to send email if Resend is configured
+    let emailSent = false;
+    if (process.env.RESEND_API_KEY) {
+        try {
+            const { Resend } = await import('resend');
+            const resend = new Resend(process.env.RESEND_API_KEY);
+            
+            await resend.emails.send({
+                from: process.env.EMAIL_FROM || 'Universal Smart AI <onboarding@resend.dev>',
+                to: [email],
+                subject: 'Verify Your Email - Universal Smart AI',
+                html: `
+                    <!DOCTYPE html>
+                    <html>
+                    <head>
+                        <meta charset="UTF-8">
+                        <title>Verify Your Email</title>
+                    </head>
+                    <body style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+                        <div style="background: linear-gradient(135deg, #667eea, #764ba2); padding: 30px; border-radius: 16px; text-align: center; color: white;">
+                            <h1 style="margin: 0;">🎁 10 FREE SESSIONS</h1>
+                        </div>
+                        <div style="background: white; padding: 30px; border-radius: 16px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin-top: 20px;">
+                            <h2 style="color: #333;">Verify Your Email</h2>
+                            <p>Thanks for signing up for <strong>Universal Smart AI</strong>! I'm excited to help you learn any subject.</p>
+                            <p>Click the button below to confirm your email address and activate your <strong>10 free tutoring sessions</strong>.</p>
+                            <div style="text-align: center; margin: 30px 0;">
+                                <a href="${verifyUrl}" style="background: linear-gradient(135deg, #6366f1, #4f46e5); color: white; padding: 12px 24px; text-decoration: none; border-radius: 8px; font-weight: bold;">Confirm Email →</a>
+                            </div>
+                            <p style="color: #666; font-size: 12px;">This link will expire in 24 hours. If you didn't sign up for Universal Smart AI, you can safely ignore this email.</p>
+                        </div>
+                        <div style="text-align: center; margin-top: 20px; color: #666; font-size: 12px;">
+                            <p>Universal Smart AI - Your Personal AI Learning Assistant</p>
+                        </div>
+                    </body>
+                    </html>
+                `
+            });
+            emailSent = true;
+            console.log(`✅ Email sent to ${email}`);
+        } catch (emailError) {
+            console.error('Failed to send email:', emailError.message);
+        }
+    }
+    
+    res.json({ 
+        success: true, 
+        message: emailSent ? 'Verification email sent! Check your inbox.' : 'Verification link created.',
+        requiresVerification: true,
+        ...(process.env.NODE_ENV !== 'production' && { debugUrl: verifyUrl })
+    });
+});
+
+// ==================== EMAIL VERIFICATION ====================
 app.get('/api/verify-email', (req, res) => {
     const { token } = req.query;
     
@@ -338,46 +287,11 @@ function getErrorPage(title, message) {
     return `
         <!DOCTYPE html>
         <html>
-        <head>
-            <title>${title}</title>
-            <style>
-                body {
-                    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-                    text-align: center;
-                    padding: 50px;
-                    background: linear-gradient(135deg, #667eea, #764ba2);
-                    color: white;
-                    min-height: 100vh;
-                    margin: 0;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                }
-                .container {
-                    max-width: 500px;
-                    background: rgba(255,255,255,0.15);
-                    padding: 40px;
-                    border-radius: 24px;
-                }
-                h1 { font-size: 2rem; margin-bottom: 1rem; }
-                .btn {
-                    display: inline-block;
-                    background: white;
-                    color: #6366f1;
-                    padding: 12px 24px;
-                    border-radius: 8px;
-                    text-decoration: none;
-                    margin-top: 20px;
-                    font-weight: bold;
-                }
-            </style>
-        </head>
-        <body>
-            <div class="container">
-                <h1>❌ ${title}</h1>
-                <p>${message}</p>
-                <a href="https://universalsmartai.com/" class="btn">Back to Universal Smart AI</a>
-            </div>
+        <head><title>${title}</title></head>
+        <body style="font-family:sans-serif;text-align:center;padding:50px;background:linear-gradient(135deg,#667eea,#764ba2);color:white;">
+            <h1>❌ ${title}</h1>
+            <p>${message}</p>
+            <a href="https://universalsmartai.com/" style="color:white;">Back to Universal Smart AI</a>
         </body>
         </html>
     `;
@@ -391,13 +305,12 @@ function getSuccessPage() {
             <title>Email Verified!</title>
             <style>
                 body {
-                    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                    font-family: sans-serif;
                     text-align: center;
                     padding: 50px;
                     background: linear-gradient(135deg, #667eea, #764ba2);
                     color: white;
                     min-height: 100vh;
-                    margin: 0;
                     display: flex;
                     align-items: center;
                     justify-content: center;
@@ -407,36 +320,25 @@ function getSuccessPage() {
                     background: rgba(255,255,255,0.15);
                     padding: 40px;
                     border-radius: 24px;
-                    animation: fadeIn 0.5s ease;
-                }
-                @keyframes fadeIn {
-                    from { opacity: 0; transform: translateY(20px); }
-                    to { opacity: 1; transform: translateY(0); }
                 }
                 h1 { font-size: 2.5rem; margin-bottom: 1rem; }
-                .checkmark { font-size: 4rem; margin-bottom: 1rem; }
                 .btn {
                     display: inline-block;
                     background: #10b981;
                     color: white;
-                    padding: 14px 28px;
+                    padding: 12px 24px;
                     border-radius: 8px;
                     text-decoration: none;
                     margin-top: 20px;
-                    font-weight: bold;
-                }
-                .btn:hover {
-                    background: #059669;
                 }
             </style>
         </head>
         <body>
             <div class="container">
-                <div class="checkmark">✅</div>
-                <h1>Email Verified!</h1>
+                <h1>✅ Email Verified!</h1>
                 <p>Thank you for confirming your email address!</p>
-                <p>Your account has been credited with <strong>10 free AI tutoring sessions</strong>.</p>
-                <a href="https://universalsmartai.com/" class="btn">Start Learning Now →</a>
+                <p>You now have <strong>10 free AI tutoring sessions</strong>!</p>
+                <a href="https://universalsmartai.com/" class="btn">Start Learning →</a>
             </div>
         </body>
         </html>
@@ -469,7 +371,7 @@ app.get('/api/health', (req, res) => {
     res.json({ 
         status: 'healthy',
         geminiAvailable: !!genAI,
-        emailServiceAvailable: !!resend,
+        emailServiceAvailable: !!process.env.RESEND_API_KEY,
         verifiedEmails: verifiedEmails.size,
         pendingVerifications: pendingVerifications.size,
         timestamp: new Date().toISOString() 
@@ -480,5 +382,5 @@ app.listen(PORT, () => {
     console.log(`🤖 Universal Smart AI API running on port ${PORT}`);
     console.log(`📧 ${verifiedEmails.size} verified emails`);
     console.log(`🤖 Gemini: ${genAI ? 'ACTIVE' : 'INACTIVE'}`);
-    console.log(`📧 Email Service: ${resend ? 'ACTIVE' : 'INACTIVE'}`);
+    console.log(`📧 Email Service: ${process.env.RESEND_API_KEY ? 'ACTIVE' : 'INACTIVE'}`);
 });
