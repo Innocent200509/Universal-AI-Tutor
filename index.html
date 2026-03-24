@@ -9,7 +9,8 @@
     <title>Universal Smart AI - Free AI Tutor (Ad-Supported)</title>
     
     <!-- Google AdSense -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-YOUR_PUBLISHER_ID" crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3701999191662457"
+         crossorigin="anonymous"></script>
     
     <!-- Rest of head content -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -107,25 +108,6 @@
             margin-right: 0.5rem;
         }
 
-        /* Premium Banner */
-        .premium-banner {
-            background: linear-gradient(135deg, var(--gold), #ffed4e);
-            color: #000;
-            padding: 0.5rem 1rem;
-            border-radius: 2rem;
-            font-size: 0.75rem;
-            font-weight: bold;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.3rem;
-        }
-
-        /* All your existing CSS continues here... */
-        /* [Keep all your existing CSS styles from the previous version] */
-        
-        /* For brevity, I'm showing the key additions. 
-           In the actual file, keep all your existing CSS from the previous version */
-        
         .bg-animation {
             position: fixed;
             top: 0;
@@ -944,7 +926,7 @@
                 <div class="ad-label">Advertisement</div>
                 <ins class="adsbygoogle"
                      style="display:block"
-                     data-ad-client="ca-pub-YOUR_PUBLISHER_ID"
+                     data-ad-client="ca-pub-3701999191662457"
                      data-ad-slot="YOUR_AD_SLOT_TOP"
                      data-ad-format="auto"
                      data-full-width-responsive="true"></ins>
@@ -1129,7 +1111,7 @@
                 <div class="ad-label">Advertisement</div>
                 <ins class="adsbygoogle"
                      style="display:block"
-                     data-ad-client="ca-pub-YOUR_PUBLISHER_ID"
+                     data-ad-client="ca-pub-3701999191662457"
                      data-ad-slot="YOUR_AD_SLOT_BOTTOM"
                      data-ad-format="auto"
                      data-full-width-responsive="true"></ins>
@@ -1228,7 +1210,8 @@
                 const notice = document.createElement('div');
                 notice.className = 'adblock-notice';
                 notice.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Please disable your ad blocker to support free access. Or <a href="#" onclick="showPremiumModal()">upgrade to ad-free</a> for just $4.99/month!';
-                document.querySelector('.hero').insertBefore(notice, document.querySelector('.stats-bar'));
+                const heroSection = document.querySelector('.hero');
+                if (heroSection) heroSection.insertBefore(notice, document.querySelector('.stats-bar'));
                 notice.style.display = 'block';
             });
         }
