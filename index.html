@@ -4,9 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="theme-color" content="#6366f1">
-    <meta name="description" content="Universal Smart AI - Free AI Tutor with ads. Upgrade to Pro for ad-free learning! Learn any subject with AI-powered help, voice input, flashcards, and quizzes.">
+    <meta name="description" content="Universal Smart AI - Free AI Tutor with ads. Upgrade to Pro for ad-free learning! Learn any subject with AI-powered help.">
     <meta name="keywords" content="AI tutor, free AI tutor, homework help, study assistant, ad-supported, math tutor">
     <title>Universal Smart AI - Free AI Tutor (Ad-Supported)</title>
+    
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-YOUR_PUBLISHER_ID" crossorigin="anonymous"></script>
+    
+    <!-- Rest of head content -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
@@ -14,6 +19,7 @@
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
     </script>
     <style>
+        /* All your existing CSS styles remain the same */
         * {
             margin: 0;
             padding: 0;
@@ -63,9 +69,9 @@
 
         /* Ad Container Styles */
         .ad-container {
-            background: rgba(0, 0, 0, 0.3);
+            background: rgba(0, 0, 0, 0.2);
             border-radius: var(--border-radius);
-            padding: 0.5rem;
+            padding: 0.75rem;
             margin: 1rem 0;
             text-align: center;
             overflow: hidden;
@@ -77,35 +83,28 @@
             opacity: 0.5;
             text-transform: uppercase;
             letter-spacing: 1px;
-            margin-bottom: 0.25rem;
+            margin-bottom: 0.5rem;
         }
 
-        .ad-banner {
-            background: linear-gradient(135deg, rgba(99,102,241,0.2), rgba(236,72,153,0.2));
-            border-radius: 0.5rem;
-            padding: 0.75rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 1rem;
-            flex-wrap: wrap;
+        .ad-container ins {
+            display: block;
+            margin: 0 auto;
         }
 
-        .ad-banner i {
-            font-size: 1.5rem;
+        /* Ad Blocker Notice */
+        .adblock-notice {
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid var(--danger);
+            border-radius: var(--border-radius);
+            padding: 1rem;
+            margin: 1rem 0;
+            text-align: center;
+            display: none;
         }
 
-        .ad-banner .ad-text {
-            font-size: 0.85rem;
-        }
-
-        .ad-banner .ad-button {
-            background: var(--primary);
-            padding: 0.3rem 0.8rem;
-            border-radius: 2rem;
-            font-size: 0.75rem;
-            font-weight: bold;
-            cursor: pointer;
+        .adblock-notice i {
+            color: var(--danger);
+            margin-right: 0.5rem;
         }
 
         /* Premium Banner */
@@ -121,17 +120,12 @@
             gap: 0.3rem;
         }
 
-        /* Ad Badge on Free Users */
-        .ad-badge {
-            background: rgba(0,0,0,0.5);
-            padding: 0.2rem 0.5rem;
-            border-radius: 1rem;
-            font-size: 0.7rem;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.3rem;
-        }
-
+        /* All your existing CSS continues here... */
+        /* [Keep all your existing CSS styles from the previous version] */
+        
+        /* For brevity, I'm showing the key additions. 
+           In the actual file, keep all your existing CSS from the previous version */
+        
         .bg-animation {
             position: fixed;
             top: 0;
@@ -945,14 +939,18 @@
                 <div class="stat-item"><div class="stat-value" id="streakDisplay">0</div><div class="stat-label">Day Streak</div></div>
             </div>
 
-            <!-- Ad Banner for Free Users -->
-            <div id="freeAdBanner" class="ad-container" style="display: none;">
+            <!-- Google AdSense Banner - Top -->
+            <div id="topAd" class="ad-container">
                 <div class="ad-label">Advertisement</div>
-                <div class="ad-banner">
-                    <i class="fas fa-ad"></i>
-                    <span class="ad-text">Enjoying Universal Smart AI? <strong>Go ad-free for just $4.99/month!</strong></span>
-                    <span class="ad-button" onclick="showPremiumModal()">Upgrade Now →</span>
-                </div>
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-YOUR_PUBLISHER_ID"
+                     data-ad-slot="YOUR_AD_SLOT_TOP"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+                <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
             </div>
 
             <div class="pomodoro-timer">
@@ -1125,6 +1123,20 @@
                 <button class="btn btn-secondary" onclick="exportAsPDF()"><i class="fas fa-file-pdf"></i> Export PDF</button>
                 <button class="btn btn-secondary" onclick="showSection('home')"><i class="fas fa-home"></i> Back</button>
             </div>
+
+            <!-- Google AdSense Banner - Bottom of Chat -->
+            <div id="bottomAd" class="ad-container" style="margin-top: 1rem;">
+                <div class="ad-label">Advertisement</div>
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-YOUR_PUBLISHER_ID"
+                     data-ad-slot="YOUR_AD_SLOT_BOTTOM"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+                <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+            </div>
         </section>
     </div>
 
@@ -1191,58 +1203,34 @@
 
         // ==================== AD MANAGEMENT ====================
         function updateAdVisibility() {
-            const adBanner = document.getElementById('freeAdBanner');
-            const premiumStatusEl = document.getElementById('premiumStatus');
+            const topAd = document.getElementById('topAd');
+            const bottomAd = document.getElementById('bottomAd');
             
             if (isPremium) {
-                if (adBanner) adBanner.style.display = 'none';
-                if (premiumStatusEl) premiumStatusEl.textContent = 'Premium';
-                // Remove upgrade button if premium
+                if (topAd) topAd.style.display = 'none';
+                if (bottomAd) bottomAd.style.display = 'none';
+                document.getElementById('premiumStatus').textContent = 'Premium';
                 const upgradeBtn = document.querySelector('.upgrade-btn');
                 if (upgradeBtn) upgradeBtn.style.display = 'none';
             } else {
-                if (adBanner) adBanner.style.display = 'block';
-                if (premiumStatusEl) premiumStatusEl.textContent = 'Free (Ad-Supported)';
+                if (topAd) topAd.style.display = 'block';
+                if (bottomAd) bottomAd.style.display = 'block';
+                document.getElementById('premiumStatus').textContent = 'Free (Ad-Supported)';
             }
         }
 
-        // Show ad at random intervals (every 3-5 questions for free users)
-        let questionCountSinceLastAd = 0;
-        
-        function maybeShowAd() {
-            if (isPremium) return;
-            
-            questionCountSinceLastAd++;
-            if (questionCountSinceLastAd >= 3) {
-                questionCountSinceLastAd = 0;
-                showAdPopup();
-            }
-        }
-        
-        function showAdPopup() {
-            const modal = document.createElement('div');
-            modal.className = 'modal-overlay';
-            modal.innerHTML = `
-                <div class="modal-content">
-                    <button class="close-btn" onclick="this.closest('.modal-overlay').remove()">×</button>
-                    <div style="font-size: 3rem; margin-bottom: 1rem;">📢</div>
-                    <h3>Support Universal Smart AI</h3>
-                    <p>You're using the <strong>free ad-supported version</strong>.</p>
-                    <p>Upgrade to Premium for just <strong>$${PREMIUM_PRICE}/month</strong> and enjoy:</p>
-                    <ul style="text-align: left; margin: 1rem 0;">
-                        <li>✅ No ads ever</li>
-                        <li>✅ Support the development</li>
-                        <li>✅ All features included</li>
-                    </ul>
-                    <button onclick="startPayPalCheckout(); this.closest('.modal-overlay').remove();" class="btn btn-gold" style="width:100%;margin-bottom:0.5rem;">
-                        <i class="fab fa-paypal"></i> Upgrade Now - $${PREMIUM_PRICE}/month
-                    </button>
-                    <button onclick="this.closest('.modal-overlay').remove()" class="btn btn-secondary" style="width:100%;">
-                        Continue with Ads
-                    </button>
-                </div>
-            `;
-            document.body.appendChild(modal);
+        // Check if ads are blocked
+        function checkAdBlock() {
+            fetch('https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js', {
+                method: 'HEAD',
+                mode: 'no-cors'
+            }).catch(() => {
+                const notice = document.createElement('div');
+                notice.className = 'adblock-notice';
+                notice.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Please disable your ad blocker to support free access. Or <a href="#" onclick="showPremiumModal()">upgrade to ad-free</a> for just $4.99/month!';
+                document.querySelector('.hero').insertBefore(notice, document.querySelector('.stats-bar'));
+                notice.style.display = 'block';
+            });
         }
 
         // ==================== TIMER ====================
@@ -1596,10 +1584,6 @@
                     localStorage.setItem('totalQuestions', totalQuestions); 
                     updateStats(); 
                     checkAchievements(); 
-                    // Show ad every few questions for free users
-                    if (!isPremium) {
-                        maybeShowAd();
-                    }
                 } else { 
                     addMessage('assistant', `⚠️ ${data.error || 'Something went wrong'}`); 
                 } 
@@ -1814,6 +1798,7 @@
             }
             
             updateAdVisibility();
+            checkAdBlock();
             switchUploadTab('file');
         });
     </script>
