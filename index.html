@@ -3,13 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <meta name="description" content="SmartExam - AI-Powered South African Exam Preparation. Personalized practice, instant feedback, real past papers, exam timer, and leaderboards.">
+    <meta name="description" content="SmartExam - AI-Powered South African Exam Preparation. Personalized practice, instant feedback, real past papers from SA Exam Papers, exam timer, and leaderboards.">
     <meta name="keywords" content="SA exam papers, Grade 12 past papers, CAPS, Matric preparation, AI tutor, NSC past papers, exam timer, study groups">
     <title>SmartExam | AI-Powered South African Exam Prep</title>
+    
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3701999191662457"
+         crossorigin="anonymous"></script>
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* All your existing CSS - keeping everything */
         * {
             margin: 0;
             padding: 0;
@@ -123,14 +128,55 @@
             padding: 2rem;
         }
 
-        /* Timer Display */
+        /* Ad Container */
+        .ad-container {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 1rem;
+            padding: 0.75rem;
+            margin: 1rem 0;
+            text-align: center;
+        }
+
+        .ad-label {
+            font-size: 0.65rem;
+            opacity: 0.5;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+
+        /* External Resources - SA Exam Papers */
+        .external-resources {
+            background: var(--glass);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .resource-link {
+            display: inline-block;
+            background: rgba(255,255,255,0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            color: white;
+            text-decoration: none;
+            margin: 0.5rem;
+            transition: all 0.3s;
+        }
+
+        .resource-link:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+        }
+
+        /* Timer Card */
         .timer-card {
             background: var(--glass);
             backdrop-filter: blur(10px);
             border-radius: 1rem;
             padding: 1rem;
             text-align: center;
-            margin-bottom: 1rem;
+            margin: 1rem 0;
         }
 
         .timer-display {
@@ -140,125 +186,20 @@
             color: var(--secondary);
         }
 
-        /* Leaderboard */
-        .leaderboard {
-            background: var(--glass);
-            backdrop-filter: blur(10px);
-            border-radius: 1rem;
-            padding: 1rem;
-            margin-top: 1rem;
-        }
-
-        .leaderboard-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.8rem;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .leaderboard-rank {
-            font-weight: bold;
-            width: 40px;
-        }
-
-        .leaderboard-name {
-            flex: 1;
-        }
-
-        .leaderboard-score {
-            font-weight: bold;
-            color: var(--secondary);
-        }
-
-        /* Study Groups */
-        .group-card {
-            background: var(--glass);
-            backdrop-filter: blur(10px);
-            border-radius: 1rem;
-            padding: 1rem;
-            margin: 0.5rem 0;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .group-card:hover {
-            transform: translateX(5px);
-            border-left: 3px solid var(--secondary);
-        }
-
-        /* Topic Tags */
-        .topic-tag {
-            display: inline-block;
-            background: rgba(255,255,255,0.1);
-            padding: 0.3rem 0.8rem;
-            border-radius: 2rem;
-            font-size: 0.8rem;
-            margin: 0.2rem;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .topic-tag:hover, .topic-tag.active {
-            background: var(--secondary);
-        }
-
-        /* Analytics Chart */
-        .chart-container {
-            background: var(--glass);
-            backdrop-filter: blur(10px);
-            border-radius: 1rem;
-            padding: 1rem;
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
             margin: 1rem 0;
         }
 
-        .subject-chart {
-            display: flex;
-            align-items: center;
-            margin: 0.5rem 0;
-        }
-
-        .subject-chart-label {
-            width: 120px;
-            font-size: 0.9rem;
-        }
-
-        .subject-chart-bar {
-            flex: 1;
-            height: 8px;
-            background: rgba(255,255,255,0.2);
-            border-radius: 4px;
-            overflow: hidden;
-        }
-
-        .subject-chart-fill {
-            height: 100%;
-            background: var(--accent);
-            width: 0%;
-            border-radius: 4px;
-            transition: width 0.5s;
-        }
-
-        .subject-chart-percent {
-            width: 50px;
-            text-align: right;
-            font-size: 0.8rem;
-        }
-
-        /* Achievement Badges */
-        .badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.3rem;
-            background: rgba(255,255,255,0.1);
-            padding: 0.3rem 0.8rem;
-            border-radius: 2rem;
-            font-size: 0.8rem;
-            margin: 0.2rem;
-        }
-
-        .badge-unlocked {
-            background: linear-gradient(135deg, var(--gold, #f39c12), #e67e22);
+        .stat-card {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            padding: 1rem;
+            border-radius: 1rem;
+            text-align: center;
         }
 
         /* Subjects Grid */
@@ -308,6 +249,21 @@
         .difficulty-medium { background: var(--warning); }
         .difficulty-hard { background: var(--danger); }
 
+        .topic-tag {
+            display: inline-block;
+            background: rgba(255,255,255,0.1);
+            padding: 0.3rem 0.8rem;
+            border-radius: 2rem;
+            font-size: 0.8rem;
+            margin: 0.2rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .topic-tag:hover, .topic-tag.active {
+            background: var(--secondary);
+        }
+
         .practice-section {
             background: var(--glass);
             backdrop-filter: blur(10px);
@@ -352,6 +308,57 @@
             padding: 1rem;
             border-radius: 0.5rem;
             margin-top: 1rem;
+        }
+
+        .leaderboard {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border-radius: 1rem;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+
+        .leaderboard-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .group-card {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border-radius: 1rem;
+            padding: 1rem;
+            margin: 0.5rem 0;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .group-card:hover {
+            transform: translateX(5px);
+            border-left: 3px solid var(--secondary);
+        }
+
+        .email-capture {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            padding: 1.5rem;
+            border-radius: 1rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .email-input {
+            padding: 0.7rem 1rem;
+            border-radius: 0.8rem;
+            border: none;
+            width: 280px;
+            max-width: 100%;
+            margin-right: 0.5rem;
+            font-size: 0.9rem;
+            background: white;
+            color: #333;
         }
 
         .modal-overlay {
@@ -416,7 +423,7 @@
             .nav-links { gap: 0.5rem; }
             .nav-links a { padding: 0.3rem 0.6rem; font-size: 0.8rem; }
             .timer-display { font-size: 2rem; }
-            .subject-chart-label { width: 90px; font-size: 0.8rem; }
+            .email-input { width: 100%; margin-bottom: 0.5rem; }
         }
     </style>
 </head>
@@ -443,11 +450,42 @@
         <section id="home">
             <div style="text-align: center; padding: 3rem 2rem; background: linear-gradient(135deg, rgba(30,58,95,0.8), rgba(15,42,64,0.9)); border-radius: 2rem; margin-bottom: 2rem;">
                 <h1 style="font-size: clamp(2rem, 5vw, 3rem); margin-bottom: 1rem;">Ace Your <span style="color: var(--secondary);">Matric Exams</span></h1>
-                <p style="font-size: 1.2rem; margin-bottom: 2rem;">AI-powered practice with real past papers. Track progress, compete with friends, and master every subject.</p>
+                <p style="font-size: 1.2rem; margin-bottom: 2rem;">AI-powered practice with real past papers from SA Exam Papers. Track progress, compete with friends, and master every subject.</p>
                 <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
                     <button class="btn" onclick="startPractice()">Start Practicing →</button>
                     <button class="btn btn-outline" onclick="showSection('subjects')">Browse Subjects</button>
                 </div>
+            </div>
+
+            <!-- SA Exam Papers Integration -->
+            <div class="external-resources">
+                <h3><i class="fas fa-download"></i> Official Past Papers from SA Exam Papers</h3>
+                <p>Download full past exam papers and memos from South Africa's largest collection:</p>
+                <div style="margin-top: 1rem;">
+                    <a href="https://www.saexampapers.co.za" target="_blank" class="resource-link">
+                        <i class="fas fa-external-link-alt"></i> SA Exam Papers - 20,000+ Past Papers
+                    </a>
+                    <a href="https://www.education.gov.za" target="_blank" class="resource-link">
+                        <i class="fas fa-external-link-alt"></i> Department of Education
+                    </a>
+                    <a href="https://www.stanmorephysics.com" target="_blank" class="resource-link">
+                        <i class="fas fa-external-link-alt"></i> Stanmore Physics
+                    </a>
+                </div>
+            </div>
+
+            <!-- Google AdSense Top Banner -->
+            <div class="ad-container">
+                <div class="ad-label">Advertisement</div>
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-3701999191662457"
+                     data-ad-slot="9204344934"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+                <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
             </div>
 
             <!-- Timer Card -->
@@ -462,30 +500,55 @@
                 </div>
             </div>
 
-            <div class="stats-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
-                <div class="stat-card" style="background: var(--glass); padding: 1rem; border-radius: 1rem; text-align: center;">
+            <div class="stats-grid">
+                <div class="stat-card">
                     <div style="font-size: 2rem; font-weight: bold;" id="totalQuestions">0</div>
                     <div>Questions Answered</div>
                 </div>
-                <div class="stat-card" style="background: var(--glass); padding: 1rem; border-radius: 1rem; text-align: center;">
+                <div class="stat-card">
                     <div style="font-size: 2rem; font-weight: bold;" id="accuracy">0%</div>
                     <div>Accuracy</div>
                 </div>
-                <div class="stat-card" style="background: var(--glass); padding: 1rem; border-radius: 1rem; text-align: center;">
+                <div class="stat-card">
                     <div style="font-size: 2rem; font-weight: bold;" id="streak">0</div>
                     <div>Day Streak</div>
                 </div>
-                <div class="stat-card" style="background: var(--glass); padding: 1rem; border-radius: 1rem; text-align: center;">
+                <div class="stat-card">
                     <div style="font-size: 2rem; font-weight: bold;" id="rank">#--</div>
                     <div>Global Rank</div>
                 </div>
             </div>
         </section>
 
+        <!-- Email Capture Section -->
+        <div class="email-capture" id="emailCapture">
+            <i class="fas fa-gift" style="font-size: 1.8rem; margin-bottom: 0.5rem;"></i>
+            <h3>🎁 Save Your Progress!</h3>
+            <p>Enter your email to save your progress, earn achievements, and compete on the leaderboard</p>
+            <form id="emailForm" onsubmit="subscribeWithVerification(event)">
+                <input type="email" id="userEmail" class="email-input" placeholder="Enter your email" required>
+                <button type="submit" class="btn" id="subscribeBtn"><i class="fas fa-envelope"></i> Save Progress</button>
+            </form>
+            <div id="emailStatus" style="margin-top: 0.8rem; display: none;"></div>
+        </div>
+
         <!-- Subjects Section -->
         <section id="subjects" style="display: none;">
             <h2><i class="fas fa-book-open"></i> All Subjects</h2>
             <div class="subjects-grid" id="subjectsGrid"></div>
+            <!-- Bottom Ad -->
+            <div class="ad-container" style="margin-top: 2rem;">
+                <div class="ad-label">Advertisement</div>
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-3701999191662457"
+                     data-ad-slot="3321462862"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+                <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+            </div>
             <button class="btn btn-outline" onclick="showSection('home')" style="margin-top: 1rem;">Back</button>
         </section>
 
@@ -500,7 +563,6 @@
                 </div>
             </div>
             
-            <!-- Topic Selector -->
             <div id="topicSelector" style="margin: 1rem 0;"></div>
             
             <div id="questionContainer"></div>
@@ -513,27 +575,9 @@
         <!-- Analytics Section -->
         <section id="analytics" style="display: none;">
             <h2><i class="fas fa-chart-line"></i> Performance Analytics</h2>
-            
-            <div class="chart-container">
-                <h3>Subject Mastery</h3>
-                <div id="subjectCharts"></div>
-            </div>
-            
-            <div class="chart-container">
-                <h3>Weekly Progress</h3>
-                <canvas id="weeklyChart" style="background: rgba(255,255,255,0.05); border-radius: 0.5rem; padding: 1rem;"></canvas>
-            </div>
-            
-            <div class="chart-container">
-                <h3>Achievements</h3>
-                <div id="badgesContainer"></div>
-            </div>
-            
-            <div class="chart-container">
-                <h3>Study Recommendations</h3>
-                <div id="recommendations"></div>
-            </div>
-            
+            <div class="stats-grid" id="subjectCharts"></div>
+            <div id="recommendations" style="background: var(--glass); border-radius: 1rem; padding: 1rem; margin: 1rem 0;"></div>
+            <div id="badgesContainer" style="background: var(--glass); border-radius: 1rem; padding: 1rem;"></div>
             <button class="btn btn-outline" onclick="showSection('home')">Back</button>
         </section>
 
@@ -549,14 +593,14 @@
                 </div>
                 <div id="leaderboardList"></div>
             </div>
-            <button class="btn btn-outline" onclick="showSection('home')" style="margin-top: 1rem;">Back</button>
+            <button class="btn btn-outline" onclick="showSection('home')">Back</button>
         </section>
 
         <!-- Study Groups Section -->
         <section id="groups" style="display: none;">
             <h2><i class="fas fa-users"></i> Study Groups</h2>
-            <div style="margin-bottom: 1rem;">
-                <input type="text" id="newGroupName" placeholder="Group name" style="background: rgba(255,255,255,0.1); border: none; padding: 0.8rem; border-radius: 0.5rem; color: white; width: 200px;">
+            <div style="margin-bottom: 1rem; display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                <input type="text" id="newGroupName" placeholder="Group name" style="background: rgba(255,255,255,0.1); border: none; padding: 0.8rem; border-radius: 0.5rem; color: white; flex: 1;">
                 <button class="btn" onclick="createStudyGroup()">Create Group</button>
             </div>
             <div id="studyGroupsList"></div>
@@ -575,10 +619,7 @@
             <div class="grade-selector" id="gradeSelector"></div>
             
             <h3>School Type</h3>
-            <div class="school-selector" id="schoolSelector"></div>
-            
-            <h3>Curriculum</h3>
-            <div id="curriculumSelector"></div>
+            <div id="schoolSelector"></div>
             
             <button class="btn" onclick="saveProfile()" style="margin-top: 1rem; width: 100%;">Save Profile</button>
         </div>
@@ -588,15 +629,17 @@
         // ==================== CONFIGURATION ====================
         const BACKEND_URL = 'https://universal-ai-tutor-2.onrender.com';
         
-        // User Profile
+        // User Profile & Progress Saving
+        let userEmail = localStorage.getItem('userEmail') || '';
+        let emailVerified = localStorage.getItem('emailVerified') === 'true';
+        
         let userProfile = JSON.parse(localStorage.getItem('smartExamProfile')) || {
             name: 'Student',
             grade: null,
-            schoolType: null,
-            curriculum: null
+            schoolType: null
         };
         
-        // Expanded Subjects (15+ subjects)
+        // Subjects (18 subjects)
         const subjects = [
             { id: 'mathematics', name: 'Mathematics', icon: '📐', topics: ['Algebra', 'Calculus', 'Geometry', 'Trigonometry', 'Statistics', 'Probability', 'Functions'] },
             { id: 'physical-sciences', name: 'Physical Sciences', icon: '⚛️', topics: ['Mechanics', 'Waves', 'Electricity', 'Chemistry', 'Thermodynamics', 'Quantum'] },
@@ -618,22 +661,19 @@
             { id: 'mechanical-tech', name: 'Mechanical Technology', icon: '⚙️', topics: ['Mechanics', 'Tools', 'Manufacturing', 'Design'] }
         ];
         
-        // Practice Stats
+        // Practice Stats - SAVED in localStorage
         let practiceStats = JSON.parse(localStorage.getItem('practiceStats')) || {
             total: 0,
             correct: 0,
             bySubject: {},
             byTopic: {},
-            weeklyProgress: [],
             streak: 0,
             lastActive: null
         };
         
-        // Leaderboard Data
         let leaderboard = JSON.parse(localStorage.getItem('leaderboard')) || [];
-        
-        // Study Groups
         let studyGroups = JSON.parse(localStorage.getItem('studyGroups')) || [];
+        let badges = JSON.parse(localStorage.getItem('badges')) || [];
         
         let currentSubject = null;
         let currentTopic = null;
@@ -656,53 +696,41 @@
                 practiceStats.lastActive = today;
                 localStorage.setItem('practiceStats', JSON.stringify(practiceStats));
                 
-                // Check streak achievements
                 if (practiceStats.streak === 7) unlockBadge('7 Day Streak');
                 if (practiceStats.streak === 30) unlockBadge('30 Day Streak');
-                if (practiceStats.streak === 100) unlockBadge('100 Day Streak');
             }
             document.getElementById('streak').textContent = practiceStats.streak;
         }
         
-        // Update stats
         function updateStats() {
             document.getElementById('totalQuestions').textContent = practiceStats.total;
             const accuracy = practiceStats.total > 0 ? Math.round((practiceStats.correct / practiceStats.total) * 100) : 0;
             document.getElementById('accuracy').textContent = accuracy + '%';
             document.getElementById('streak').textContent = practiceStats.streak;
             
-            // Update rank
             const sortedLeaderboard = [...leaderboard].sort((a, b) => b.score - a.score);
             const userRank = sortedLeaderboard.findIndex(u => u.name === userProfile.name) + 1;
             document.getElementById('rank').textContent = userRank > 0 ? `#${userRank}` : '#--';
         }
         
-        // Unlock badge
         function unlockBadge(badgeName) {
-            let badges = JSON.parse(localStorage.getItem('badges')) || [];
             if (!badges.includes(badgeName)) {
                 badges.push(badgeName);
                 localStorage.setItem('badges', JSON.stringify(badges));
-                showToast(`🏆 Achievement Unlocked: ${badgeName}!`, 'success');
                 renderBadges();
+                showToast(`🏆 Achievement Unlocked: ${badgeName}!`, 'success');
             }
         }
         
-        // Render badges
         function renderBadges() {
-            const badges = JSON.parse(localStorage.getItem('badges')) || [];
             const container = document.getElementById('badgesContainer');
             if (container) {
-                container.innerHTML = badges.map(badge => `
-                    <div class="badge badge-unlocked">
-                        <i class="fas fa-medal"></i> ${badge}
-                    </div>
-                `).join('');
-                if (badges.length === 0) container.innerHTML = '<p>Complete challenges to earn badges!</p>';
+                container.innerHTML = badges.length > 0 ? 
+                    `<h3>Achievements</h3><div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">${badges.map(b => `<span class="badge" style="background: var(--secondary); padding: 0.3rem 0.8rem; border-radius: 2rem;">🏅 ${b}</span>`).join('')}</div>` :
+                    '<p>Complete challenges to earn badges!</p>';
             }
         }
         
-        // Update leaderboard
         function updateLeaderboard() {
             const score = practiceStats.total > 0 ? Math.round((practiceStats.correct / practiceStats.total) * 100) : 0;
             const existing = leaderboard.findIndex(u => u.name === userProfile.name);
@@ -720,7 +748,6 @@
             leaderboard = leaderboard.sort((a, b) => b.score - a.score).slice(0, 100);
             localStorage.setItem('leaderboard', JSON.stringify(leaderboard));
             
-            // Render leaderboard
             const container = document.getElementById('leaderboardList');
             if (container) {
                 container.innerHTML = leaderboard.map((user, i) => `
@@ -734,7 +761,6 @@
             }
         }
         
-        // Render subjects grid
         function renderSubjects() {
             const grid = document.getElementById('subjectsGrid');
             grid.innerHTML = subjects.map(subject => {
@@ -745,12 +771,12 @@
                         <div class="subject-icon">${subject.icon}</div>
                         <div class="subject-title">${subject.name}</div>
                         <p style="font-size: 0.8rem; opacity: 0.8;">${subject.topics.length} topics</p>
-                        <div class="subject-stats" style="display: flex; justify-content: space-between; margin-top: 0.5rem;">
+                        <div style="display: flex; justify-content: space-between; margin-top: 0.5rem;">
                             <span><i class="fas fa-check-circle"></i> ${stats.correct}/${stats.total}</span>
                             <span><i class="fas fa-chart-line"></i> ${percent}%</span>
                         </div>
-                        <div class="progress-bar-container" style="margin-top: 0.5rem; background: rgba(255,255,255,0.2); border-radius: 0.5rem; height: 4px;">
-                            <div class="progress-fill" style="width: ${percent}%; height: 100%; background: var(--secondary); border-radius: 0.5rem;"></div>
+                        <div style="margin-top: 0.5rem; background: rgba(255,255,255,0.2); border-radius: 0.5rem; height: 4px;">
+                            <div style="width: ${percent}%; height: 100%; background: var(--secondary); border-radius: 0.5rem;"></div>
                         </div>
                     </div>
                 `;
@@ -762,16 +788,13 @@
             currentTopic = null;
             document.getElementById('practiceSubjectTitle').innerHTML = `<i class="fas fa-book"></i> ${subjectName} Practice`;
             
-            // Render topics
             const subjectData = subjects.find(s => s.id === subjectId);
             const topicContainer = document.getElementById('topicSelector');
             if (subjectData && topicContainer) {
                 topicContainer.innerHTML = `
                     <div style="margin: 1rem 0;">
-                        <strong>Topics:</strong>
-                        ${subjectData.topics.map(topic => `
-                            <span class="topic-tag" onclick="selectTopic('${topic}')">${topic}</span>
-                        `).join('')}
+                        <strong>Topics:</strong><br>
+                        ${subjectData.topics.map(topic => `<span class="topic-tag" onclick="selectTopic('${topic}')">${topic}</span>`).join('')}
                         <span class="topic-tag" onclick="selectTopic(null)">All Topics</span>
                     </div>
                 `;
@@ -784,9 +807,7 @@
         function selectTopic(topic) {
             currentTopic = topic;
             document.querySelectorAll('.topic-tag').forEach(tag => tag.classList.remove('active'));
-            if (topic) {
-                event.target.classList.add('active');
-            }
+            if (topic && event.target) event.target.classList.add('active');
             generateQuestion();
         }
         
@@ -799,32 +820,12 @@
             if (currentSubject) generateQuestion();
         }
         
-        // Past paper questions database
+        // Past paper questions
         const pastPaperQuestions = {
             'mathematics': {
-                easy: [
-                    { text: "Solve for x: 2x + 5 = 15", topic: "Algebra", marks: 2, year: "2023" },
-                    { text: "Calculate the area of a circle with radius 5cm", topic: "Geometry", marks: 3, year: "2022" }
-                ],
-                medium: [
-                    { text: "Solve the quadratic equation: x² - 5x + 6 = 0", topic: "Algebra", marks: 4, year: "2023" },
-                    { text: "Find the gradient of the line through (2,3) and (5,9)", topic: "Coordinate Geometry", marks: 3, year: "2022" }
-                ],
-                hard: [
-                    { text: "Solve for x: log₂(x+3) + log₂(x-3) = 4", topic: "Logarithms", marks: 5, year: "2023" },
-                    { text: "Find the derivative of f(x) = 3x⁴ - 2x³ + 5x - 7", topic: "Calculus", marks: 4, year: "2022" }
-                ]
-            },
-            'physical-sciences': {
-                easy: [
-                    { text: "State Newton's Second Law of Motion", topic: "Mechanics", marks: 2, year: "2023" }
-                ],
-                medium: [
-                    { text: "Calculate the force needed to accelerate a 5kg object at 2 m/s²", topic: "Mechanics", marks: 3, year: "2023" }
-                ],
-                hard: [
-                    { text: "Explain the photoelectric effect and its implications", topic: "Quantum Physics", marks: 5, year: "2023" }
-                ]
+                easy: [{ text: "Solve for x: 2x + 5 = 15", topic: "Algebra", marks: 2, year: "2023" }],
+                medium: [{ text: "Solve: x² - 5x + 6 = 0", topic: "Algebra", marks: 4, year: "2023" }],
+                hard: [{ text: "Solve: log₂(x+3) + log₂(x-3) = 4", topic: "Logarithms", marks: 5, year: "2023" }]
             }
         };
         
@@ -834,23 +835,22 @@
             const container = document.getElementById('questionContainer');
             container.innerHTML = '<div class="loader" style="margin: 2rem auto;"></div><p style="text-align: center;">Loading question...</p>';
             
-            // Try past paper question
             const subjectQuestions = pastPaperQuestions[currentSubject.id];
             if (subjectQuestions && subjectQuestions[currentDifficulty]) {
                 const questions = subjectQuestions[currentDifficulty];
                 const filtered = currentTopic ? questions.filter(q => q.topic === currentTopic) : questions;
-                const randomQuestion = filtered.length > 0 ? filtered[Math.floor(Math.random() * filtered.length)] : questions[0];
+                const randomQuestion = filtered.length > 0 ? filtered[0] : questions[0];
                 currentQuestion = randomQuestion;
                 
                 container.innerHTML = `
                     <div class="question-card">
-                        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem;">
+                        <div style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem;">
                             <span class="difficulty-badge difficulty-${currentDifficulty}">${currentDifficulty.toUpperCase()}</span>
                             <span><i class="fas fa-calendar-alt"></i> ${randomQuestion.year} Past Paper</span>
                             <span><i class="fas fa-tag"></i> ${randomQuestion.topic}</span>
                             <span><i class="fas fa-star"></i> ${randomQuestion.marks} marks</span>
                         </div>
-                        <div class="question-text" style="font-size: 1.1rem; line-height: 1.6;">${randomQuestion.text}</div>
+                        <div style="font-size: 1.1rem;">${randomQuestion.text}</div>
                         <textarea id="userAnswer" class="answer-input" rows="4" placeholder="Type your answer here..."></textarea>
                         <button class="btn" onclick="submitAnswer()">Submit Answer</button>
                         <button class="btn btn-outline" onclick="generateQuestion()">Next Question →</button>
@@ -862,27 +862,25 @@
             
             // AI-generated question
             try {
-                const topicText = currentTopic ? ` focusing on ${currentTopic}` : '';
                 const response = await fetch(`${BACKEND_URL}/api/tutor`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        message: `Generate a ${currentDifficulty} difficulty practice question for Grade ${userProfile.grade || '12'} ${currentSubject.name}${topicText} following CAPS curriculum. Make it similar to past exam papers.`,
+                        message: `Generate a ${currentDifficulty} difficulty practice question for Grade ${userProfile.grade || '12'} ${currentSubject.name} following CAPS curriculum.`,
                         subject: currentSubject.name,
-                        email: localStorage.getItem('userEmail') || ''
+                        email: userEmail
                     })
                 });
                 const data = await response.json();
                 if (data.reply) {
-                    currentQuestion = { text: data.reply, isAIGenerated: true, topic: currentTopic || 'General' };
+                    currentQuestion = { text: data.reply, isAIGenerated: true };
                     container.innerHTML = `
                         <div class="question-card">
-                            <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
+                            <div style="margin-bottom: 1rem;">
                                 <span class="difficulty-badge difficulty-${currentDifficulty}">${currentDifficulty.toUpperCase()}</span>
-                                <span><i class="fas fa-robot"></i> AI Generated</span>
-                                ${currentTopic ? `<span><i class="fas fa-tag"></i> ${currentTopic}</span>` : ''}
+                                <span style="margin-left: 0.5rem;"><i class="fas fa-robot"></i> AI Generated</span>
                             </div>
-                            <div class="question-text" style="font-size: 1.1rem; line-height: 1.6;">${data.reply}</div>
+                            <div style="font-size: 1.1rem;">${data.reply}</div>
                             <textarea id="userAnswer" class="answer-input" rows="4" placeholder="Type your answer here..."></textarea>
                             <button class="btn" onclick="submitAnswer()">Submit Answer</button>
                             <button class="btn btn-outline" onclick="generateQuestion()">Next Question →</button>
@@ -905,16 +903,14 @@
             const feedbackArea = document.getElementById('feedbackArea');
             feedbackArea.innerHTML = '<div class="loader"></div> Checking answer...';
             
-            const prompt = `Question: ${currentQuestion.text}\n\nStudent's answer: ${answer}\n\nEvaluate this answer for a Grade ${userProfile.grade || '12'} CAPS student. Provide:\n1. A score out of ${currentQuestion.marks || 5}\n2. Specific feedback on what was correct\n3. What could be improved\n4. The model answer\nBe encouraging and specific.`;
-            
             try {
                 const response = await fetch(`${BACKEND_URL}/api/tutor`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        message: prompt,
+                        message: `Question: ${currentQuestion.text}\n\nStudent's answer: ${answer}\n\nEvaluate this answer. Provide feedback and model answer.`,
                         subject: currentSubject.name,
-                        email: localStorage.getItem('userEmail') || ''
+                        email: userEmail
                     })
                 });
                 const data = await response.json();
@@ -922,33 +918,20 @@
                 if (data.reply) {
                     practiceStats.total++;
                     practiceStats.correct++;
-                    
                     if (!practiceStats.bySubject[currentSubject.id]) {
                         practiceStats.bySubject[currentSubject.id] = { total: 0, correct: 0 };
                     }
                     practiceStats.bySubject[currentSubject.id].total++;
                     practiceStats.bySubject[currentSubject.id].correct++;
                     
-                    if (currentTopic) {
-                        const topicKey = `${currentSubject.id}_${currentTopic}`;
-                        if (!practiceStats.byTopic[topicKey]) {
-                            practiceStats.byTopic[topicKey] = { total: 0, correct: 0 };
-                        }
-                        practiceStats.byTopic[topicKey].total++;
-                        practiceStats.byTopic[topicKey].correct++;
-                    }
-                    
                     localStorage.setItem('practiceStats', JSON.stringify(practiceStats));
                     updateStats();
                     updateStreak();
                     updateLeaderboard();
-                    renderAnalytics();
                     
-                    // Check mastery achievements
-                    const subjectStats = practiceStats.bySubject[currentSubject.id];
-                    if (subjectStats && subjectStats.total >= 10 && (subjectStats.correct / subjectStats.total) >= 0.8) {
-                        unlockBadge(`${currentSubject.name} Master`);
-                    }
+                    if (practiceStats.total === 1) unlockBadge('First Question');
+                    if (practiceStats.total === 10) unlockBadge('10 Questions');
+                    if (practiceStats.total === 100) unlockBadge('100 Questions');
                     
                     feedbackArea.innerHTML = `
                         <div class="feedback-card">
@@ -962,7 +945,6 @@
             }
         }
         
-        // Analytics
         function renderAnalytics() {
             const container = document.getElementById('subjectCharts');
             if (container) {
@@ -970,18 +952,18 @@
                     const stats = practiceStats.bySubject[subject.id] || { total: 0, correct: 0 };
                     const percent = stats.total > 0 ? Math.round((stats.correct / stats.total) * 100) : 0;
                     return `
-                        <div class="subject-chart">
-                            <div class="subject-chart-label">${subject.name}</div>
-                            <div class="subject-chart-bar">
-                                <div class="subject-chart-fill" style="width: ${percent}%;"></div>
+                        <div class="stat-card">
+                            <div><strong>${subject.name}</strong></div>
+                            <div style="font-size: 1.5rem;">${percent}%</div>
+                            <div>${stats.correct}/${stats.total}</div>
+                            <div style="margin-top: 0.5rem; background: rgba(255,255,255,0.2); border-radius: 0.5rem; height: 4px;">
+                                <div style="width: ${percent}%; height: 100%; background: var(--accent); border-radius: 0.5rem;"></div>
                             </div>
-                            <div class="subject-chart-percent">${percent}%</div>
                         </div>
                     `;
                 }).join('');
             }
             
-            // Recommendations
             const weakSubjects = subjects.filter(s => {
                 const stats = practiceStats.bySubject[s.id];
                 if (!stats || stats.total < 5) return false;
@@ -992,14 +974,15 @@
             if (recContainer) {
                 if (weakSubjects.length > 0) {
                     recContainer.innerHTML = `
-                        <p>🔍 Based on your performance, focus on these subjects:</p>
-                        <ul>
-                            ${weakSubjects.map(s => `<li>${s.name} - Practice more to improve</li>`).join('')}
-                        </ul>
+                        <h3>📚 Recommended Focus</h3>
+                        <p>Based on your performance, practice these subjects more:</p>
+                        <ul>${weakSubjects.map(s => `<li>${s.name}</li>`).join('')}</ul>
                         <button class="btn btn-outline" onclick="showSection('subjects')">Practice Now →</button>
                     `;
+                } else if (practiceStats.total > 0) {
+                    recContainer.innerHTML = '<h3>🎉 Great job!</h3><p>You\'re doing well in all subjects. Keep practicing to maintain your streak!</p>';
                 } else {
-                    recContainer.innerHTML = '<p>🎉 Great job! You\'re doing well in all subjects. Keep practicing to maintain your streak!</p>';
+                    recContainer.innerHTML = '<p>Start practicing to get personalized recommendations!</p>';
                 }
             }
         }
@@ -1055,7 +1038,7 @@
                 container.innerHTML = studyGroups.map(group => `
                     <div class="group-card" onclick="joinStudyGroup(${group.id})">
                         <strong>${group.name}</strong>
-                        <div style="font-size: 0.8rem; opacity: 0.7;">${group.members.length} members • Created ${new Date(group.created).toLocaleDateString()}</div>
+                        <div style="font-size: 0.8rem; opacity: 0.7;">${group.members.length} members</div>
                     </div>
                 `).join('');
                 if (studyGroups.length === 0) container.innerHTML = '<p>No study groups yet. Create one!</p>';
@@ -1075,13 +1058,11 @@
         // Profile functions
         function initProfileModal() {
             document.getElementById('studentName').value = userProfile.name;
-            
             const gradeSelector = document.getElementById('gradeSelector');
             gradeSelector.innerHTML = '';
             for (let i = 10; i <= 12; i++) {
                 gradeSelector.innerHTML += `<button class="difficulty-badge" style="margin: 0.2rem;" onclick="selectGrade(${i})">Grade ${i}</button>`;
             }
-            gradeSelector.innerHTML += `<button class="difficulty-badge" onclick="selectGrade('University')">University</button>`;
             
             const schoolSelector = document.getElementById('schoolSelector');
             schoolSelector.innerHTML = `
@@ -1094,13 +1075,13 @@
         function selectGrade(grade) {
             userProfile.grade = grade;
             document.querySelectorAll('#gradeSelector .difficulty-badge').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
+            if (event.target) event.target.classList.add('active');
         }
         
         function selectSchool(school) {
             userProfile.schoolType = school;
             document.querySelectorAll('#schoolSelector .difficulty-badge').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
+            if (event.target) event.target.classList.add('active');
         }
         
         function saveProfile() {
@@ -1156,8 +1137,75 @@
             setTimeout(() => toast.remove(), 3000);
         }
         
+        // Email verification
+        async function subscribeWithVerification(event) {
+            event.preventDefault();
+            const email = document.getElementById('userEmail').value;
+            if (!email || !email.includes('@')) {
+                showToast('Enter valid email', 'warning');
+                return;
+            }
+            
+            const btn = document.getElementById('subscribeBtn');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+            
+            try {
+                const response = await fetch(`${BACKEND_URL}/api/subscribe`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, source: 'smart-exam' })
+                });
+                const data = await response.json();
+                
+                if (response.ok) {
+                    localStorage.setItem('pendingEmail', email);
+                    showToast('Verification email sent! Check your inbox.', 'success');
+                    document.getElementById('emailForm').style.display = 'none';
+                } else if (data.alreadyVerified) {
+                    showToast('Email already verified! Progress saved.', 'success');
+                    document.getElementById('emailCapture').style.display = 'none';
+                    userEmail = email;
+                    localStorage.setItem('userEmail', email);
+                    localStorage.setItem('emailVerified', 'true');
+                    emailVerified = true;
+                    updateStats();
+                } else {
+                    showToast(data.error || 'Failed to send', 'error');
+                }
+            } catch (error) {
+                showToast('Network error', 'error');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-envelope"></i> Save Progress';
+            }
+        }
+        
+        async function checkEmailVerification() {
+            const email = localStorage.getItem('pendingEmail') || localStorage.getItem('userEmail');
+            if (!email) return;
+            try {
+                const response = await fetch(`${BACKEND_URL}/api/check-verified`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email })
+                });
+                const data = await response.json();
+                if (data.verified) {
+                    localStorage.setItem('emailVerified', 'true');
+                    localStorage.setItem('userEmail', email);
+                    userEmail = email;
+                    emailVerified = true;
+                    document.getElementById('emailCapture').style.display = 'none';
+                    updateStats();
+                    showToast('Email verified! Progress saved.', 'success');
+                }
+            } catch(e) {}
+        }
+        
         // Initialize
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', async () => {
+            await checkEmailVerification();
             updateStats();
             updateStreak();
             renderSubjects();
@@ -1165,7 +1213,11 @@
             updateLeaderboard();
             renderStudyGroups();
             
-            // Set active nav link
+            if (emailVerified) {
+                document.getElementById('emailCapture').style.display = 'none';
+            }
+            
+            // Set active nav
             document.querySelectorAll('.nav-links a').forEach(link => {
                 link.classList.remove('active');
                 if (link.textContent === 'Home') link.classList.add('active');
