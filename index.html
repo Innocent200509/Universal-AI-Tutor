@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <meta name="description" content="SmartExam - AI-Powered South African Exam Preparation. Personalized practice, instant feedback, and real past papers for CAPS curriculum. Ace your Matric!">
-    <meta name="keywords" content="SA exam papers, Grade 12 past papers, CAPS, Matric preparation, AI tutor, NSC past papers">
+    <meta name="description" content="SmartExam - AI-Powered South African Exam Preparation. Personalized practice, instant feedback, real past papers, exam timer, and leaderboards.">
+    <meta name="keywords" content="SA exam papers, Grade 12 past papers, CAPS, Matric preparation, AI tutor, NSC past papers, exam timer, study groups">
     <title>SmartExam | AI-Powered South African Exam Prep</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -28,6 +28,7 @@
             --warning: #f39c12;
             --danger: #e74c3c;
             --info: #3498db;
+            --purple: #9b59b6;
         }
 
         body {
@@ -37,7 +38,6 @@
             min-height: 100vh;
         }
 
-        /* Navigation */
         nav {
             background: rgba(0, 0, 0, 0.3);
             backdrop-filter: blur(10px);
@@ -69,7 +69,7 @@
 
         .nav-links {
             display: flex;
-            gap: 1.5rem;
+            gap: 1rem;
             list-style: none;
             flex-wrap: wrap;
         }
@@ -84,7 +84,7 @@
             transition: all 0.3s;
         }
 
-        .nav-links a:hover {
+        .nav-links a:hover, .nav-links a.active {
             background: var(--glass);
             color: var(--secondary);
         }
@@ -123,54 +123,145 @@
             padding: 2rem;
         }
 
-        /* Hero Section */
-        .hero {
-            text-align: center;
-            padding: 4rem 2rem;
-            background: linear-gradient(135deg, rgba(30,58,95,0.8), rgba(15,42,64,0.9));
-            border-radius: 2rem;
-            margin-bottom: 3rem;
-        }
-
-        .hero h1 {
-            font-size: clamp(2rem, 5vw, 3.5rem);
-            margin-bottom: 1rem;
-        }
-
-        .hero h1 span {
-            color: var(--secondary);
-        }
-
-        .hero p {
-            font-size: 1.2rem;
-            opacity: 0.9;
-            max-width: 800px;
-            margin: 0 auto 2rem;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
-            margin: 2rem 0;
-        }
-
-        .stat-card {
+        /* Timer Display */
+        .timer-card {
             background: var(--glass);
             backdrop-filter: blur(10px);
             border-radius: 1rem;
-            padding: 1.5rem;
+            padding: 1rem;
             text-align: center;
-            border: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 1rem;
         }
 
-        .stat-number {
-            font-size: 2.5rem;
+        .timer-display {
+            font-size: 3rem;
             font-weight: 800;
+            font-family: monospace;
             color: var(--secondary);
         }
 
-        /* Subject Grid */
+        /* Leaderboard */
+        .leaderboard {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border-radius: 1rem;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+
+        .leaderboard-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .leaderboard-rank {
+            font-weight: bold;
+            width: 40px;
+        }
+
+        .leaderboard-name {
+            flex: 1;
+        }
+
+        .leaderboard-score {
+            font-weight: bold;
+            color: var(--secondary);
+        }
+
+        /* Study Groups */
+        .group-card {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border-radius: 1rem;
+            padding: 1rem;
+            margin: 0.5rem 0;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .group-card:hover {
+            transform: translateX(5px);
+            border-left: 3px solid var(--secondary);
+        }
+
+        /* Topic Tags */
+        .topic-tag {
+            display: inline-block;
+            background: rgba(255,255,255,0.1);
+            padding: 0.3rem 0.8rem;
+            border-radius: 2rem;
+            font-size: 0.8rem;
+            margin: 0.2rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .topic-tag:hover, .topic-tag.active {
+            background: var(--secondary);
+        }
+
+        /* Analytics Chart */
+        .chart-container {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border-radius: 1rem;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+
+        .subject-chart {
+            display: flex;
+            align-items: center;
+            margin: 0.5rem 0;
+        }
+
+        .subject-chart-label {
+            width: 120px;
+            font-size: 0.9rem;
+        }
+
+        .subject-chart-bar {
+            flex: 1;
+            height: 8px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .subject-chart-fill {
+            height: 100%;
+            background: var(--accent);
+            width: 0%;
+            border-radius: 4px;
+            transition: width 0.5s;
+        }
+
+        .subject-chart-percent {
+            width: 50px;
+            text-align: right;
+            font-size: 0.8rem;
+        }
+
+        /* Achievement Badges */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            background: rgba(255,255,255,0.1);
+            padding: 0.3rem 0.8rem;
+            border-radius: 2rem;
+            font-size: 0.8rem;
+            margin: 0.2rem;
+        }
+
+        .badge-unlocked {
+            background: linear-gradient(135deg, var(--gold, #f39c12), #e67e22);
+        }
+
+        /* Subjects Grid */
         .subjects-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -191,7 +282,6 @@
         .subject-card:hover {
             transform: translateY(-5px);
             border-color: var(--secondary);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
 
         .subject-icon {
@@ -200,17 +290,8 @@
         }
 
         .subject-title {
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-
-        .subject-stats {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 1rem;
-            font-size: 0.8rem;
-            opacity: 0.8;
         }
 
         .difficulty-badge {
@@ -219,13 +300,14 @@
             border-radius: 2rem;
             font-size: 0.7rem;
             font-weight: 600;
+            cursor: pointer;
+            margin: 0.2rem;
         }
 
-        .difficulty-easy { background: var(--success); color: white; }
-        .difficulty-medium { background: var(--warning); color: white; }
-        .difficulty-hard { background: var(--danger); color: white; }
+        .difficulty-easy { background: var(--success); }
+        .difficulty-medium { background: var(--warning); }
+        .difficulty-hard { background: var(--danger); }
 
-        /* Practice Section */
         .practice-section {
             background: var(--glass);
             backdrop-filter: blur(10px);
@@ -252,12 +334,6 @@
             margin: 1rem 0;
         }
 
-        .question-text {
-            font-size: 1.2rem;
-            line-height: 1.6;
-            margin-bottom: 1.5rem;
-        }
-
         .answer-input {
             width: 100%;
             background: rgba(255,255,255,0.1);
@@ -278,31 +354,6 @@
             margin-top: 1rem;
         }
 
-        /* Results Section */
-        .results-section {
-            background: var(--glass);
-            backdrop-filter: blur(10px);
-            border-radius: 1.5rem;
-            padding: 2rem;
-            margin: 2rem 0;
-        }
-
-        .progress-bar-container {
-            background: rgba(255,255,255,0.2);
-            border-radius: 1rem;
-            height: 12px;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            background: var(--accent);
-            height: 100%;
-            width: 0%;
-            transition: width 0.5s;
-            border-radius: 1rem;
-        }
-
-        /* Profile Modal */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -326,27 +377,6 @@
             max-height: 90vh;
             overflow-y: auto;
             border: 1px solid var(--secondary);
-        }
-
-        .grade-selector, .school-selector {
-            display: flex;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-            margin: 1rem 0;
-        }
-
-        .grade-btn {
-            background: rgba(255,255,255,0.1);
-            border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 2rem;
-            color: white;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .grade-btn.active, .grade-btn:hover {
-            background: var(--secondary);
         }
 
         .toast {
@@ -381,33 +411,12 @@
             to { transform: rotate(360deg); }
         }
 
-        .external-resources {
-            background: var(--glass);
-            border-radius: 1rem;
-            padding: 1.5rem;
-            margin: 2rem 0;
-        }
-
-        .resource-link {
-            display: inline-block;
-            background: rgba(255,255,255,0.1);
-            padding: 0.5rem 1rem;
-            border-radius: 2rem;
-            color: white;
-            text-decoration: none;
-            margin: 0.5rem;
-            transition: all 0.3s;
-        }
-
-        .resource-link:hover {
-            background: var(--secondary);
-        }
-
         @media (max-width: 768px) {
             .container { padding: 1rem; }
             .nav-links { gap: 0.5rem; }
             .nav-links a { padding: 0.3rem 0.6rem; font-size: 0.8rem; }
-            .hero { padding: 2rem 1rem; }
+            .timer-display { font-size: 2rem; }
+            .subject-chart-label { width: 90px; font-size: 0.8rem; }
         }
     </style>
 </head>
@@ -421,64 +430,61 @@
                 <li><a onclick="showSection('home')">Home</a></li>
                 <li><a onclick="showSection('subjects')">Subjects</a></li>
                 <li><a onclick="showSection('practice')">Practice</a></li>
-                <li><a onclick="showSection('results')">My Progress</a></li>
-                <li><a onclick="showProfileModal()"><i class="fas fa-user"></i> Profile</a></li>
+                <li><a onclick="showSection('analytics')">Analytics</a></li>
+                <li><a onclick="showSection('leaderboard')">Leaderboard</a></li>
+                <li><a onclick="showSection('groups')">Study Groups</a></li>
+                <li><a onclick="showProfileModal()"><i class="fas fa-user"></i></a></li>
             </ul>
         </div>
     </nav>
 
     <div class="container">
-        <!-- Hero Section -->
+        <!-- Home Section -->
         <section id="home">
-            <div class="hero">
-                <h1>Ace Your <span>Matric Exams</span> with AI-Powered Practice</h1>
-                <p>The smartest way to prepare for South African CAPS exams. Get personalized questions, instant feedback, and track your progress—all for free.</p>
+            <div style="text-align: center; padding: 3rem 2rem; background: linear-gradient(135deg, rgba(30,58,95,0.8), rgba(15,42,64,0.9)); border-radius: 2rem; margin-bottom: 2rem;">
+                <h1 style="font-size: clamp(2rem, 5vw, 3rem); margin-bottom: 1rem;">Ace Your <span style="color: var(--secondary);">Matric Exams</span></h1>
+                <p style="font-size: 1.2rem; margin-bottom: 2rem;">AI-powered practice with real past papers. Track progress, compete with friends, and master every subject.</p>
                 <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
-                    <button class="btn" onclick="startPractice()">Start Practicing Now →</button>
+                    <button class="btn" onclick="startPractice()">Start Practicing →</button>
                     <button class="btn btn-outline" onclick="showSection('subjects')">Browse Subjects</button>
                 </div>
             </div>
 
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-number" id="totalQuestions">0</div>
-                    <div>Questions Answered</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number" id="accuracy">0%</div>
-                    <div>Accuracy</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number" id="streak">0</div>
-                    <div>Day Streak</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number" id="subjectsMastered">0</div>
-                    <div>Subjects Mastered</div>
+            <!-- Timer Card -->
+            <div class="timer-card">
+                <h3><i class="fas fa-hourglass-half"></i> Exam Simulator</h3>
+                <div class="timer-display" id="timerDisplay">00:00</div>
+                <div style="display: flex; gap: 0.5rem; justify-content: center; margin-top: 1rem;">
+                    <button class="btn btn-outline" onclick="startExamTimer(30)">30 min</button>
+                    <button class="btn btn-outline" onclick="startExamTimer(60)">60 min</button>
+                    <button class="btn btn-outline" onclick="startExamTimer(90)">90 min</button>
+                    <button class="btn btn-outline" onclick="stopTimer()">Stop</button>
                 </div>
             </div>
 
-            <!-- External Resources -->
-            <div class="external-resources">
-                <h3><i class="fas fa-download"></i> Official Past Papers</h3>
-                <p>Download full past exam papers and memos from our partners:</p>
-                <div style="margin-top: 1rem;">
-                    <a href="https://www.saexampapers.co.za" target="_blank" class="resource-link">
-                        <i class="fas fa-external-link-alt"></i> SA Exam Papers
-                    </a>
-                    <a href="https://www.education.gov.za" target="_blank" class="resource-link">
-                        <i class="fas fa-external-link-alt"></i> Department of Education
-                    </a>
-                    <a href="https://www.stanmorephysics.com" target="_blank" class="resource-link">
-                        <i class="fas fa-external-link-alt"></i> Stanmore Physics
-                    </a>
+            <div class="stats-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                <div class="stat-card" style="background: var(--glass); padding: 1rem; border-radius: 1rem; text-align: center;">
+                    <div style="font-size: 2rem; font-weight: bold;" id="totalQuestions">0</div>
+                    <div>Questions Answered</div>
+                </div>
+                <div class="stat-card" style="background: var(--glass); padding: 1rem; border-radius: 1rem; text-align: center;">
+                    <div style="font-size: 2rem; font-weight: bold;" id="accuracy">0%</div>
+                    <div>Accuracy</div>
+                </div>
+                <div class="stat-card" style="background: var(--glass); padding: 1rem; border-radius: 1rem; text-align: center;">
+                    <div style="font-size: 2rem; font-weight: bold;" id="streak">0</div>
+                    <div>Day Streak</div>
+                </div>
+                <div class="stat-card" style="background: var(--glass); padding: 1rem; border-radius: 1rem; text-align: center;">
+                    <div style="font-size: 2rem; font-weight: bold;" id="rank">#--</div>
+                    <div>Global Rank</div>
                 </div>
             </div>
         </section>
 
         <!-- Subjects Section -->
         <section id="subjects" style="display: none;">
-            <h2><i class="fas fa-book-open"></i> Choose Your Subject</h2>
+            <h2><i class="fas fa-book-open"></i> All Subjects</h2>
             <div class="subjects-grid" id="subjectsGrid"></div>
             <button class="btn btn-outline" onclick="showSection('home')" style="margin-top: 1rem;">Back</button>
         </section>
@@ -493,24 +499,67 @@
                     <span class="difficulty-badge difficulty-hard" onclick="setDifficulty('hard')">Hard</span>
                 </div>
             </div>
+            
+            <!-- Topic Selector -->
+            <div id="topicSelector" style="margin: 1rem 0;"></div>
+            
             <div id="questionContainer"></div>
             <div style="margin-top: 1rem; display: flex; gap: 1rem; justify-content: center;">
                 <button class="btn btn-outline" onclick="showSection('subjects')">Change Subject</button>
-                <button class="btn btn-outline" onclick="showSection('home')">Back to Home</button>
+                <button class="btn btn-outline" onclick="showSection('home')">Back</button>
             </div>
         </section>
 
-        <!-- Results Section -->
-        <section id="results" style="display: none;">
-            <h2><i class="fas fa-chart-line"></i> Your Performance</h2>
-            <div class="results-section">
-                <h3>Overall Progress</h3>
-                <div class="progress-bar-container" style="margin: 1rem 0;">
-                    <div class="progress-fill" id="overallProgressFill"></div>
-                </div>
-                <p id="overallProgressText">0% complete</p>
+        <!-- Analytics Section -->
+        <section id="analytics" style="display: none;">
+            <h2><i class="fas fa-chart-line"></i> Performance Analytics</h2>
+            
+            <div class="chart-container">
+                <h3>Subject Mastery</h3>
+                <div id="subjectCharts"></div>
             </div>
-            <div id="subjectPerformance"></div>
+            
+            <div class="chart-container">
+                <h3>Weekly Progress</h3>
+                <canvas id="weeklyChart" style="background: rgba(255,255,255,0.05); border-radius: 0.5rem; padding: 1rem;"></canvas>
+            </div>
+            
+            <div class="chart-container">
+                <h3>Achievements</h3>
+                <div id="badgesContainer"></div>
+            </div>
+            
+            <div class="chart-container">
+                <h3>Study Recommendations</h3>
+                <div id="recommendations"></div>
+            </div>
+            
+            <button class="btn btn-outline" onclick="showSection('home')">Back</button>
+        </section>
+
+        <!-- Leaderboard Section -->
+        <section id="leaderboard" style="display: none;">
+            <h2><i class="fas fa-trophy"></i> Global Leaderboard</h2>
+            <div class="leaderboard">
+                <div style="display: flex; justify-content: space-between; padding: 1rem; border-bottom: 2px solid var(--secondary);">
+                    <span>Rank</span>
+                    <span>Student</span>
+                    <span>Score</span>
+                    <span>Streak</span>
+                </div>
+                <div id="leaderboardList"></div>
+            </div>
+            <button class="btn btn-outline" onclick="showSection('home')" style="margin-top: 1rem;">Back</button>
+        </section>
+
+        <!-- Study Groups Section -->
+        <section id="groups" style="display: none;">
+            <h2><i class="fas fa-users"></i> Study Groups</h2>
+            <div style="margin-bottom: 1rem;">
+                <input type="text" id="newGroupName" placeholder="Group name" style="background: rgba(255,255,255,0.1); border: none; padding: 0.8rem; border-radius: 0.5rem; color: white; width: 200px;">
+                <button class="btn" onclick="createStudyGroup()">Create Group</button>
+            </div>
+            <div id="studyGroupsList"></div>
             <button class="btn btn-outline" onclick="showSection('home')">Back</button>
         </section>
     </div>
@@ -520,20 +569,16 @@
         <div class="modal-content">
             <button onclick="closeProfileModal()" style="float: right; background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer;">×</button>
             <h2><i class="fas fa-user-graduate"></i> Your Profile</h2>
-            <p>Tell us about yourself to personalize your practice</p>
+            <input type="text" id="studentName" placeholder="Your Name" style="width: 100%; background: rgba(255,255,255,0.1); border: none; padding: 0.8rem; border-radius: 0.5rem; color: white; margin: 1rem 0;">
             
             <h3>Grade</h3>
             <div class="grade-selector" id="gradeSelector"></div>
             
             <h3>School Type</h3>
-            <div class="school-selector">
-                <button class="grade-btn" onclick="selectSchool('Public')">🏫 Public School</button>
-                <button class="grade-btn" onclick="selectSchool('Private')">🏛️ Private School</button>
-                <button class="grade-btn" onclick="selectSchool('Homeschool')">🏠 Homeschool</button>
-            </div>
+            <div class="school-selector" id="schoolSelector"></div>
             
             <h3>Curriculum</h3>
-            <div class="school-selector" id="curriculumSelector"></div>
+            <div id="curriculumSelector"></div>
             
             <button class="btn" onclick="saveProfile()" style="margin-top: 1rem; width: 100%;">Save Profile</button>
         </div>
@@ -545,23 +590,32 @@
         
         // User Profile
         let userProfile = JSON.parse(localStorage.getItem('smartExamProfile')) || {
+            name: 'Student',
             grade: null,
             schoolType: null,
             curriculum: null
         };
         
-        // Subjects Database (CAPS-aligned)
+        // Expanded Subjects (15+ subjects)
         const subjects = [
-            { id: 'mathematics', name: 'Mathematics', icon: '📐', color: '#e67e22', papers: 45, topics: ['Algebra', 'Calculus', 'Geometry', 'Trigonometry', 'Statistics'] },
-            { id: 'physical-sciences', name: 'Physical Sciences', icon: '⚛️', color: '#3498db', papers: 42, topics: ['Mechanics', 'Waves', 'Electricity', 'Chemistry', 'Thermodynamics'] },
-            { id: 'life-sciences', name: 'Life Sciences', icon: '🧬', color: '#27ae60', papers: 38, topics: ['Cell Biology', 'Genetics', 'Human Body', 'Ecology', 'Evolution'] },
-            { id: 'english', name: 'English HL', icon: '📖', color: '#9b59b6', papers: 35, topics: ['Literature', 'Poetry', 'Essay Writing', 'Comprehension'] },
-            { id: 'afrikaans', name: 'Afrikaans FAL', icon: '🇿🇦', color: '#e84393', papers: 32, topics: ['Literatuur', 'Opstelle', 'Begrip', 'Taal'] },
-            { id: 'history', name: 'History', icon: '📜', color: '#f39c12', papers: 28, topics: ['World Wars', 'South African History', 'Cold War'] },
-            { id: 'geography', name: 'Geography', icon: '🌍', color: '#2ecc71', papers: 30, topics: ['Climate', 'Geomorphology', 'Population', 'GIS'] },
-            { id: 'accounting', name: 'Accounting', icon: '💰', color: '#e74c3c', papers: 25, topics: ['Financial Statements', 'VAT', 'Analysis', 'Budgets'] },
-            { id: 'business-studies', name: 'Business Studies', icon: '🏢', color: '#1abc9c', papers: 28, topics: ['Management', 'Marketing', 'Economics', 'Entrepreneurship'] },
-            { id: 'economics', name: 'Economics', icon: '📊', color: '#3498db', papers: 26, topics: ['Microeconomics', 'Macroeconomics', 'SA Economy'] }
+            { id: 'mathematics', name: 'Mathematics', icon: '📐', topics: ['Algebra', 'Calculus', 'Geometry', 'Trigonometry', 'Statistics', 'Probability', 'Functions'] },
+            { id: 'physical-sciences', name: 'Physical Sciences', icon: '⚛️', topics: ['Mechanics', 'Waves', 'Electricity', 'Chemistry', 'Thermodynamics', 'Quantum'] },
+            { id: 'life-sciences', name: 'Life Sciences', icon: '🧬', topics: ['Cell Biology', 'Genetics', 'Human Body', 'Ecology', 'Evolution', 'Reproduction'] },
+            { id: 'english', name: 'English HL', icon: '📖', topics: ['Literature', 'Poetry', 'Essay Writing', 'Comprehension', 'Creative Writing'] },
+            { id: 'afrikaans', name: 'Afrikaans FAL', icon: '🇿🇦', topics: ['Literatuur', 'Opstelle', 'Begrip', 'Taal', 'Poësie'] },
+            { id: 'history', name: 'History', icon: '📜', topics: ['World Wars', 'South African History', 'Cold War', 'Civil Rights'] },
+            { id: 'geography', name: 'Geography', icon: '🌍', topics: ['Climate', 'Geomorphology', 'Population', 'GIS', 'Development'] },
+            { id: 'accounting', name: 'Accounting', icon: '💰', topics: ['Financial Statements', 'VAT', 'Analysis', 'Budgets', 'Auditing'] },
+            { id: 'business-studies', name: 'Business Studies', icon: '🏢', topics: ['Management', 'Marketing', 'Economics', 'Entrepreneurship', 'HR'] },
+            { id: 'economics', name: 'Economics', icon: '📊', topics: ['Microeconomics', 'Macroeconomics', 'SA Economy', 'Global Economy'] },
+            { id: 'cat', name: 'Computer Applications', icon: '💻', topics: ['Hardware', 'Software', 'Networks', 'Databases', 'Web Design'] },
+            { id: 'technical-maths', name: 'Technical Mathematics', icon: '📏', topics: ['Algebra', 'Geometry', 'Trigonometry', 'Calculus'] },
+            { id: 'technical-sciences', name: 'Technical Sciences', icon: '🔧', topics: ['Mechanics', 'Electricity', 'Chemistry', 'Materials'] },
+            { id: 'tourism', name: 'Tourism', icon: '✈️', topics: ['Tourism Industry', 'Marketing', 'Customer Service', 'Destinations'] },
+            { id: 'consumer-studies', name: 'Consumer Studies', icon: '🛍️', topics: ['Nutrition', 'Fashion', 'Finance', 'Entrepreneurship'] },
+            { id: 'civil-tech', name: 'Civil Technology', icon: '🏗️', topics: ['Construction', 'Materials', 'Drawing', 'Site Planning'] },
+            { id: 'electrical-tech', name: 'Electrical Technology', icon: '⚡', topics: ['Circuits', 'Motors', 'Electronics', 'Power Systems'] },
+            { id: 'mechanical-tech', name: 'Mechanical Technology', icon: '⚙️', topics: ['Mechanics', 'Tools', 'Manufacturing', 'Design'] }
         ];
         
         // Practice Stats
@@ -569,13 +623,24 @@
             total: 0,
             correct: 0,
             bySubject: {},
+            byTopic: {},
+            weeklyProgress: [],
             streak: 0,
             lastActive: null
         };
         
+        // Leaderboard Data
+        let leaderboard = JSON.parse(localStorage.getItem('leaderboard')) || [];
+        
+        // Study Groups
+        let studyGroups = JSON.parse(localStorage.getItem('studyGroups')) || [];
+        
         let currentSubject = null;
+        let currentTopic = null;
         let currentDifficulty = 'medium';
         let currentQuestion = null;
+        let timerInterval = null;
+        let timerSeconds = 0;
         
         // Update streak
         function updateStreak() {
@@ -590,23 +655,83 @@
                 }
                 practiceStats.lastActive = today;
                 localStorage.setItem('practiceStats', JSON.stringify(practiceStats));
+                
+                // Check streak achievements
+                if (practiceStats.streak === 7) unlockBadge('7 Day Streak');
+                if (practiceStats.streak === 30) unlockBadge('30 Day Streak');
+                if (practiceStats.streak === 100) unlockBadge('100 Day Streak');
             }
             document.getElementById('streak').textContent = practiceStats.streak;
         }
         
-        // Update stats display
+        // Update stats
         function updateStats() {
             document.getElementById('totalQuestions').textContent = practiceStats.total;
             const accuracy = practiceStats.total > 0 ? Math.round((practiceStats.correct / practiceStats.total) * 100) : 0;
             document.getElementById('accuracy').textContent = accuracy + '%';
             document.getElementById('streak').textContent = practiceStats.streak;
             
-            // Calculate mastered subjects (70%+ accuracy)
-            let mastered = 0;
-            for (const [subject, stats] of Object.entries(practiceStats.bySubject)) {
-                if (stats.correct / stats.total >= 0.7) mastered++;
+            // Update rank
+            const sortedLeaderboard = [...leaderboard].sort((a, b) => b.score - a.score);
+            const userRank = sortedLeaderboard.findIndex(u => u.name === userProfile.name) + 1;
+            document.getElementById('rank').textContent = userRank > 0 ? `#${userRank}` : '#--';
+        }
+        
+        // Unlock badge
+        function unlockBadge(badgeName) {
+            let badges = JSON.parse(localStorage.getItem('badges')) || [];
+            if (!badges.includes(badgeName)) {
+                badges.push(badgeName);
+                localStorage.setItem('badges', JSON.stringify(badges));
+                showToast(`🏆 Achievement Unlocked: ${badgeName}!`, 'success');
+                renderBadges();
             }
-            document.getElementById('subjectsMastered').textContent = mastered;
+        }
+        
+        // Render badges
+        function renderBadges() {
+            const badges = JSON.parse(localStorage.getItem('badges')) || [];
+            const container = document.getElementById('badgesContainer');
+            if (container) {
+                container.innerHTML = badges.map(badge => `
+                    <div class="badge badge-unlocked">
+                        <i class="fas fa-medal"></i> ${badge}
+                    </div>
+                `).join('');
+                if (badges.length === 0) container.innerHTML = '<p>Complete challenges to earn badges!</p>';
+            }
+        }
+        
+        // Update leaderboard
+        function updateLeaderboard() {
+            const score = practiceStats.total > 0 ? Math.round((practiceStats.correct / practiceStats.total) * 100) : 0;
+            const existing = leaderboard.findIndex(u => u.name === userProfile.name);
+            if (existing >= 0) {
+                leaderboard[existing].score = score;
+                leaderboard[existing].streak = practiceStats.streak;
+            } else if (userProfile.name !== 'Student') {
+                leaderboard.push({
+                    name: userProfile.name,
+                    score: score,
+                    streak: practiceStats.streak,
+                    subjects: Object.keys(practiceStats.bySubject).length
+                });
+            }
+            leaderboard = leaderboard.sort((a, b) => b.score - a.score).slice(0, 100);
+            localStorage.setItem('leaderboard', JSON.stringify(leaderboard));
+            
+            // Render leaderboard
+            const container = document.getElementById('leaderboardList');
+            if (container) {
+                container.innerHTML = leaderboard.map((user, i) => `
+                    <div class="leaderboard-item">
+                        <div class="leaderboard-rank">#${i+1}</div>
+                        <div class="leaderboard-name">${user.name} ${user.name === userProfile.name ? '(You)' : ''}</div>
+                        <div class="leaderboard-score">${user.score}%</div>
+                        <div>🔥 ${user.streak}</div>
+                    </div>
+                `).join('');
+            }
         }
         
         // Render subjects grid
@@ -619,13 +744,13 @@
                     <div class="subject-card" onclick="selectSubject('${subject.id}', '${subject.name}')">
                         <div class="subject-icon">${subject.icon}</div>
                         <div class="subject-title">${subject.name}</div>
-                        <p style="font-size: 0.8rem; opacity: 0.8;">${subject.papers}+ past papers</p>
-                        <div class="subject-stats">
+                        <p style="font-size: 0.8rem; opacity: 0.8;">${subject.topics.length} topics</p>
+                        <div class="subject-stats" style="display: flex; justify-content: space-between; margin-top: 0.5rem;">
                             <span><i class="fas fa-check-circle"></i> ${stats.correct}/${stats.total}</span>
                             <span><i class="fas fa-chart-line"></i> ${percent}%</span>
                         </div>
-                        <div class="progress-bar-container" style="margin-top: 0.5rem;">
-                            <div class="progress-fill" style="width: ${percent}%; background: var(--secondary);"></div>
+                        <div class="progress-bar-container" style="margin-top: 0.5rem; background: rgba(255,255,255,0.2); border-radius: 0.5rem; height: 4px;">
+                            <div class="progress-fill" style="width: ${percent}%; height: 100%; background: var(--secondary); border-radius: 0.5rem;"></div>
                         </div>
                     </div>
                 `;
@@ -634,8 +759,34 @@
         
         function selectSubject(subjectId, subjectName) {
             currentSubject = { id: subjectId, name: subjectName };
+            currentTopic = null;
             document.getElementById('practiceSubjectTitle').innerHTML = `<i class="fas fa-book"></i> ${subjectName} Practice`;
+            
+            // Render topics
+            const subjectData = subjects.find(s => s.id === subjectId);
+            const topicContainer = document.getElementById('topicSelector');
+            if (subjectData && topicContainer) {
+                topicContainer.innerHTML = `
+                    <div style="margin: 1rem 0;">
+                        <strong>Topics:</strong>
+                        ${subjectData.topics.map(topic => `
+                            <span class="topic-tag" onclick="selectTopic('${topic}')">${topic}</span>
+                        `).join('')}
+                        <span class="topic-tag" onclick="selectTopic(null)">All Topics</span>
+                    </div>
+                `;
+            }
+            
             showSection('practice');
+            generateQuestion();
+        }
+        
+        function selectTopic(topic) {
+            currentTopic = topic;
+            document.querySelectorAll('.topic-tag').forEach(tag => tag.classList.remove('active'));
+            if (topic) {
+                event.target.classList.add('active');
+            }
             generateQuestion();
         }
         
@@ -648,37 +799,31 @@
             if (currentSubject) generateQuestion();
         }
         
-        // Past paper question database (CAPS-aligned)
+        // Past paper questions database
         const pastPaperQuestions = {
             'mathematics': {
                 easy: [
                     { text: "Solve for x: 2x + 5 = 15", topic: "Algebra", marks: 2, year: "2023" },
-                    { text: "Calculate the area of a circle with radius 5cm", topic: "Geometry", marks: 3, year: "2022" },
-                    { text: "Simplify: 3a² × 2a³", topic: "Algebra", marks: 2, year: "2023" }
+                    { text: "Calculate the area of a circle with radius 5cm", topic: "Geometry", marks: 3, year: "2022" }
                 ],
                 medium: [
                     { text: "Solve the quadratic equation: x² - 5x + 6 = 0", topic: "Algebra", marks: 4, year: "2023" },
-                    { text: "Find the gradient of the line through (2,3) and (5,9)", topic: "Coordinate Geometry", marks: 3, year: "2022" },
-                    { text: "Calculate the value of sin 60° × cos 30°", topic: "Trigonometry", marks: 3, year: "2023" }
+                    { text: "Find the gradient of the line through (2,3) and (5,9)", topic: "Coordinate Geometry", marks: 3, year: "2022" }
                 ],
                 hard: [
                     { text: "Solve for x: log₂(x+3) + log₂(x-3) = 4", topic: "Logarithms", marks: 5, year: "2023" },
-                    { text: "Find the derivative of f(x) = 3x⁴ - 2x³ + 5x - 7", topic: "Calculus", marks: 4, year: "2022" },
-                    { text: "Calculate the area under the curve y = x² from x=0 to x=3", topic: "Integration", marks: 5, year: "2023" }
+                    { text: "Find the derivative of f(x) = 3x⁴ - 2x³ + 5x - 7", topic: "Calculus", marks: 4, year: "2022" }
                 ]
             },
             'physical-sciences': {
                 easy: [
-                    { text: "State Newton's Second Law of Motion", topic: "Mechanics", marks: 2, year: "2023" },
-                    { text: "What is the difference between speed and velocity?", topic: "Mechanics", marks: 2, year: "2022" }
+                    { text: "State Newton's Second Law of Motion", topic: "Mechanics", marks: 2, year: "2023" }
                 ],
                 medium: [
-                    { text: "Calculate the force needed to accelerate a 5kg object at 2 m/s²", topic: "Mechanics", marks: 3, year: "2023" },
-                    { text: "Balance the equation: H₂ + O₂ → H₂O", topic: "Chemistry", marks: 2, year: "2022" }
+                    { text: "Calculate the force needed to accelerate a 5kg object at 2 m/s²", topic: "Mechanics", marks: 3, year: "2023" }
                 ],
                 hard: [
-                    { text: "Explain the photoelectric effect and its implications for quantum theory", topic: "Quantum Physics", marks: 5, year: "2023" },
-                    { text: "Calculate the pH of a 0.01M HCl solution", topic: "Chemistry", marks: 3, year: "2022" }
+                    { text: "Explain the photoelectric effect and its implications", topic: "Quantum Physics", marks: 5, year: "2023" }
                 ]
             }
         };
@@ -689,11 +834,12 @@
             const container = document.getElementById('questionContainer');
             container.innerHTML = '<div class="loader" style="margin: 2rem auto;"></div><p style="text-align: center;">Loading question...</p>';
             
-            // Try to get a past paper question first
+            // Try past paper question
             const subjectQuestions = pastPaperQuestions[currentSubject.id];
             if (subjectQuestions && subjectQuestions[currentDifficulty]) {
                 const questions = subjectQuestions[currentDifficulty];
-                const randomQuestion = questions[Math.floor(Math.random() * questions.length)];
+                const filtered = currentTopic ? questions.filter(q => q.topic === currentTopic) : questions;
+                const randomQuestion = filtered.length > 0 ? filtered[Math.floor(Math.random() * filtered.length)] : questions[0];
                 currentQuestion = randomQuestion;
                 
                 container.innerHTML = `
@@ -704,7 +850,7 @@
                             <span><i class="fas fa-tag"></i> ${randomQuestion.topic}</span>
                             <span><i class="fas fa-star"></i> ${randomQuestion.marks} marks</span>
                         </div>
-                        <div class="question-text">${randomQuestion.text}</div>
+                        <div class="question-text" style="font-size: 1.1rem; line-height: 1.6;">${randomQuestion.text}</div>
                         <textarea id="userAnswer" class="answer-input" rows="4" placeholder="Type your answer here..."></textarea>
                         <button class="btn" onclick="submitAnswer()">Submit Answer</button>
                         <button class="btn btn-outline" onclick="generateQuestion()">Next Question →</button>
@@ -714,27 +860,29 @@
                 return;
             }
             
-            // If no past paper question, generate with AI
+            // AI-generated question
             try {
+                const topicText = currentTopic ? ` focusing on ${currentTopic}` : '';
                 const response = await fetch(`${BACKEND_URL}/api/tutor`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        message: `Generate a ${currentDifficulty} difficulty practice question for Grade ${userProfile.grade || '12'} ${currentSubject.name} following CAPS curriculum. Make it similar to past exam papers.`,
+                        message: `Generate a ${currentDifficulty} difficulty practice question for Grade ${userProfile.grade || '12'} ${currentSubject.name}${topicText} following CAPS curriculum. Make it similar to past exam papers.`,
                         subject: currentSubject.name,
                         email: localStorage.getItem('userEmail') || ''
                     })
                 });
                 const data = await response.json();
                 if (data.reply) {
-                    currentQuestion = { text: data.reply, isAIGenerated: true };
+                    currentQuestion = { text: data.reply, isAIGenerated: true, topic: currentTopic || 'General' };
                     container.innerHTML = `
                         <div class="question-card">
                             <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
                                 <span class="difficulty-badge difficulty-${currentDifficulty}">${currentDifficulty.toUpperCase()}</span>
                                 <span><i class="fas fa-robot"></i> AI Generated</span>
+                                ${currentTopic ? `<span><i class="fas fa-tag"></i> ${currentTopic}</span>` : ''}
                             </div>
-                            <div class="question-text">${data.reply}</div>
+                            <div class="question-text" style="font-size: 1.1rem; line-height: 1.6;">${data.reply}</div>
                             <textarea id="userAnswer" class="answer-input" rows="4" placeholder="Type your answer here..."></textarea>
                             <button class="btn" onclick="submitAnswer()">Submit Answer</button>
                             <button class="btn btn-outline" onclick="generateQuestion()">Next Question →</button>
@@ -773,16 +921,34 @@
                 
                 if (data.reply) {
                     practiceStats.total++;
-                    // Simple scoring - in production, AI would score
                     practiceStats.correct++;
+                    
                     if (!practiceStats.bySubject[currentSubject.id]) {
                         practiceStats.bySubject[currentSubject.id] = { total: 0, correct: 0 };
                     }
                     practiceStats.bySubject[currentSubject.id].total++;
                     practiceStats.bySubject[currentSubject.id].correct++;
+                    
+                    if (currentTopic) {
+                        const topicKey = `${currentSubject.id}_${currentTopic}`;
+                        if (!practiceStats.byTopic[topicKey]) {
+                            practiceStats.byTopic[topicKey] = { total: 0, correct: 0 };
+                        }
+                        practiceStats.byTopic[topicKey].total++;
+                        practiceStats.byTopic[topicKey].correct++;
+                    }
+                    
                     localStorage.setItem('practiceStats', JSON.stringify(practiceStats));
                     updateStats();
                     updateStreak();
+                    updateLeaderboard();
+                    renderAnalytics();
+                    
+                    // Check mastery achievements
+                    const subjectStats = practiceStats.bySubject[currentSubject.id];
+                    if (subjectStats && subjectStats.total >= 10 && (subjectStats.correct / subjectStats.total) >= 0.8) {
+                        unlockBadge(`${currentSubject.name} Master`);
+                    }
                     
                     feedbackArea.innerHTML = `
                         <div class="feedback-card">
@@ -796,102 +962,153 @@
             }
         }
         
-        function startPractice() {
-            if (!userProfile.grade) {
-                showProfileModal();
-                showToast('Please set up your profile first', 'warning');
-                return;
+        // Analytics
+        function renderAnalytics() {
+            const container = document.getElementById('subjectCharts');
+            if (container) {
+                container.innerHTML = subjects.map(subject => {
+                    const stats = practiceStats.bySubject[subject.id] || { total: 0, correct: 0 };
+                    const percent = stats.total > 0 ? Math.round((stats.correct / stats.total) * 100) : 0;
+                    return `
+                        <div class="subject-chart">
+                            <div class="subject-chart-label">${subject.name}</div>
+                            <div class="subject-chart-bar">
+                                <div class="subject-chart-fill" style="width: ${percent}%;"></div>
+                            </div>
+                            <div class="subject-chart-percent">${percent}%</div>
+                        </div>
+                    `;
+                }).join('');
             }
-            showSection('subjects');
+            
+            // Recommendations
+            const weakSubjects = subjects.filter(s => {
+                const stats = practiceStats.bySubject[s.id];
+                if (!stats || stats.total < 5) return false;
+                return (stats.correct / stats.total) < 0.6;
+            });
+            
+            const recContainer = document.getElementById('recommendations');
+            if (recContainer) {
+                if (weakSubjects.length > 0) {
+                    recContainer.innerHTML = `
+                        <p>🔍 Based on your performance, focus on these subjects:</p>
+                        <ul>
+                            ${weakSubjects.map(s => `<li>${s.name} - Practice more to improve</li>`).join('')}
+                        </ul>
+                        <button class="btn btn-outline" onclick="showSection('subjects')">Practice Now →</button>
+                    `;
+                } else {
+                    recContainer.innerHTML = '<p>🎉 Great job! You\'re doing well in all subjects. Keep practicing to maintain your streak!</p>';
+                }
+            }
         }
         
-        // Render subject performance
-        function renderSubjectPerformance() {
-            const container = document.getElementById('subjectPerformance');
-            container.innerHTML = subjects.map(subject => {
-                const stats = practiceStats.bySubject[subject.id] || { total: 0, correct: 0 };
-                const percent = stats.total > 0 ? Math.round((stats.correct / stats.total) * 100) : 0;
-                return `
-                    <div style="margin-bottom: 1rem;">
-                        <div style="display: flex; justify-content: space-between;">
-                            <span><i class="fas fa-book"></i> ${subject.name}</span>
-                            <span>${stats.correct}/${stats.total} (${percent}%)</span>
-                        </div>
-                        <div class="progress-bar-container">
-                            <div class="progress-fill" style="width: ${percent}%; background: var(--accent);"></div>
-                        </div>
+        // Timer functions
+        function startExamTimer(minutes) {
+            stopTimer();
+            timerSeconds = minutes * 60;
+            updateTimerDisplay();
+            timerInterval = setInterval(() => {
+                if (timerSeconds > 0) {
+                    timerSeconds--;
+                    updateTimerDisplay();
+                } else {
+                    stopTimer();
+                    showToast('Time\'s up! Great practice session!', 'success');
+                    unlockBadge('Completed a Full Practice Session');
+                }
+            }, 1000);
+        }
+        
+        function stopTimer() {
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
+        }
+        
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timerSeconds / 60);
+            const seconds = timerSeconds % 60;
+            document.getElementById('timerDisplay').textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+        
+        // Study Groups
+        function createStudyGroup() {
+            const name = document.getElementById('newGroupName').value;
+            if (!name) return;
+            studyGroups.push({
+                id: Date.now(),
+                name: name,
+                members: [userProfile.name],
+                created: new Date().toISOString()
+            });
+            localStorage.setItem('studyGroups', JSON.stringify(studyGroups));
+            document.getElementById('newGroupName').value = '';
+            renderStudyGroups();
+        }
+        
+        function renderStudyGroups() {
+            const container = document.getElementById('studyGroupsList');
+            if (container) {
+                container.innerHTML = studyGroups.map(group => `
+                    <div class="group-card" onclick="joinStudyGroup(${group.id})">
+                        <strong>${group.name}</strong>
+                        <div style="font-size: 0.8rem; opacity: 0.7;">${group.members.length} members • Created ${new Date(group.created).toLocaleDateString()}</div>
                     </div>
-                `;
-            }).join('');
-            
-            const overallPercent = practiceStats.total > 0 ? Math.round((practiceStats.correct / practiceStats.total) * 100) : 0;
-            document.getElementById('overallProgressFill').style.width = overallPercent + '%';
-            document.getElementById('overallProgressText').textContent = overallPercent + '% complete';
+                `).join('');
+                if (studyGroups.length === 0) container.innerHTML = '<p>No study groups yet. Create one!</p>';
+            }
+        }
+        
+        function joinStudyGroup(groupId) {
+            const group = studyGroups.find(g => g.id === groupId);
+            if (group && !group.members.includes(userProfile.name)) {
+                group.members.push(userProfile.name);
+                localStorage.setItem('studyGroups', JSON.stringify(studyGroups));
+                renderStudyGroups();
+                showToast(`Joined ${group.name}!`, 'success');
+            }
         }
         
         // Profile functions
         function initProfileModal() {
+            document.getElementById('studentName').value = userProfile.name;
+            
             const gradeSelector = document.getElementById('gradeSelector');
             gradeSelector.innerHTML = '';
             for (let i = 10; i <= 12; i++) {
-                gradeSelector.innerHTML += `<button class="grade-btn" onclick="selectGrade(${i})">Grade ${i}</button>`;
+                gradeSelector.innerHTML += `<button class="difficulty-badge" style="margin: 0.2rem;" onclick="selectGrade(${i})">Grade ${i}</button>`;
             }
-            gradeSelector.innerHTML += `<button class="grade-btn" onclick="selectGrade('University')">🎓 University</button>`;
+            gradeSelector.innerHTML += `<button class="difficulty-badge" onclick="selectGrade('University')">University</button>`;
             
-            if (userProfile.grade) {
-                document.querySelectorAll('.grade-btn').forEach(btn => {
-                    if (btn.textContent.includes(userProfile.grade)) btn.classList.add('active');
-                });
-            }
-            
-            updateCurriculumSelector();
+            const schoolSelector = document.getElementById('schoolSelector');
+            schoolSelector.innerHTML = `
+                <button class="difficulty-badge" onclick="selectSchool('Public')">Public School</button>
+                <button class="difficulty-badge" onclick="selectSchool('Private')">Private School</button>
+                <button class="difficulty-badge" onclick="selectSchool('Homeschool')">Homeschool</button>
+            `;
         }
         
         function selectGrade(grade) {
             userProfile.grade = grade;
-            document.querySelectorAll('.grade-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('#gradeSelector .difficulty-badge').forEach(btn => btn.classList.remove('active'));
             event.target.classList.add('active');
-            updateCurriculumSelector();
         }
         
         function selectSchool(school) {
             userProfile.schoolType = school;
-            document.querySelectorAll('.school-selector .grade-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
-            updateCurriculumSelector();
-        }
-        
-        function updateCurriculumSelector() {
-            const container = document.getElementById('curriculumSelector');
-            let curriculums = ['CAPS (South Africa)', 'IGCSE', 'Cambridge', 'IB'];
-            if (userProfile.schoolType === 'Public') curriculums = ['CAPS (South Africa)'];
-            if (userProfile.schoolType === 'Private') curriculums = ['Cambridge', 'IGCSE', 'IB'];
-            
-            container.innerHTML = curriculums.map(curr => `
-                <button class="grade-btn" onclick="selectCurriculum('${curr}')">${curr}</button>
-            `).join('');
-            
-            if (userProfile.curriculum) {
-                document.querySelectorAll('#curriculumSelector .grade-btn').forEach(btn => {
-                    if (btn.textContent === userProfile.curriculum) btn.classList.add('active');
-                });
-            }
-        }
-        
-        function selectCurriculum(curriculum) {
-            userProfile.curriculum = curriculum;
-            document.querySelectorAll('#curriculumSelector .grade-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('#schoolSelector .difficulty-badge').forEach(btn => btn.classList.remove('active'));
             event.target.classList.add('active');
         }
         
         function saveProfile() {
-            if (!userProfile.grade || !userProfile.schoolType || !userProfile.curriculum) {
-                showToast('Please complete all fields', 'warning');
-                return;
-            }
+            userProfile.name = document.getElementById('studentName').value || 'Student';
             localStorage.setItem('smartExamProfile', JSON.stringify(userProfile));
             closeProfileModal();
-            showToast('Profile saved! Practice will be personalized.', 'success');
+            updateLeaderboard();
+            showToast('Profile saved!', 'success');
         }
         
         function showProfileModal() {
@@ -903,24 +1120,30 @@
             document.getElementById('profileModal').style.display = 'none';
         }
         
-        // UI Functions
+        function startPractice() {
+            if (!userProfile.grade) {
+                showProfileModal();
+                showToast('Please set up your profile first', 'warning');
+                return;
+            }
+            showSection('subjects');
+        }
+        
         function showSection(section) {
             document.getElementById('home').style.display = 'none';
             document.getElementById('subjects').style.display = 'none';
             document.getElementById('practice').classList.remove('active');
-            document.getElementById('results').style.display = 'none';
+            document.getElementById('analytics').style.display = 'none';
+            document.getElementById('leaderboard').style.display = 'none';
+            document.getElementById('groups').style.display = 'none';
             
-            if (section === 'home') {
-                document.getElementById('home').style.display = 'block';
-            } else if (section === 'subjects') {
-                document.getElementById('subjects').style.display = 'block';
-                renderSubjects();
-            } else if (section === 'practice') {
-                document.getElementById('practice').classList.add('active');
-            } else if (section === 'results') {
-                document.getElementById('results').style.display = 'block';
-                renderSubjectPerformance();
-            }
+            document.getElementById(section).style.display = 'block';
+            if (section === 'practice') document.getElementById('practice').classList.add('active');
+            if (section === 'analytics') renderAnalytics();
+            if (section === 'leaderboard') updateLeaderboard();
+            if (section === 'groups') renderStudyGroups();
+            if (section === 'subjects') renderSubjects();
+            
             window.scrollTo(0, 0);
         }
         
@@ -938,6 +1161,15 @@
             updateStats();
             updateStreak();
             renderSubjects();
+            renderBadges();
+            updateLeaderboard();
+            renderStudyGroups();
+            
+            // Set active nav link
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.classList.remove('active');
+                if (link.textContent === 'Home') link.classList.add('active');
+            });
         });
     </script>
 </body>
