@@ -3,9 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <meta name="description" content="SmartExam - AI-Powered South African Exam Preparation. Personalized practice, instant feedback, real past papers from SA Exam Papers, exam timer, and leaderboards.">
-    <meta name="keywords" content="SA exam papers, Grade 12 past papers, CAPS, Matric preparation, AI tutor, NSC past papers, exam timer, study groups">
+    <meta name="theme-color" content="#e67e22">
+    <meta name="description" content="SmartExam - AI-Powered South African Exam Preparation. Install on your phone for offline practice and daily reminders!">
+    <meta name="keywords" content="SA exam papers, Grade 12 past papers, CAPS, Matric preparation, AI tutor, NSC past papers">
     <title>SmartExam | AI-Powered South African Exam Prep</title>
+    
+    <!-- PWA Support -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="SmartExam">
+    <link rel="apple-touch-icon" href="/icons/icon-192x192.png">
+    <meta name="mobile-web-app-capable" content="yes">
     
     <!-- Google AdSense -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3701999191662457"
@@ -14,7 +23,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* All your existing CSS - keeping everything */
         * {
             margin: 0;
             padding: 0;
@@ -33,7 +41,6 @@
             --warning: #f39c12;
             --danger: #e74c3c;
             --info: #3498db;
-            --purple: #9b59b6;
         }
 
         body {
@@ -43,6 +50,7 @@
             min-height: 100vh;
         }
 
+        /* Navigation */
         nav {
             background: rgba(0, 0, 0, 0.3);
             backdrop-filter: blur(10px);
@@ -94,6 +102,7 @@
             color: var(--secondary);
         }
 
+        /* Buttons */
         .btn {
             background: linear-gradient(135deg, var(--secondary), #d35400);
             color: white;
@@ -122,6 +131,7 @@
             background: var(--secondary);
         }
 
+        /* Container */
         .container {
             max-width: 1400px;
             margin: 0 auto;
@@ -144,7 +154,7 @@
             margin-bottom: 0.5rem;
         }
 
-        /* External Resources - SA Exam Papers */
+        /* External Resources */
         .external-resources {
             background: var(--glass);
             border-radius: 1rem;
@@ -189,7 +199,7 @@
         /* Stats Grid */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
             gap: 1rem;
             margin: 1rem 0;
         }
@@ -233,8 +243,10 @@
         .subject-title {
             font-size: 1.2rem;
             font-weight: 600;
+            margin-bottom: 0.5rem;
         }
 
+        /* Difficulty Badges */
         .difficulty-badge {
             display: inline-block;
             padding: 0.2rem 0.6rem;
@@ -249,6 +261,7 @@
         .difficulty-medium { background: var(--warning); }
         .difficulty-hard { background: var(--danger); }
 
+        /* Topic Tags */
         .topic-tag {
             display: inline-block;
             background: rgba(255,255,255,0.1);
@@ -264,6 +277,7 @@
             background: var(--secondary);
         }
 
+        /* Practice Section */
         .practice-section {
             background: var(--glass);
             backdrop-filter: blur(10px);
@@ -283,11 +297,18 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
+        /* Question Card */
         .question-card {
             background: rgba(0,0,0,0.3);
             border-radius: 1rem;
             padding: 1.5rem;
             margin: 1rem 0;
+        }
+
+        .question-text {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 1rem;
         }
 
         .answer-input {
@@ -310,12 +331,21 @@
             margin-top: 1rem;
         }
 
+        /* Leaderboard */
         .leaderboard {
             background: var(--glass);
             backdrop-filter: blur(10px);
             border-radius: 1rem;
             padding: 1rem;
             margin-top: 1rem;
+        }
+
+        .leaderboard-header {
+            display: flex;
+            justify-content: space-between;
+            padding: 1rem;
+            border-bottom: 2px solid var(--secondary);
+            font-weight: bold;
         }
 
         .leaderboard-item {
@@ -326,6 +356,28 @@
             border-bottom: 1px solid rgba(255,255,255,0.1);
         }
 
+        .leaderboard-rank {
+            font-weight: bold;
+            width: 50px;
+        }
+
+        .leaderboard-name {
+            flex: 1;
+        }
+
+        .leaderboard-score {
+            font-weight: bold;
+            color: var(--secondary);
+            width: 60px;
+            text-align: right;
+        }
+
+        .leaderboard-streak {
+            width: 60px;
+            text-align: right;
+        }
+
+        /* Study Groups */
         .group-card {
             background: var(--glass);
             backdrop-filter: blur(10px);
@@ -341,6 +393,7 @@
             border-left: 3px solid var(--secondary);
         }
 
+        /* Email Capture */
         .email-capture {
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             padding: 1.5rem;
@@ -361,6 +414,7 @@
             color: #333;
         }
 
+        /* Modal */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -386,6 +440,7 @@
             border: 1px solid var(--secondary);
         }
 
+        /* Toast Notification */
         .toast {
             position: fixed;
             bottom: 20px;
@@ -404,6 +459,7 @@
             to { opacity: 1; transform: translateX(-50%) translateY(0); }
         }
 
+        /* Loader */
         .loader {
             border: 3px solid rgba(255,255,255,0.2);
             border-left-color: var(--secondary);
@@ -418,16 +474,152 @@
             to { transform: rotate(360deg); }
         }
 
+        /* PWA Install Banner */
+        .install-banner {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, var(--secondary), #d35400);
+            border-radius: 1rem;
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+            z-index: 1001;
+            animation: slideUp 0.3s ease;
+        }
+
+        .install-banner button {
+            background: white;
+            color: var(--secondary);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .install-banner button:last-child {
+            background: transparent;
+            color: white;
+            border: 1px solid white;
+        }
+
+        /* Offline Indicator */
+        .offline-indicator {
+            position: fixed;
+            top: 70px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--danger);
+            color: white;
+            padding: 0.3rem 1rem;
+            border-radius: 2rem;
+            font-size: 0.8rem;
+            z-index: 1000;
+            display: none;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            text-align: center;
+            padding: 3rem 2rem;
+            background: linear-gradient(135deg, rgba(30,58,95,0.8), rgba(15,42,64,0.9));
+            border-radius: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .hero-title {
+            font-size: clamp(2rem, 5vw, 3rem);
+            margin-bottom: 1rem;
+        }
+
+        .hero-title span {
+            color: var(--secondary);
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+        }
+
+        /* Grade Selector */
+        .grade-selector, .school-selector {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin: 1rem 0;
+        }
+
+        .grade-btn {
+            background: rgba(255,255,255,0.1);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .grade-btn:hover, .grade-btn.active {
+            background: var(--secondary);
+        }
+
+        /* Responsive */
         @media (max-width: 768px) {
-            .container { padding: 1rem; }
-            .nav-links { gap: 0.5rem; }
-            .nav-links a { padding: 0.3rem 0.6rem; font-size: 0.8rem; }
-            .timer-display { font-size: 2rem; }
-            .email-input { width: 100%; margin-bottom: 0.5rem; }
+            .container {
+                padding: 1rem;
+            }
+            .nav-links {
+                gap: 0.5rem;
+            }
+            .nav-links a {
+                padding: 0.3rem 0.6rem;
+                font-size: 0.8rem;
+            }
+            .timer-display {
+                font-size: 2rem;
+            }
+            .email-input {
+                width: 100%;
+                margin-bottom: 0.5rem;
+                margin-right: 0;
+            }
+            .hero-section {
+                padding: 2rem 1rem;
+            }
+            .hero-subtitle {
+                font-size: 1rem;
+            }
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            .install-banner {
+                flex-direction: column;
+                text-align: center;
+            }
+            .install-banner button {
+                width: 100%;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Offline Indicator -->
+    <div id="offlineIndicator" class="offline-indicator">
+        <i class="fas fa-wifi"></i> You're offline. Answers will sync when online.
+    </div>
+
+    <!-- Navigation -->
     <nav>
         <div class="nav-container">
             <div class="logo">
@@ -448,9 +640,9 @@
     <div class="container">
         <!-- Home Section -->
         <section id="home">
-            <div style="text-align: center; padding: 3rem 2rem; background: linear-gradient(135deg, rgba(30,58,95,0.8), rgba(15,42,64,0.9)); border-radius: 2rem; margin-bottom: 2rem;">
-                <h1 style="font-size: clamp(2rem, 5vw, 3rem); margin-bottom: 1rem;">Ace Your <span style="color: var(--secondary);">Matric Exams</span></h1>
-                <p style="font-size: 1.2rem; margin-bottom: 2rem;">AI-powered practice with real past papers from SA Exam Papers. Track progress, compete with friends, and master every subject.</p>
+            <div class="hero-section">
+                <h1 class="hero-title">Ace Your <span>Matric Exams</span></h1>
+                <p class="hero-subtitle">AI-powered practice with real past papers. Install the app for offline practice and daily reminders!</p>
                 <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
                     <button class="btn" onclick="startPractice()">Start Practicing →</button>
                     <button class="btn btn-outline" onclick="showSection('subjects')">Browse Subjects</button>
@@ -467,9 +659,6 @@
                     </a>
                     <a href="https://www.education.gov.za" target="_blank" class="resource-link">
                         <i class="fas fa-external-link-alt"></i> Department of Education
-                    </a>
-                    <a href="https://www.stanmorephysics.com" target="_blank" class="resource-link">
-                        <i class="fas fa-external-link-alt"></i> Stanmore Physics
                     </a>
                 </div>
             </div>
@@ -500,10 +689,11 @@
                 </div>
             </div>
 
+            <!-- Stats -->
             <div class="stats-grid">
                 <div class="stat-card">
                     <div style="font-size: 2rem; font-weight: bold;" id="totalQuestions">0</div>
-                    <div>Questions Answered</div>
+                    <div>Questions</div>
                 </div>
                 <div class="stat-card">
                     <div style="font-size: 2rem; font-weight: bold;" id="accuracy">0%</div>
@@ -524,7 +714,7 @@
         <div class="email-capture" id="emailCapture">
             <i class="fas fa-gift" style="font-size: 1.8rem; margin-bottom: 0.5rem;"></i>
             <h3>🎁 Save Your Progress!</h3>
-            <p>Enter your email to save your progress, earn achievements, and compete on the leaderboard</p>
+            <p>Enter your email to save your progress, earn achievements, and get daily reminders</p>
             <form id="emailForm" onsubmit="subscribeWithVerification(event)">
                 <input type="email" id="userEmail" class="email-input" placeholder="Enter your email" required>
                 <button type="submit" class="btn" id="subscribeBtn"><i class="fas fa-envelope"></i> Save Progress</button>
@@ -536,7 +726,6 @@
         <section id="subjects" style="display: none;">
             <h2><i class="fas fa-book-open"></i> All Subjects</h2>
             <div class="subjects-grid" id="subjectsGrid"></div>
-            <!-- Bottom Ad -->
             <div class="ad-container" style="margin-top: 2rem;">
                 <div class="ad-label">Advertisement</div>
                 <ins class="adsbygoogle"
@@ -562,9 +751,7 @@
                     <span class="difficulty-badge difficulty-hard" onclick="setDifficulty('hard')">Hard</span>
                 </div>
             </div>
-            
             <div id="topicSelector" style="margin: 1rem 0;"></div>
-            
             <div id="questionContainer"></div>
             <div style="margin-top: 1rem; display: flex; gap: 1rem; justify-content: center;">
                 <button class="btn btn-outline" onclick="showSection('subjects')">Change Subject</button>
@@ -585,7 +772,7 @@
         <section id="leaderboard" style="display: none;">
             <h2><i class="fas fa-trophy"></i> Global Leaderboard</h2>
             <div class="leaderboard">
-                <div style="display: flex; justify-content: space-between; padding: 1rem; border-bottom: 2px solid var(--secondary);">
+                <div class="leaderboard-header">
                     <span>Rank</span>
                     <span>Student</span>
                     <span>Score</span>
@@ -614,13 +801,10 @@
             <button onclick="closeProfileModal()" style="float: right; background: none; border: none; color: white; font-size: 1.5rem; cursor: pointer;">×</button>
             <h2><i class="fas fa-user-graduate"></i> Your Profile</h2>
             <input type="text" id="studentName" placeholder="Your Name" style="width: 100%; background: rgba(255,255,255,0.1); border: none; padding: 0.8rem; border-radius: 0.5rem; color: white; margin: 1rem 0;">
-            
             <h3>Grade</h3>
-            <div class="grade-selector" id="gradeSelector"></div>
-            
+            <div id="gradeSelector"></div>
             <h3>School Type</h3>
             <div id="schoolSelector"></div>
-            
             <button class="btn" onclick="saveProfile()" style="margin-top: 1rem; width: 100%;">Save Profile</button>
         </div>
     </div>
@@ -629,7 +813,7 @@
         // ==================== CONFIGURATION ====================
         const BACKEND_URL = 'https://universal-ai-tutor-2.onrender.com';
         
-        // User Profile & Progress Saving
+        // User Profile
         let userEmail = localStorage.getItem('userEmail') || '';
         let emailVerified = localStorage.getItem('emailVerified') === 'true';
         
@@ -639,34 +823,25 @@
             schoolType: null
         };
         
-        // Subjects (18 subjects)
+        // Subjects
         const subjects = [
-            { id: 'mathematics', name: 'Mathematics', icon: '📐', topics: ['Algebra', 'Calculus', 'Geometry', 'Trigonometry', 'Statistics', 'Probability', 'Functions'] },
-            { id: 'physical-sciences', name: 'Physical Sciences', icon: '⚛️', topics: ['Mechanics', 'Waves', 'Electricity', 'Chemistry', 'Thermodynamics', 'Quantum'] },
-            { id: 'life-sciences', name: 'Life Sciences', icon: '🧬', topics: ['Cell Biology', 'Genetics', 'Human Body', 'Ecology', 'Evolution', 'Reproduction'] },
-            { id: 'english', name: 'English HL', icon: '📖', topics: ['Literature', 'Poetry', 'Essay Writing', 'Comprehension', 'Creative Writing'] },
-            { id: 'afrikaans', name: 'Afrikaans FAL', icon: '🇿🇦', topics: ['Literatuur', 'Opstelle', 'Begrip', 'Taal', 'Poësie'] },
-            { id: 'history', name: 'History', icon: '📜', topics: ['World Wars', 'South African History', 'Cold War', 'Civil Rights'] },
-            { id: 'geography', name: 'Geography', icon: '🌍', topics: ['Climate', 'Geomorphology', 'Population', 'GIS', 'Development'] },
-            { id: 'accounting', name: 'Accounting', icon: '💰', topics: ['Financial Statements', 'VAT', 'Analysis', 'Budgets', 'Auditing'] },
-            { id: 'business-studies', name: 'Business Studies', icon: '🏢', topics: ['Management', 'Marketing', 'Economics', 'Entrepreneurship', 'HR'] },
-            { id: 'economics', name: 'Economics', icon: '📊', topics: ['Microeconomics', 'Macroeconomics', 'SA Economy', 'Global Economy'] },
-            { id: 'cat', name: 'Computer Applications', icon: '💻', topics: ['Hardware', 'Software', 'Networks', 'Databases', 'Web Design'] },
-            { id: 'technical-maths', name: 'Technical Mathematics', icon: '📏', topics: ['Algebra', 'Geometry', 'Trigonometry', 'Calculus'] },
-            { id: 'technical-sciences', name: 'Technical Sciences', icon: '🔧', topics: ['Mechanics', 'Electricity', 'Chemistry', 'Materials'] },
-            { id: 'tourism', name: 'Tourism', icon: '✈️', topics: ['Tourism Industry', 'Marketing', 'Customer Service', 'Destinations'] },
-            { id: 'consumer-studies', name: 'Consumer Studies', icon: '🛍️', topics: ['Nutrition', 'Fashion', 'Finance', 'Entrepreneurship'] },
-            { id: 'civil-tech', name: 'Civil Technology', icon: '🏗️', topics: ['Construction', 'Materials', 'Drawing', 'Site Planning'] },
-            { id: 'electrical-tech', name: 'Electrical Technology', icon: '⚡', topics: ['Circuits', 'Motors', 'Electronics', 'Power Systems'] },
-            { id: 'mechanical-tech', name: 'Mechanical Technology', icon: '⚙️', topics: ['Mechanics', 'Tools', 'Manufacturing', 'Design'] }
+            { id: 'mathematics', name: 'Mathematics', icon: '📐', topics: ['Algebra', 'Calculus', 'Geometry', 'Trigonometry', 'Statistics'] },
+            { id: 'physical-sciences', name: 'Physical Sciences', icon: '⚛️', topics: ['Mechanics', 'Waves', 'Electricity', 'Chemistry'] },
+            { id: 'life-sciences', name: 'Life Sciences', icon: '🧬', topics: ['Cell Biology', 'Genetics', 'Human Body', 'Ecology'] },
+            { id: 'english', name: 'English HL', icon: '📖', topics: ['Literature', 'Poetry', 'Essay Writing'] },
+            { id: 'afrikaans', name: 'Afrikaans FAL', icon: '🇿🇦', topics: ['Literatuur', 'Opstelle', 'Begrip'] },
+            { id: 'history', name: 'History', icon: '📜', topics: ['World Wars', 'South African History', 'Cold War'] },
+            { id: 'geography', name: 'Geography', icon: '🌍', topics: ['Climate', 'Geomorphology', 'Population'] },
+            { id: 'accounting', name: 'Accounting', icon: '💰', topics: ['Financial Statements', 'VAT', 'Analysis'] },
+            { id: 'business-studies', name: 'Business Studies', icon: '🏢', topics: ['Management', 'Marketing', 'Economics'] },
+            { id: 'economics', name: 'Economics', icon: '📊', topics: ['Microeconomics', 'Macroeconomics', 'SA Economy'] }
         ];
         
-        // Practice Stats - SAVED in localStorage
+        // Practice Stats
         let practiceStats = JSON.parse(localStorage.getItem('practiceStats')) || {
             total: 0,
             correct: 0,
             bySubject: {},
-            byTopic: {},
             streak: 0,
             lastActive: null
         };
@@ -682,7 +857,7 @@
         let timerInterval = null;
         let timerSeconds = 0;
         
-        // Update streak
+        // ==================== HELPER FUNCTIONS ====================
         function updateStreak() {
             const today = new Date().toDateString();
             if (practiceStats.lastActive !== today) {
@@ -725,9 +900,11 @@
         function renderBadges() {
             const container = document.getElementById('badgesContainer');
             if (container) {
-                container.innerHTML = badges.length > 0 ? 
-                    `<h3>Achievements</h3><div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">${badges.map(b => `<span class="badge" style="background: var(--secondary); padding: 0.3rem 0.8rem; border-radius: 2rem;">🏅 ${b}</span>`).join('')}</div>` :
-                    '<p>Complete challenges to earn badges!</p>';
+                if (badges.length > 0) {
+                    container.innerHTML = `<h3>🏅 Achievements</h3><div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">${badges.map(b => `<span style="background: var(--secondary); padding: 0.3rem 0.8rem; border-radius: 2rem; font-size: 0.8rem;">🏅 ${b}</span>`).join('')}</div>`;
+                } else {
+                    container.innerHTML = '<p>Complete challenges to earn badges!</p>';
+                }
             }
         }
         
@@ -755,7 +932,7 @@
                         <div class="leaderboard-rank">#${i+1}</div>
                         <div class="leaderboard-name">${user.name} ${user.name === userProfile.name ? '(You)' : ''}</div>
                         <div class="leaderboard-score">${user.score}%</div>
-                        <div>🔥 ${user.streak}</div>
+                        <div class="leaderboard-streak">🔥 ${user.streak}</div>
                     </div>
                 `).join('');
             }
@@ -820,53 +997,18 @@
             if (currentSubject) generateQuestion();
         }
         
-        // Past paper questions
-        const pastPaperQuestions = {
-            'mathematics': {
-                easy: [{ text: "Solve for x: 2x + 5 = 15", topic: "Algebra", marks: 2, year: "2023" }],
-                medium: [{ text: "Solve: x² - 5x + 6 = 0", topic: "Algebra", marks: 4, year: "2023" }],
-                hard: [{ text: "Solve: log₂(x+3) + log₂(x-3) = 4", topic: "Logarithms", marks: 5, year: "2023" }]
-            }
-        };
-        
         async function generateQuestion() {
             if (!currentSubject) return;
             
             const container = document.getElementById('questionContainer');
             container.innerHTML = '<div class="loader" style="margin: 2rem auto;"></div><p style="text-align: center;">Loading question...</p>';
             
-            const subjectQuestions = pastPaperQuestions[currentSubject.id];
-            if (subjectQuestions && subjectQuestions[currentDifficulty]) {
-                const questions = subjectQuestions[currentDifficulty];
-                const filtered = currentTopic ? questions.filter(q => q.topic === currentTopic) : questions;
-                const randomQuestion = filtered.length > 0 ? filtered[0] : questions[0];
-                currentQuestion = randomQuestion;
-                
-                container.innerHTML = `
-                    <div class="question-card">
-                        <div style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem;">
-                            <span class="difficulty-badge difficulty-${currentDifficulty}">${currentDifficulty.toUpperCase()}</span>
-                            <span><i class="fas fa-calendar-alt"></i> ${randomQuestion.year} Past Paper</span>
-                            <span><i class="fas fa-tag"></i> ${randomQuestion.topic}</span>
-                            <span><i class="fas fa-star"></i> ${randomQuestion.marks} marks</span>
-                        </div>
-                        <div style="font-size: 1.1rem;">${randomQuestion.text}</div>
-                        <textarea id="userAnswer" class="answer-input" rows="4" placeholder="Type your answer here..."></textarea>
-                        <button class="btn" onclick="submitAnswer()">Submit Answer</button>
-                        <button class="btn btn-outline" onclick="generateQuestion()">Next Question →</button>
-                        <div id="feedbackArea"></div>
-                    </div>
-                `;
-                return;
-            }
-            
-            // AI-generated question
             try {
                 const response = await fetch(`${BACKEND_URL}/api/tutor`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        message: `Generate a ${currentDifficulty} difficulty practice question for Grade ${userProfile.grade || '12'} ${currentSubject.name} following CAPS curriculum.`,
+                        message: `Generate a ${currentDifficulty} difficulty practice question for Grade ${userProfile.grade || '12'} ${currentSubject.name} following CAPS curriculum. Make it similar to past exam papers.`,
                         subject: currentSubject.name,
                         email: userEmail
                     })
@@ -879,8 +1021,9 @@
                             <div style="margin-bottom: 1rem;">
                                 <span class="difficulty-badge difficulty-${currentDifficulty}">${currentDifficulty.toUpperCase()}</span>
                                 <span style="margin-left: 0.5rem;"><i class="fas fa-robot"></i> AI Generated</span>
+                                ${currentTopic ? `<span style="margin-left: 0.5rem;"><i class="fas fa-tag"></i> ${currentTopic}</span>` : ''}
                             </div>
-                            <div style="font-size: 1.1rem;">${data.reply}</div>
+                            <div class="question-text">${data.reply}</div>
                             <textarea id="userAnswer" class="answer-input" rows="4" placeholder="Type your answer here..."></textarea>
                             <button class="btn" onclick="submitAnswer()">Submit Answer</button>
                             <button class="btn btn-outline" onclick="generateQuestion()">Next Question →</button>
@@ -987,9 +1130,8 @@
             }
         }
         
-        // Timer functions
         function startExamTimer(minutes) {
-            stopTimer();
+            if (timerInterval) clearInterval(timerInterval);
             timerSeconds = minutes * 60;
             updateTimerDisplay();
             timerInterval = setInterval(() => {
@@ -997,7 +1139,8 @@
                     timerSeconds--;
                     updateTimerDisplay();
                 } else {
-                    stopTimer();
+                    clearInterval(timerInterval);
+                    timerInterval = null;
                     showToast('Time\'s up! Great practice session!', 'success');
                     unlockBadge('Completed a Full Practice Session');
                 }
@@ -1017,7 +1160,6 @@
             document.getElementById('timerDisplay').textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
         }
         
-        // Study Groups
         function createStudyGroup() {
             const name = document.getElementById('newGroupName').value;
             if (!name) return;
@@ -1030,18 +1172,22 @@
             localStorage.setItem('studyGroups', JSON.stringify(studyGroups));
             document.getElementById('newGroupName').value = '';
             renderStudyGroups();
+            showToast(`Study group "${name}" created!`, 'success');
         }
         
         function renderStudyGroups() {
             const container = document.getElementById('studyGroupsList');
             if (container) {
-                container.innerHTML = studyGroups.map(group => `
-                    <div class="group-card" onclick="joinStudyGroup(${group.id})">
-                        <strong>${group.name}</strong>
-                        <div style="font-size: 0.8rem; opacity: 0.7;">${group.members.length} members</div>
-                    </div>
-                `).join('');
-                if (studyGroups.length === 0) container.innerHTML = '<p>No study groups yet. Create one!</p>';
+                if (studyGroups.length > 0) {
+                    container.innerHTML = studyGroups.map(group => `
+                        <div class="group-card" onclick="joinStudyGroup(${group.id})">
+                            <strong>${group.name}</strong>
+                            <div style="font-size: 0.8rem; opacity: 0.7;">${group.members.length} members</div>
+                        </div>
+                    `).join('');
+                } else {
+                    container.innerHTML = '<p>No study groups yet. Create one!</p>';
+                }
             }
         }
         
@@ -1055,32 +1201,32 @@
             }
         }
         
-        // Profile functions
         function initProfileModal() {
             document.getElementById('studentName').value = userProfile.name;
+            
             const gradeSelector = document.getElementById('gradeSelector');
             gradeSelector.innerHTML = '';
             for (let i = 10; i <= 12; i++) {
-                gradeSelector.innerHTML += `<button class="difficulty-badge" style="margin: 0.2rem;" onclick="selectGrade(${i})">Grade ${i}</button>`;
+                gradeSelector.innerHTML += `<button class="grade-btn" onclick="selectGrade(${i})">Grade ${i}</button>`;
             }
             
             const schoolSelector = document.getElementById('schoolSelector');
             schoolSelector.innerHTML = `
-                <button class="difficulty-badge" onclick="selectSchool('Public')">Public School</button>
-                <button class="difficulty-badge" onclick="selectSchool('Private')">Private School</button>
-                <button class="difficulty-badge" onclick="selectSchool('Homeschool')">Homeschool</button>
+                <button class="grade-btn" onclick="selectSchool('Public')">🏫 Public School</button>
+                <button class="grade-btn" onclick="selectSchool('Private')">🏛️ Private School</button>
+                <button class="grade-btn" onclick="selectSchool('Homeschool')">🏠 Homeschool</button>
             `;
         }
         
         function selectGrade(grade) {
             userProfile.grade = grade;
-            document.querySelectorAll('#gradeSelector .difficulty-badge').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('#gradeSelector .grade-btn').forEach(btn => btn.classList.remove('active'));
             if (event.target) event.target.classList.add('active');
         }
         
         function selectSchool(school) {
             userProfile.schoolType = school;
-            document.querySelectorAll('#schoolSelector .difficulty-badge').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('#schoolSelector .grade-btn').forEach(btn => btn.classList.remove('active'));
             if (event.target) event.target.classList.add('active');
         }
         
@@ -1111,19 +1257,24 @@
         }
         
         function showSection(section) {
-            document.getElementById('home').style.display = 'none';
-            document.getElementById('subjects').style.display = 'none';
-            document.getElementById('practice').classList.remove('active');
-            document.getElementById('analytics').style.display = 'none';
-            document.getElementById('leaderboard').style.display = 'none';
-            document.getElementById('groups').style.display = 'none';
+            const sections = ['home', 'subjects', 'practice', 'analytics', 'leaderboard', 'groups'];
+            sections.forEach(s => {
+                const el = document.getElementById(s);
+                if (el) {
+                    el.style.display = 'none';
+                    if (s === 'practice') el.classList.remove('active');
+                }
+            });
             
-            document.getElementById(section).style.display = 'block';
-            if (section === 'practice') document.getElementById('practice').classList.add('active');
-            if (section === 'analytics') renderAnalytics();
-            if (section === 'leaderboard') updateLeaderboard();
-            if (section === 'groups') renderStudyGroups();
-            if (section === 'subjects') renderSubjects();
+            const activeSection = document.getElementById(section);
+            if (activeSection) {
+                activeSection.style.display = 'block';
+                if (section === 'practice') activeSection.classList.add('active');
+                if (section === 'analytics') renderAnalytics();
+                if (section === 'leaderboard') updateLeaderboard();
+                if (section === 'groups') renderStudyGroups();
+                if (section === 'subjects') renderSubjects();
+            }
             
             window.scrollTo(0, 0);
         }
@@ -1203,6 +1354,87 @@
             } catch(e) {}
         }
         
+        // PWA Functions
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            
+            const installBanner = document.createElement('div');
+            installBanner.className = 'install-banner';
+            installBanner.innerHTML = `
+                <div>
+                    <i class="fas fa-download"></i>
+                    <strong>Install SmartExam</strong>
+                    <small style="display: block;">Get offline access and daily reminders</small>
+                </div>
+                <div>
+                    <button id="installAppBtn">Install</button>
+                    <button id="dismissInstallBtn">Not now</button>
+                </div>
+            `;
+            document.body.appendChild(installBanner);
+            
+            document.getElementById('installAppBtn').onclick = async () => {
+                if (deferredPrompt) {
+                    deferredPrompt.prompt();
+                    const { outcome } = await deferredPrompt.userChoice;
+                    if (outcome === 'accepted') {
+                        installBanner.remove();
+                    }
+                    deferredPrompt = null;
+                }
+            };
+            document.getElementById('dismissInstallBtn').onclick = () => installBanner.remove();
+        });
+        
+        // Offline detection
+        window.addEventListener('online', () => {
+            document.getElementById('offlineIndicator').style.display = 'none';
+            showToast('Back online!', 'success');
+        });
+        
+        window.addEventListener('offline', () => {
+            document.getElementById('offlineIndicator').style.display = 'block';
+            showToast('You\'re offline. Answers will sync when online.', 'warning');
+        });
+        
+        // Service Worker
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js')
+                .then(() => console.log('✅ Service Worker registered'))
+                .catch(err => console.error('❌ Service Worker failed:', err));
+        }
+        
+        // Ask for notifications
+        function askForNotifications() {
+            if (emailVerified && !localStorage.getItem('notificationsAsked')) {
+                setTimeout(() => {
+                    if (confirm('Get daily practice reminders? 🔔')) {
+                        if ('Notification' in window && Notification.permission !== 'granted') {
+                            Notification.requestPermission();
+                        }
+                    }
+                    localStorage.setItem('notificationsAsked', 'true');
+                }, 5000);
+            }
+        }
+        
+        // Daily reminder
+        function scheduleDailyReminder() {
+            const lastReminder = localStorage.getItem('lastReminder');
+            const today = new Date().toDateString();
+            if (lastReminder !== today && Notification.permission === 'granted') {
+                setTimeout(() => {
+                    new Notification('SmartExam', {
+                        body: 'Time to practice! Don\'t break your streak! 🔥',
+                        icon: '/icons/icon-192x192.png'
+                    });
+                }, 1000 * 60 * 60 * 19);
+                localStorage.setItem('lastReminder', today);
+            }
+        }
+        
         // Initialize
         document.addEventListener('DOMContentLoaded', async () => {
             await checkEmailVerification();
@@ -1215,13 +1447,13 @@
             
             if (emailVerified) {
                 document.getElementById('emailCapture').style.display = 'none';
+                askForNotifications();
+                scheduleDailyReminder();
             }
             
-            // Set active nav
-            document.querySelectorAll('.nav-links a').forEach(link => {
-                link.classList.remove('active');
-                if (link.textContent === 'Home') link.classList.add('active');
-            });
+            if (!navigator.onLine) {
+                document.getElementById('offlineIndicator').style.display = 'block';
+            }
         });
     </script>
 </body>
