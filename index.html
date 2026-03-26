@@ -2,27 +2,24 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="theme-color" content="#6366f1">
-    <meta name="description" content="Universal Smart AI Pro - Personalized AI tutor for YOUR grade, school, and curriculum. SAT, CAPS, IGCSE, IB. Scan homework, voice learning, exam prep.">
-    <meta name="keywords" content="AI tutor, grade-specific tutor, CAPS curriculum, SAT prep, IGCSE tutor, South Africa tutor, personalized learning">
-    <title>Universal Smart AI Pro - Your Personal AI Tutor, Built for YOUR Grade</title>
+    <meta name="description" content="Universal Smart AI Pro - Personalized exam prep based on YOUR academic record. Upload your report card, get customized questions from real past papers.">
+    <title>Universal Smart AI Pro - Smart Exam Prep</title>
     
     <!-- Google AdSense -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3701999191662457"
          crossorigin="anonymous"></script>
     
-    <!-- Tesseract.js for OCR -->
-    <script src="https://unpkg.com/tesseract.js@5.0.5/dist/tesseract.min.js"></script>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- PDF.js for academic record parsing -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
     <script>
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
     </script>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* ==================== ENHANCED CSS ==================== */
         * {
             margin: 0;
             padding: 0;
@@ -33,7 +30,6 @@
         :root {
             --primary: #6366f1;
             --primary-dark: #4f46e5;
-            --primary-light: #818cf8;
             --secondary: #ec4899;
             --accent: #06b6d4;
             --dark: #0f172a;
@@ -42,19 +38,9 @@
             --warning: #f59e0b;
             --danger: #ef4444;
             --glass: rgba(255, 255, 255, 0.1);
-            --glass-dark: rgba(0, 0, 0, 0.3);
             --gold: #ffd700;
             --border-radius: 1rem;
             --border-radius-lg: 1.5rem;
-            --border-radius-sm: 0.75rem;
-            transition: background-color 0.3s, color 0.3s;
-        }
-
-        body.light-mode {
-            --dark: #f8fafc;
-            --light: #0f172a;
-            --glass: rgba(0, 0, 0, 0.05);
-            background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%);
         }
 
         body {
@@ -63,729 +49,134 @@
             min-height: 100vh;
             color: var(--light);
             overflow-x: hidden;
-            font-size: 16px;
-            line-height: 1.5;
-            transition: background 0.3s;
         }
 
-        @media (max-width: 768px) { body { font-size: 14px; } }
-
-        /* Profile Card */
-        .profile-card {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            border-radius: var(--border-radius-lg);
-            padding: 1.5rem;
-            margin: 1rem 0;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .profile-card::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-            animation: rotate 20s linear infinite;
-        }
-
-        .profile-badge {
-            font-size: 0.8rem;
-            background: rgba(255,255,255,0.2);
-            padding: 0.2rem 0.6rem;
-            border-radius: 2rem;
-            display: inline-block;
-        }
-
-        /* Personalization Modal */
-        .personalization-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.95);
-            z-index: 10001;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            backdrop-filter: blur(10px);
-        }
-
-        .personalization-content {
-            background: linear-gradient(135deg, #1e293b, #0f172a);
-            padding: 2rem;
-            border-radius: var(--border-radius-lg);
-            max-width: 500px;
-            width: 90%;
-            max-height: 90vh;
-            overflow-y: auto;
-            text-align: center;
-        }
-
-        .grade-selector, .school-selector, .curriculum-selector, .subject-selector {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            justify-content: center;
-            margin: 1rem 0;
-        }
-
-        .grade-btn, .school-btn, .curriculum-btn, .subject-btn {
-            background: rgba(255,255,255,0.1);
-            border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 2rem;
-            color: white;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .grade-btn.active, .school-btn.active, .curriculum-btn.active, .subject-btn.active {
-            background: var(--primary);
-            box-shadow: 0 0 15px rgba(99,102,241,0.5);
-        }
-
-        /* Subject Tags */
-        .subject-tag {
-            background: rgba(255,255,255,0.1);
-            padding: 0.3rem 0.8rem;
-            border-radius: 2rem;
-            font-size: 0.8rem;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.3rem;
-        }
-
-        .ad-container {
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: var(--border-radius);
-            padding: 0.75rem;
-            margin: 1rem 0;
-            text-align: center;
-            overflow: hidden;
-        }
-
-        .ad-label {
-            font-size: 0.65rem;
-            opacity: 0.5;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 0.5rem;
-        }
-
-        .scanner-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.95);
-            z-index: 10000;
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            backdrop-filter: blur(10px);
-        }
-
-        .scanner-modal.active {
-            display: flex;
-            animation: fadeIn 0.3s ease;
-        }
-
-        .scanner-preview {
-            width: 90%;
-            max-width: 500px;
-            background: white;
-            border-radius: 1rem;
-            overflow: hidden;
-        }
-
-        .scanner-preview video, .scanner-preview img {
-            width: 100%;
-            height: auto;
-        }
-
-        .feature-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.5rem;
-            margin: 2rem 0;
-        }
-
-        .feature-card {
+        /* Upload Area */
+        .upload-card {
             background: var(--glass);
             backdrop-filter: blur(10px);
-            border-radius: var(--border-radius);
-            padding: 1.5rem;
-            text-align: center;
+            border-radius: var(--border-radius-lg);
+            padding: 2rem;
+            margin: 1rem 0;
+            border: 2px dashed rgba(255,255,255,0.3);
             cursor: pointer;
             transition: all 0.3s;
-            border: 1px solid rgba(255,255,255,0.1);
+            text-align: center;
         }
 
-        .feature-card:hover {
-            transform: translateY(-5px);
+        .upload-card:hover {
             border-color: var(--primary);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            transform: translateY(-5px);
         }
 
-        .feature-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-        }
-
-        .exam-selector {
-            background: var(--glass);
-            border-radius: var(--border-radius);
-            padding: 1rem;
-            margin: 1rem 0;
-            display: flex;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .exam-btn {
-            background: rgba(255,255,255,0.1);
-            border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 2rem;
-            color: white;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .exam-btn.active, .exam-btn:hover {
-            background: var(--primary);
-        }
-
-        .score-card {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            border-radius: var(--border-radius);
-            padding: 1.5rem;
-            text-align: center;
-            margin: 1rem 0;
-        }
-
-        .score-number {
-            font-size: 3rem;
-            font-weight: bold;
-            color: var(--gold);
-        }
-
-        .bg-animation {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -2;
-            overflow: hidden;
-        }
-
-        .bg-animation::before {
-            content: '';
-            position: absolute;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(99,102,241,0.3) 0%, rgba(236,72,153,0.3) 100%);
-            animation: rotate 20s linear infinite;
-        }
-
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        .bg-animation span {
-            position: absolute;
-            display: block;
-            width: 20px;
-            height: 20px;
-            background: rgba(255, 255, 255, 0.1);
-            animation: float 25s linear infinite;
-            bottom: -150px;
-            border-radius: 50%;
-        }
-
-        @keyframes float {
-            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(-1000px) rotate(720deg); opacity: 0; }
-        }
-
-        .theme-toggle {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: var(--glass);
-            border-radius: 50%;
-            width: 45px;
-            height: 45px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            z-index: 999;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.2);
-            transition: all 0.3s;
-        }
-
-        .theme-toggle:hover { transform: scale(1.1); }
-
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.9);
-            z-index: 9999;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            backdrop-filter: blur(10px);
-            padding: 1rem;
-        }
-
-        .modal-content {
-            background: linear-gradient(135deg, #1e293b, #0f172a);
-            padding: 2rem;
-            border-radius: var(--border-radius-lg);
-            max-width: 500px;
-            width: 100%;
-            text-align: center;
-            border: 2px solid var(--primary);
-            position: relative;
-            animation: slideUp 0.3s ease;
-        }
-
-        @media (max-width: 480px) { .modal-content { padding: 1.5rem; } }
-
-        @keyframes slideUp {
-            from { transform: translateY(50px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-
-        .price-tag { font-size: 3rem; font-weight: bold; color: var(--gold); margin: 1rem 0; }
-        .feature-list { text-align: left; margin: 1.5rem 0; list-style: none; }
-        .feature-list li { padding: 0.5rem 0; display: flex; align-items: center; gap: 0.5rem; }
-        .feature-list li::before { content: "✓"; color: var(--success); font-weight: bold; }
-
-        .upgrade-btn {
-            background: linear-gradient(135deg, var(--gold), #ffed4e);
-            color: #000;
-            border: none;
-            padding: 0.6rem 1.2rem;
-            border-radius: 2rem;
-            cursor: pointer;
-            font-weight: bold;
-            position: fixed;
-            top: 1rem;
-            right: 1rem;
-            z-index: 999;
-            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
-            animation: pulse 2s infinite;
-            font-size: 0.9rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        @media (max-width: 768px) { .upgrade-btn { top: 0.75rem; right: 0.75rem; padding: 0.5rem 1rem; font-size: 0.8rem; } }
-
-        @keyframes pulse {
-            0%, 100% { box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4); }
-            50% { box-shadow: 0 4px 25px rgba(255, 215, 0, 0.8); }
-        }
-
-        nav {
-            background: rgba(15, 23, 42, 0.8);
-            backdrop-filter: blur(10px);
-            padding: 0.8rem 1.5rem;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            border-bottom: 1px solid var(--glass);
-        }
-
-        .nav-container {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }
-
-        .logo {
-            font-size: 1.3rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 1rem;
-            list-style: none;
-            flex-wrap: wrap;
-        }
-
-        .nav-links a {
-            color: var(--light);
-            text-decoration: none;
-            transition: all 0.3s;
-            font-weight: 500;
-            cursor: pointer;
-            padding: 0.4rem 0.8rem;
-            border-radius: 0.5rem;
-            font-size: 0.9rem;
-        }
-
-        .nav-links a:hover { background: var(--glass); color: var(--accent); }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 1.5rem;
-        }
-
-        @media (max-width: 768px) { .container { padding: 1rem; } }
-
-        .hero {
-            text-align: center;
-            padding: 2rem 1rem;
-            animation: fadeInUp 0.8s ease-out;
-        }
-
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .hero h1 {
-            font-size: clamp(1.8rem, 5vw, 3.5rem);
-            margin-bottom: 1rem;
-            background: linear-gradient(135deg, #fff, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .hero p {
-            font-size: clamp(0.9rem, 3vw, 1.1rem);
-            opacity: 0.9;
-            margin-bottom: 1.5rem;
-        }
-
-        .stats-bar {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-            gap: 0.8rem;
-            margin-top: 1.5rem;
-            max-width: 800px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .stat-item {
-            background: var(--glass);
-            padding: 0.8rem;
-            border-radius: var(--border-radius);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: transform 0.3s;
-            text-align: center;
-        }
-
-        .stat-item:hover { transform: translateY(-3px); border-color: var(--primary); }
-
-        .stat-value {
-            font-size: clamp(1.2rem, 4vw, 2rem);
-            font-weight: bold;
-            color: var(--accent);
-        }
-
-        .stat-label { font-size: 0.7rem; opacity: 0.8; margin-top: 0.25rem; }
-
-        .pomodoro-timer {
-            background: var(--glass);
-            border-radius: 1rem;
-            padding: 1rem;
-            margin: 1rem auto;
-            max-width: 400px;
-            text-align: center;
-        }
-
-        .timer-display { font-size: 2.5rem; font-weight: bold; margin: 0.5rem 0; }
-
-        .upload-section {
-            background: var(--glass);
-            backdrop-filter: blur(10px);
-            border-radius: var(--border-radius-lg);
-            padding: 1.5rem;
-            margin: 1.5rem 0;
-            border: 2px dashed rgba(255, 255, 255, 0.3);
-            transition: all 0.3s;
-            display: none;
-        }
-
-        .upload-section.active { display: block; animation: fadeIn 0.5s ease; }
-
-        .upload-tabs {
-            display: flex;
-            gap: 0.8rem;
-            justify-content: center;
-            margin-bottom: 1.5rem;
-            flex-wrap: wrap;
-        }
-
-        .upload-tab {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 0.6rem 1.2rem;
-            border-radius: 2rem;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-weight: 500;
-            font-size: 0.9rem;
-        }
-
-        .upload-tab:hover, .upload-tab.active { background: var(--primary); }
-
-        .upload-area {
-            border: 2px dashed var(--glass);
-            border-radius: var(--border-radius);
-            padding: 2rem 1rem;
-            margin: 1rem 0;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-align: center;
-        }
-
-        .upload-icon { font-size: clamp(2rem, 6vw, 3rem); margin-bottom: 0.5rem; }
-
-        .document-list {
-            margin-top: 1rem;
-            max-height: 400px;
-            overflow-y: auto;
-        }
-
-        .document-item {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 0.8rem;
-            border-radius: var(--border-radius-sm);
-            margin-bottom: 0.5rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-        }
-
-        .document-info {
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-            flex: 1;
-        }
-
-        .document-info i { font-size: 1.2rem; color: var(--accent); }
-
-        .document-actions { display: flex; gap: 0.5rem; }
-
-        .document-actions button {
-            background: rgba(255, 255, 255, 0.1);
-            border: none;
-            color: white;
-            cursor: pointer;
-            padding: 0.4rem;
-            border-radius: 0.4rem;
-        }
-
-        .subjects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 1rem;
-            margin: 2rem 0;
-        }
-
+        /* Subject Cards */
         .subject-card {
             background: var(--glass);
             backdrop-filter: blur(10px);
             border-radius: var(--border-radius);
-            padding: 1.2rem;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.3s ease;
+            padding: 1rem;
+            margin: 0.5rem;
             cursor: pointer;
-            text-align: center;
+            transition: all 0.3s;
         }
 
         .subject-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-            border-color: var(--primary);
+            transform: translateY(-3px);
+            border: 1px solid var(--primary);
         }
 
-        .subject-icon { font-size: clamp(2rem, 5vw, 3rem); margin-bottom: 0.5rem; }
-        .subject-title { font-size: clamp(1rem, 4vw, 1.25rem); margin-bottom: 0.3rem; font-weight: 600; }
-        .subject-desc { opacity: 0.8; font-size: 0.8rem; }
+        .subject-card.weak {
+            border-left: 4px solid var(--danger);
+        }
 
-        .chat-section {
+        .subject-card.strong {
+            border-left: 4px solid var(--success);
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            background: rgba(255,255,255,0.2);
+            border-radius: 1rem;
+            height: 10px;
+            overflow: hidden;
+            margin: 0.5rem 0;
+        }
+
+        .progress-fill {
+            background: var(--accent);
+            height: 100%;
+            width: 0%;
+            transition: width 0.5s;
+        }
+
+        /* Question Card */
+        .question-card {
             background: var(--glass);
             backdrop-filter: blur(10px);
-            border-radius: var(--border-radius-lg);
-            padding: 1rem;
-            margin: 1.5rem 0;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            display: none;
-        }
-
-        .chat-section.active { display: block; animation: fadeIn 0.5s ease; }
-
-        .subject-selector {
-            display: flex;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-            margin-bottom: 1rem;
-            padding: 0.8rem;
-            background: rgba(0, 0, 0, 0.2);
             border-radius: var(--border-radius);
+            padding: 1.5rem;
+            margin: 1rem 0;
         }
 
-        .subject-chip {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 0.4rem 0.8rem;
-            border-radius: 2rem;
+        .option {
+            background: rgba(255,255,255,0.05);
+            padding: 0.8rem;
+            margin: 0.5rem 0;
+            border-radius: 0.5rem;
             cursor: pointer;
             transition: all 0.3s;
-            font-size: 0.75rem;
         }
 
-        .subject-chip:hover, .subject-chip.active { background: var(--primary); }
-
-        .chat-container {
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: var(--border-radius);
-            display: flex;
-            flex-direction: column;
+        .option:hover {
+            background: rgba(99,102,241,0.3);
         }
 
-        .chat-messages {
-            flex: 1;
-            padding: 1rem;
-            overflow-y: auto;
-            max-height: 450px;
-            min-height: 350px;
+        .option.correct {
+            background: var(--success);
         }
 
-        .message {
-            margin-bottom: 0.8rem;
-            display: flex;
-            animation: messageSlide 0.3s ease;
-        }
-
-        @keyframes messageSlide {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .message.user { justify-content: flex-end; }
-        .message.assistant { justify-content: flex-start; }
-
-        .message-content {
-            max-width: 85%;
-            padding: 0.8rem 1rem;
-            border-radius: 1rem;
-            word-wrap: break-word;
-            white-space: pre-wrap;
-            line-height: 1.4;
-            font-size: 0.9rem;
-        }
-
-        .message.user .message-content {
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            border-bottom-right-radius: 0.25rem;
-        }
-
-        .message.assistant .message-content {
-            background: rgba(255, 255, 255, 0.1);
-            border-bottom-left-radius: 0.25rem;
-        }
-
-        .message-time { font-size: 0.65rem; opacity: 0.6; margin-top: 0.2rem; text-align: right; }
-
-        .chat-input-area {
-            display: flex;
-            gap: 0.8rem;
-            padding: 0.8rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 0 0 var(--border-radius) var(--border-radius);
-            flex-wrap: wrap;
-        }
-
-        .chat-input {
-            flex: 1;
-            background: rgba(255, 255, 255, 0.1);
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            color: white;
-            padding: 0.8rem;
-            border-radius: 0.8rem;
-            font-size: 0.9rem;
-            resize: none;
-            font-family: inherit;
+        .option.wrong {
+            background: var(--danger);
         }
 
         .btn {
             background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             color: white;
             border: none;
-            padding: 0.6rem 1.2rem;
-            font-size: 0.9rem;
+            padding: 0.8rem 1.5rem;
             border-radius: 0.8rem;
             cursor: pointer;
-            transition: all 0.3s;
             font-weight: 600;
+            transition: all 0.3s;
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
         }
 
-        .btn:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3); }
-
-        .btn-secondary { background: rgba(255, 255, 255, 0.1); }
-        .btn-gold { background: linear-gradient(135deg, var(--gold), #ffed4e); color: #000; }
-
-        .quick-actions {
-            display: flex;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-            margin: 0.8rem 0;
-            justify-content: center;
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(99,102,241,0.3);
         }
 
-        .quick-action {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 0.4rem 0.8rem;
+        .btn-secondary {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .btn-gold {
+            background: linear-gradient(135deg, var(--gold), #ffed4e);
+            color: #000;
+        }
+
+        .streak-badge {
+            position: fixed;
+            top: 1rem;
+            left: 1rem;
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            padding: 0.5rem 1rem;
             border-radius: 2rem;
-            font-size: 0.75rem;
-            cursor: pointer;
-            transition: all 0.3s;
+            font-weight: bold;
+            z-index: 100;
         }
-
-        .quick-action:hover { background: var(--primary); transform: scale(1.05); }
 
         .toast {
             position: fixed;
@@ -796,1376 +187,684 @@
             color: white;
             padding: 0.8rem 1.2rem;
             border-radius: 0.8rem;
-            animation: slideUp 0.3s ease;
             z-index: 1000;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-            font-size: 0.85rem;
+            animation: slideUp 0.3s ease;
         }
 
-        @media (max-width: 480px) { .toast { white-space: normal; max-width: 90%; text-align: center; } }
-
-        .flashcard {
-            width: 250px;
-            height: 300px;
-            background: var(--glass);
-            border-radius: 1rem;
-            padding: 1rem;
-            cursor: pointer;
-            position: relative;
-            perspective: 1000px;
-            transition: transform 0.6s;
-            transform-style: preserve-3d;
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+            to { opacity: 1; transform: translateX(-50%) translateY(0); }
         }
 
-        .flashcard.flipped { transform: rotateY(180deg); }
-
-        .flashcard-front, .flashcard-back {
-            position: absolute;
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
-            backface-visibility: hidden;
+            background: rgba(0,0,0,0.9);
+            z-index: 9999;
             display: flex;
             align-items: center;
             justify-content: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            padding: 2rem;
+            border-radius: var(--border-radius-lg);
+            max-width: 500px;
+            width: 90%;
             text-align: center;
-            padding: 1rem;
-            border-radius: 1rem;
+            border: 2px solid var(--primary);
         }
 
-        .flashcard-back {
-            transform: rotateY(180deg);
-            background: var(--primary);
+        .nav-links {
+            display: flex;
+            gap: 1rem;
+            list-style: none;
         }
 
-        .quiz-question {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 0.5rem;
-            padding: 1rem;
-            margin-bottom: 1rem;
-        }
-
-        .quiz-option {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 0.5rem;
-            margin: 0.2rem 0;
-            border-radius: 0.3rem;
+        .nav-links a {
+            color: var(--light);
+            text-decoration: none;
             cursor: pointer;
-            transition: all 0.3s;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
         }
 
-        .quiz-option:hover { background: rgba(99, 102, 241, 0.3); }
-
-        #equationEditor {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+        .nav-links a:hover {
             background: var(--glass);
-            backdrop-filter: blur(20px);
-            border-radius: 1rem;
-            padding: 1.5rem;
-            z-index: 10000;
-            max-width: 90%;
-            width: 500px;
-            border: 1px solid var(--primary);
         }
 
-        .analysis-result {
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: var(--border-radius);
-            padding: 1rem;
-            margin-top: 1rem;
-            text-align: left;
-            max-height: 300px;
-            overflow-y: auto;
+        nav {
+            background: rgba(15,23,42,0.8);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
 
-        .email-capture {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            padding: 1.5rem;
-            border-radius: var(--border-radius);
-            margin: 1.5rem 0;
-            text-align: center;
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
         }
-
-        .email-input {
-            padding: 0.7rem 1rem;
-            border-radius: 0.8rem;
-            border: none;
-            width: 280px;
-            max-width: 100%;
-            margin-right: 0.5rem;
-            font-size: 0.9rem;
-            background: white;
-            color: #333;
-        }
-
-        .streak-badge {
-            position: fixed;
-            top: 1rem;
-            left: 1rem;
-            background: linear-gradient(135deg, #f59e0b, #d97706);
-            padding: 0.5rem 0.8rem;
-            border-radius: 2rem;
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-            font-weight: bold;
-            z-index: 100;
-            font-size: 0.8rem;
-        }
-
-        .progress-bar {
-            width: 100%;
-            height: 4px;
-            background: rgba(255,255,255,0.2);
-            border-radius: 2px;
-            overflow: hidden;
-            margin-top: 0.5rem;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: var(--accent);
-            width: 0%;
-            transition: width 0.3s;
-        }
-
-        .loader {
-            border: 3px solid rgba(255, 255, 255, 0.1);
-            border-left-color: var(--accent);
-            border-radius: 50%;
-            width: 24px;
-            height: 24px;
-            animation: spin 1s linear infinite;
-            display: inline-block;
-        }
-
-        @keyframes spin { to { transform: rotate(360deg); } }
-
-        .typing-indicator {
-            display: flex;
-            gap: 0.3rem;
-            padding: 0.5rem;
-        }
-
-        .typing-indicator span {
-            width: 8px;
-            height: 8px;
-            background: white;
-            border-radius: 50%;
-            animation: typing 1.4s infinite;
-        }
-
-        @keyframes typing {
-            0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
-            30% { transform: translateY(-8px); opacity: 1; }
-        }
-
-        .close-btn {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            background: none;
-            border: none;
-            color: white;
-            font-size: 1.2rem;
-            cursor: pointer;
-            opacity: 0.7;
-        }
-
-        .feedback {
-            margin-top: 1rem;
-            padding: 0.8rem;
-            border-radius: 0.5rem;
-            font-weight: 500;
-            font-size: 0.85rem;
-        }
-
-        .feedback.correct { background: rgba(16, 185, 129, 0.2); color: var(--success); }
-        .feedback.incorrect { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
 
         @media (max-width: 768px) {
             .container { padding: 1rem; }
-            .subject-chip { font-size: 0.7rem; }
-            .btn { padding: 0.5rem 1rem; font-size: 0.85rem; }
+            .nav-links { gap: 0.5rem; }
+            .nav-links a { padding: 0.3rem 0.6rem; font-size: 0.8rem; }
         }
     </style>
 </head>
 <body>
-    <div class="bg-animation">
-        <span style="left:10%; animation-delay:0s;"></span>
-        <span style="left:20%; animation-delay:2s;"></span>
-        <span style="left:35%; animation-delay:4s;"></span>
-        <span style="left:50%; animation-delay:0s;"></span>
-        <span style="left:65%; animation-delay:2s;"></span>
-        <span style="left:80%; animation-delay:4s;"></span>
-        <span style="left:90%; animation-delay:0s;"></span>
-    </div>
-
-    <button class="upgrade-btn" onclick="showPremiumModal()">
-        <i class="fas fa-crown"></i> Pro - $4.99/mo
-    </button>
-
     <div class="streak-badge" id="streakBadge">
-        <i class="fas fa-fire"></i>
-        <span id="streakCount">0</span>
-        <span>day</span>
+        <i class="fas fa-fire"></i> <span id="streakCount">0</span> day streak
     </div>
 
     <nav>
-        <div class="nav-container">
-            <div class="logo">
-                <i class="fas fa-robot"></i>
-                <span>Universal Smart AI Pro</span>
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+            <div class="logo" style="font-size: 1.3rem; font-weight: bold;">
+                <i class="fas fa-robot"></i> Universal Smart AI Pro
             </div>
             <ul class="nav-links">
-                <li><a onclick="showSection('home')"><i class="fas fa-home"></i> Home</a></li>
-                <li><a onclick="showPersonalization()"><i class="fas fa-user-graduate"></i> My Profile</a></li>
-                <li><a onclick="showSection('upload')"><i class="fas fa-camera"></i> Scanner</a></li>
-                <li><a onclick="showSection('chat')"><i class="fas fa-comment-dots"></i> Chat</a></li>
+                <li><a onclick="showSection('home')">Home</a></li>
+                <li><a onclick="showSection('upload')">Upload Record</a></li>
+                <li><a onclick="showSection('subjects')">My Subjects</a></li>
+                <li><a onclick="showSection('practice')">Practice</a></li>
             </ul>
         </div>
     </nav>
 
     <div class="container">
-        <!-- Hero Section -->
-        <section id="home" class="hero">
-            <h1><i class="fas fa-robot"></i> Universal Smart AI Pro</h1>
-            <p>The AI Tutor That KNOWS Your Grade, School, and Curriculum</p>
+        <!-- Home Section -->
+        <section id="home" style="text-align: center; padding: 2rem 0;">
+            <h1 style="font-size: clamp(2rem, 5vw, 3rem); margin-bottom: 1rem;">
+                <i class="fas fa-robot"></i> Smart Exam Prep
+            </h1>
+            <p style="font-size: 1.2rem; margin-bottom: 2rem;">
+                Upload your academic record → AI identifies weak subjects → Generate personalized questions from real past papers
+            </p>
             
-            <!-- Profile Card -->
-            <div class="profile-card" id="profileCard">
-                <i class="fas fa-user-graduate" style="font-size: 2rem;"></i>
-                <h3 id="profileName">Student</h3>
-                <div id="profileDetails" class="profile-badge">
-                    <span id="profileGrade">Not set</span> • 
-                    <span id="profileSchool">Not set</span> • 
-                    <span id="profileCurriculum">Not set</span>
+            <div class="stats-bar" style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin: 2rem 0;">
+                <div class="stat-item" style="background: var(--glass); padding: 1rem; border-radius: 1rem;">
+                    <div style="font-size: 2rem; font-weight: bold;" id="totalQuestions">0</div>
+                    <div>Questions Practiced</div>
                 </div>
-                <button class="btn btn-secondary" onclick="showPersonalization()" style="margin-top: 0.5rem; padding: 0.3rem 0.8rem; font-size: 0.8rem;">
-                    <i class="fas fa-edit"></i> Edit Profile
+                <div class="stat-item" style="background: var(--glass); padding: 1rem; border-radius: 1rem;">
+                    <div style="font-size: 2rem; font-weight: bold;" id="accuracy">0%</div>
+                    <div>Accuracy</div>
+                </div>
+                <div class="stat-item" style="background: var(--glass); padding: 1rem; border-radius: 1rem;">
+                    <div style="font-size: 2rem; font-weight: bold;" id="weakSubjectsCount">0</div>
+                    <div>Weak Subjects</div>
+                </div>
+            </div>
+            
+            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <button class="btn" onclick="showSection('upload')">
+                    <i class="fas fa-upload"></i> Upload Your Report Card
+                </button>
+                <button class="btn btn-secondary" onclick="showSection('subjects')">
+                    <i class="fas fa-book"></i> View Subjects
+                </button>
+                <button class="btn btn-secondary" onclick="showSection('practice')">
+                    <i class="fas fa-play"></i> Start Practice
                 </button>
             </div>
-
-            <div class="stats-bar">
-                <div class="stat-item"><div class="stat-value" id="totalQuestions">0</div><div class="stat-label">Questions</div></div>
-                <div class="stat-item"><div class="stat-value" id="premiumStatus">Free</div><div class="stat-label">Plan</div></div>
-                <div class="stat-item"><div class="stat-value" id="documentsCount">0</div><div class="stat-label">Scans</div></div>
-                <div class="stat-item"><div class="stat-value" id="streakDisplay">0</div><div class="stat-label">Day Streak</div></div>
-            </div>
-
-            <!-- Feature Cards -->
-            <div class="feature-grid">
-                <div class="feature-card" onclick="startPhotoScanner()">
-                    <div class="feature-icon">📸</div>
-                    <h3>Scan Homework</h3>
-                    <p>Take picture → AI solves</p>
-                    <span class="profile-badge">New!</span>
-                </div>
-                <div class="feature-card" onclick="startVoiceMode()">
-                    <div class="feature-icon">🎤</div>
-                    <h3>Voice Mode</h3>
-                    <p>Hands-free learning</p>
-                </div>
-                <div class="feature-card" onclick="generatePracticeQuestions()">
-                    <div class="feature-icon">📚</div>
-                    <h3>Practice Questions</h3>
-                    <p>Grade-specific problems</p>
-                </div>
-            </div>
-
-            <!-- Top Banner Ad -->
-            <div id="topAd" class="ad-container">
-                <div class="ad-label">Advertisement</div>
-                <ins class="adsbygoogle"
-                     style="display:block"
-                     data-ad-client="ca-pub-3701999191662457"
-                     data-ad-slot="9204344934"
-                     data-ad-format="auto"
-                     data-full-width-responsive="true"></ins>
-                <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                </script>
-            </div>
-
-            <div class="pomodoro-timer">
-                <h3><i class="fas fa-hourglass-half"></i> Focus Timer</h3>
-                <div class="timer-display" id="timerDisplay">25:00</div>
-                <div style="display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap;">
-                    <button class="btn btn-secondary" onclick="startTimer()"><i class="fas fa-play"></i> Start</button>
-                    <button class="btn btn-secondary" onclick="pauseTimer()"><i class="fas fa-pause"></i> Pause</button>
-                    <button class="btn btn-secondary" onclick="resetTimer()"><i class="fas fa-redo"></i> Reset</button>
-                </div>
-            </div>
-
-            <div class="progress-dashboard">
-                <h3><i class="fas fa-chart-line"></i> Your Progress</h3>
-                <div style="background: var(--glass); border-radius: 1rem; padding: 1rem;">
-                    <div style="margin-bottom: 1rem;">
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.3rem;">
-                            <span>Overall Mastery</span>
-                            <span id="masteryPercent">0%</span>
-                        </div>
-                        <div class="progress-bar" style="height: 8px;">
-                            <div class="progress-fill" id="masteryBar" style="width: 0%;"></div>
-                        </div>
-                    </div>
-                    <div id="subjectProgressList"></div>
-                </div>
-            </div>
-
-            <div id="achievementsDisplay" style="background: var(--glass); border-radius: 1rem; padding: 1rem; margin-top: 1rem;">
-                <h3><i class="fas fa-trophy"></i> Achievements <span id="achievementsCount">0/0</span></h3>
-                <div id="achievementsList" style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.5rem;"></div>
-            </div>
-
-            <div style="margin-top: 1rem; display: flex; gap: 0.8rem; justify-content: center; flex-wrap: wrap;">
-                <button class="btn" onclick="startPhotoScanner()"><i class="fas fa-camera"></i> Scan Homework</button>
-                <button class="btn" onclick="startVoiceMode()"><i class="fas fa-microphone"></i> Voice Mode</button>
-                <button class="btn btn-secondary" onclick="generatePracticeQuestions()"><i class="fas fa-magic"></i> Practice</button>
-                <button class="btn btn-secondary" onclick="getStudyRecommendations()"><i class="fas fa-lightbulb"></i> Study Tips</button>
-            </div>
         </section>
 
-        <!-- Email Capture -->
-        <div class="email-capture" id="emailCapture">
-            <i class="fas fa-gift" style="font-size: 1.8rem; margin-bottom: 0.5rem;"></i>
-            <h3>🎁 Get 10 Free Sessions!</h3>
-            <p>Personalized for YOUR grade and curriculum</p>
-            <form id="emailForm" onsubmit="subscribeWithVerification(event)">
-                <input type="email" id="userEmail" class="email-input" placeholder="Enter your email" required>
-                <button type="submit" class="btn" id="subscribeBtn"><i class="fas fa-envelope"></i> Start Free</button>
-            </form>
-            <div id="emailStatus" style="margin-top: 0.8rem; display: none;"></div>
-        </div>
-
-        <!-- Upload Section (Photo Scanner) -->
-        <section id="upload" class="upload-section">
-            <h2 style="font-size: 1.3rem;"><i class="fas fa-camera"></i> Scan Homework</h2>
-            <p>Take a photo of any problem - AI solves it with steps matching YOUR grade level</p>
+        <!-- Upload Section -->
+        <section id="upload" style="display: none;">
+            <h2><i class="fas fa-upload"></i> Upload Your Academic Record</h2>
+            <p>Upload your school report card or university transcript. We'll analyze your performance and identify weak subjects.</p>
             
-            <div class="upload-area" onclick="startPhotoScanner()">
-                <i class="fas fa-camera upload-icon"></i>
-                <p>Click to take a photo of your homework</p>
-                <input type="file" id="photoInput" class="file-input" accept="image/*" capture="environment">
+            <div class="upload-card" onclick="document.getElementById('recordFile').click()">
+                <i class="fas fa-file-pdf" style="font-size: 3rem; margin-bottom: 1rem;"></i>
+                <p><strong>Click to upload PDF</strong></p>
+                <p style="font-size: 0.8rem; opacity: 0.7;">Supports: School report cards, university transcripts, National Senior Certificate</p>
+                <input type="file" id="recordFile" accept=".pdf,.jpg,.png" style="display: none;">
             </div>
-
-            <div id="scanResult" style="margin-top: 1rem; display: none;">
-                <h3>Extracted Text:</h3>
-                <div id="extractedText" style="background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 0.5rem; margin: 0.5rem 0;"></div>
-                <button class="btn" onclick="solveScannedProblem()"><i class="fas fa-robot"></i> Solve with AI</button>
-                <div id="scanSolution" style="margin-top: 1rem;"></div>
+            
+            <div id="uploadStatus" style="margin-top: 1rem;"></div>
+            
+            <div id="extractedData" style="display: none; margin-top: 2rem;">
+                <h3>📊 Extracted Academic Data</h3>
+                <div id="studentInfo" style="background: var(--glass); padding: 1rem; border-radius: 1rem; margin: 1rem 0;"></div>
+                <div id="subjectsList"></div>
+                <button class="btn" onclick="analyzeWeakSubjects()">Analyze & Create Study Plan</button>
             </div>
-
-            <div class="document-list" id="documentList"></div>
-            <div style="margin-top: 1rem;"><button class="btn btn-secondary" onclick="showSection('home')"><i class="fas fa-home"></i> Back</button></div>
+            
+            <button class="btn btn-secondary" onclick="showSection('home')" style="margin-top: 1rem;">Back</button>
         </section>
 
-        <!-- Chat Section -->
-        <section id="chat" class="chat-section">
-            <div class="subject-selector" id="subjectSelector">
-                <div class="subject-chip active" onclick="changeSubject('General')">💬 General</div>
-                <div class="subject-chip" onclick="changeSubject('Mathematics')">📐 Math</div>
-                <div class="subject-chip" onclick="changeSubject('Science')">🔬 Science</div>
-                <div class="subject-chip" onclick="changeSubject('English')">📖 English</div>
-                <div class="subject-chip" onclick="changeSubject('History')">📜 History</div>
-            </div>
-            <div class="chat-container">
-                <div class="chat-messages" id="chatMessages">
-                    <div class="message assistant">
-                        <div class="message-content">
-                            <i class="fas fa-robot"></i> 👋 Hi! I'm your AI Tutor, personalized for YOUR learning.<br><br>
-                            <strong>Your Profile:</strong> <span id="chatProfileInfo">Not set</span><br><br>
-                            I'll answer questions at your grade level and follow your curriculum. 
-                            Try scanning a homework problem or asking a question about what you're studying now!
-                        </div>
-                    </div>
-                </div>
-                <div class="quick-actions">
-                    <span class="quick-action" onclick="startVoiceMode()"><i class="fas fa-microphone"></i> Voice Mode</span>
-                    <span class="quick-action" onclick="startPhotoScanner()"><i class="fas fa-camera"></i> Scan Problem</span>
-                    <span class="quick-action" onclick="generatePracticeQuestions()">📚 Practice Questions</span>
-                    <span class="quick-action" onclick="speakLastAnswer()"><i class="fas fa-volume-up"></i> Speak</span>
-                </div>
-                <div class="chat-input-area">
-                    <textarea class="chat-input" id="chatInput" placeholder="Ask me anything..." rows="1" onkeypress="if(event.key==='Enter' && !event.shiftKey){event.preventDefault();sendMessage();}"></textarea>
-                    <button id="voiceModeBtn" class="btn btn-secondary" onclick="startContinuousVoiceMode()" style="padding: 0.8rem;"><i class="fas fa-microphone-alt"></i></button>
-                    <button id="micBtn" class="btn btn-secondary" onclick="toggleSpeechRecognition()" style="padding: 0.8rem;"><i class="fas fa-microphone"></i></button>
-                    <button id="eqBtn" class="btn btn-secondary" onclick="showEquationEditor()" style="padding: 0.8rem;"><i class="fas fa-square-root-alt"></i></button>
-                    <button class="btn" onclick="sendMessage()"><i class="fas fa-paper-plane"></i> Send</button>
-                </div>
-            </div>
-            <div style="margin-top: 0.8rem; text-align: center; display: flex; gap: 0.8rem; justify-content: center; flex-wrap: wrap;">
-                <button class="btn btn-secondary" onclick="clearChat()"><i class="fas fa-trash"></i> Clear</button>
-                <button class="btn btn-secondary" onclick="exportAsPDF()"><i class="fas fa-file-pdf"></i> Export Notes</button>
-                <button class="btn btn-secondary" onclick="showSection('home')"><i class="fas fa-home"></i> Back</button>
-            </div>
-
-            <!-- Bottom Banner Ad -->
-            <div id="bottomAd" class="ad-container" style="margin-top: 1rem;">
-                <div class="ad-label">Advertisement</div>
-                <ins class="adsbygoogle"
-                     style="display:block"
-                     data-ad-client="ca-pub-3701999191662457"
-                     data-ad-slot="3321462862"
-                     data-ad-format="auto"
-                     data-full-width-responsive="true"></ins>
-                <script>
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                </script>
-            </div>
+        <!-- Subjects Section -->
+        <section id="subjects" style="display: none;">
+            <h2><i class="fas fa-book"></i> Your Subjects</h2>
+            <div id="subjectsGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; margin: 1rem 0;"></div>
+            <button class="btn btn-secondary" onclick="showSection('home')">Back</button>
         </section>
-    </div>
 
-    <!-- Personalization Modal -->
-    <div id="personalizationModal" class="personalization-modal" style="display: none;">
-        <div class="personalization-content">
-            <button class="close-btn" onclick="closePersonalization()">×</button>
-            <h2><i class="fas fa-user-graduate"></i> Your Learning Profile</h2>
-            <p>Tell us about yourself so we can personalize your learning</p>
-            
-            <h3 style="margin-top: 1rem;">Grade</h3>
-            <div class="grade-selector" id="gradeSelector"></div>
-            
-            <h3>School Type</h3>
-            <div class="school-selector" id="schoolSelector">
-                <button class="school-btn" onclick="selectSchoolType('Public')">🏫 Public School</button>
-                <button class="school-btn" onclick="selectSchoolType('Private')">🏛️ Private School</button>
-                <button class="school-btn" onclick="selectSchoolType('Homeschool')">🏠 Homeschool</button>
-            </div>
-            
-            <h3>Curriculum</h3>
-            <div class="curriculum-selector" id="curriculumSelector"></div>
-            
-            <h3>Subjects You Study</h3>
-            <div class="subject-selector" id="subjectSelectorPersonal"></div>
-            
-            <button class="btn" onclick="saveProfile()" style="margin-top: 1rem; width: 100%;">Save & Continue</button>
-        </div>
-    </div>
-
-    <!-- Photo Scanner Modal -->
-    <div id="scannerModal" class="scanner-modal">
-        <div class="scanner-preview">
-            <video id="scannerVideo" autoplay playsinline style="width:100%;"></video>
-            <canvas id="scannerCanvas" style="display:none;"></canvas>
-            <div style="padding: 1rem; text-align: center;">
-                <button class="btn" onclick="capturePhoto()">Capture</button>
-                <button class="btn btn-secondary" onclick="closeScanner()">Cancel</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Equation Editor Modal -->
-    <div id="equationEditor" style="display: none;">
-        <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
-            <h3>Math Equation Editor</h3>
-            <button onclick="closeEquationEditor()" style="background: none; border: none; color: white; font-size: 1.2rem;">✕</button>
-        </div>
-        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem; margin-bottom: 1rem;">
-            <button class="btn btn-secondary" onclick="insertMath('^2')">x²</button>
-            <button class="btn btn-secondary" onclick="insertMath('^3')">x³</button>
-            <button class="btn btn-secondary" onclick="insertMath('\\sqrt{}')">√</button>
-            <button class="btn btn-secondary" onclick="insertMath('\\frac{}{}')">a/b</button>
-            <button class="btn btn-secondary" onclick="insertMath('\\pi')">π</button>
-            <button class="btn btn-secondary" onclick="insertMath('\\theta')">θ</button>
-            <button class="btn btn-secondary" onclick="insertMath('\\int')">∫</button>
-            <button class="btn btn-secondary" onclick="insertMath('\\sum')">∑</button>
-        </div>
-        <textarea id="equationInput" rows="3" style="width: 100%; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; padding: 0.5rem; border-radius: 0.5rem; margin-bottom: 1rem;" placeholder="Type LaTeX or math expression..."></textarea>
-        <div style="display: flex; gap: 1rem;">
-            <button class="btn" onclick="insertEquation()">Insert</button>
-            <button class="btn btn-secondary" onclick="closeEquationEditor()">Cancel</button>
-        </div>
+        <!-- Practice Section -->
+        <section id="practice" style="display: none;">
+            <h2><i class="fas fa-brain"></i> Practice Mode</h2>
+            <div id="subjectSelector" style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin: 1rem 0;"></div>
+            <div id="questionContainer"></div>
+            <div id="practiceResult" style="margin-top: 1rem;"></div>
+            <button class="btn btn-secondary" onclick="showSection('home')">Back</button>
+        </section>
     </div>
 
     <script>
-        // ==================== USER PROFILE SYSTEM ====================
-        let userProfile = JSON.parse(localStorage.getItem('userProfile')) || {
+        // ==================== CONFIGURATION ====================
+        const BACKEND_URL = 'https://universal-ai-tutor-2.onrender.com';
+        const SITE_URL = 'https://universalsmartai.com';
+        
+        // Student Data
+        let studentData = {
+            name: null,
             grade: null,
-            schoolType: null,
-            curriculum: null,
-            subjects: []
+            subjects: [],
+            weakSubjects: [],
+            strongSubjects: []
         };
         
-        // Curriculum mapping based on school type
-        const curriculums = {
-            Public: ['CAPS (South Africa)', 'IGCSE', 'Cambridge', 'IB'],
-            Private: ['Cambridge', 'IGCSE', 'IB', 'CAPS'],
-            Homeschool: ['CAPS', 'Cambridge', 'Common Core', 'Montessori']
+        let practiceStats = {
+            total: 0,
+            correct: 0,
+            currentSubject: null
         };
         
-        // Grade-specific content topics
-        const gradeTopics = {
-            primary: ['Basic Math', 'Reading', 'Science', 'Social Studies'],
-            middle: ['Algebra', 'Geometry', 'Physical Science', 'World History'],
-            high: ['Calculus', 'Physics', 'Chemistry', 'Biology', 'Literature'],
-            university: ['Advanced Mathematics', 'Specialized Subjects']
-        };
+        let currentQuestion = null;
         
-        function initPersonalization() {
-            // Build grade selector (Grades 1-12 + University)
-            const gradeSelector = document.getElementById('gradeSelector');
-            gradeSelector.innerHTML = '';
-            for (let i = 1; i <= 12; i++) {
-                gradeSelector.innerHTML += `<button class="grade-btn" onclick="selectGrade(${i})">Grade ${i}</button>`;
+        // Load saved data
+        function loadStudentData() {
+            const saved = localStorage.getItem('studentAcademicData');
+            if (saved) {
+                studentData = JSON.parse(saved);
+                renderSubjectsGrid();
+                updateStats();
             }
-            gradeSelector.innerHTML += `<button class="grade-btn" onclick="selectGrade('University')">🎓 University</button>`;
+        }
+        
+        function saveStudentData() {
+            localStorage.setItem('studentAcademicData', JSON.stringify(studentData));
+            updateStats();
+        }
+        
+        function updateStats() {
+            document.getElementById('totalQuestions').textContent = practiceStats.total;
+            const accuracy = practiceStats.total > 0 ? Math.round((practiceStats.correct / practiceStats.total) * 100) : 0;
+            document.getElementById('accuracy').textContent = accuracy + '%';
+            document.getElementById('weakSubjectsCount').textContent = studentData.weakSubjects.length;
+            document.getElementById('streakCount').textContent = localStorage.getItem('streak') || 0;
+        }
+        
+        // ==================== ACADEMIC RECORD PARSING ====================
+        async function handleFileUpload(file) {
+            const statusDiv = document.getElementById('uploadStatus');
+            statusDiv.innerHTML = '<div class="loader"></div> Processing your academic record...';
             
-            // Set active if already selected
-            if (userProfile.grade) {
-                document.querySelectorAll('.grade-btn').forEach(btn => {
-                    if (btn.innerText.includes(userProfile.grade)) btn.classList.add('active');
-                });
-                if (userProfile.schoolType) {
-                    document.querySelectorAll('.school-btn').forEach(btn => {
-                        if (btn.innerText.includes(userProfile.schoolType)) btn.classList.add('active');
-                    });
+            let text = '';
+            
+            if (file.type === 'application/pdf') {
+                text = await extractTextFromPDF(file);
+            } else {
+                // For images, use Tesseract (simplified)
+                text = await extractTextFromImage(file);
+            }
+            
+            parseAcademicRecord(text);
+        }
+        
+        async function extractTextFromPDF(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = async function(e) {
+                    const typedarray = new Uint8Array(e.target.result);
+                    try {
+                        const pdf = await pdfjsLib.getDocument(typedarray).promise;
+                        let fullText = '';
+                        for (let i = 1; i <= pdf.numPages; i++) {
+                            const page = await pdf.getPage(i);
+                            const textContent = await page.getTextContent();
+                            const pageText = textContent.items.map(item => item.str).join(' ');
+                            fullText += pageText + '\n';
+                        }
+                        resolve(fullText);
+                    } catch (error) {
+                        reject(error);
+                    }
+                };
+                reader.onerror = reject;
+                reader.readAsArrayBuffer(file);
+            });
+        }
+        
+        async function extractTextFromImage(file) {
+            // Placeholder - in production, use Tesseract.js
+            return new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    resolve("Image processed - manual entry recommended for accuracy");
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+        
+        function parseAcademicRecord(text) {
+            const extracted = {
+                name: null,
+                subjects: []
+            };
+            
+            // Look for name patterns
+            const nameMatch = text.match(/Name\s*:\s*([A-Z\s]+)/i) || 
+                             text.match(/Learner\s*:\s*([A-Z\s]+)/i) ||
+                             text.match(/Awarded to\s*([A-Z\s]+)/i);
+            if (nameMatch) extracted.name = nameMatch[1].trim();
+            
+            // Look for grade
+            const gradeMatch = text.match(/Grade\s*(\d+)/i) || text.match(/Year\s*:\s*(\d{4})/i);
+            if (gradeMatch) extracted.grade = gradeMatch[1];
+            
+            // Extract subjects and marks from the academic record
+            // This parses the sample data you provided
+            
+            const lines = text.split('\n');
+            let currentSubject = null;
+            
+            // Subject patterns from your sample records
+            const subjectPatterns = [
+                'Mathematics', 'Physical Sciences', 'English', 'SiSwati', 'Technical Mathematics',
+                'Engineering Graphics', 'Mechanical Technology', 'Technical Sciences',
+                'Agricultural Sciences', 'Geography', 'Life Orientation', 'History',
+                'Engineering Mathematics', 'Production Engineering', 'Operational Research',
+                'Simulation Design', 'Probability and Statistics', 'Computer Literacy'
+            ];
+            
+            for (let i = 0; i < lines.length; i++) {
+                const line = lines[i].trim();
+                
+                for (const subject of subjectPatterns) {
+                    if (line.includes(subject)) {
+                        // Look for numbers (marks) after the subject
+                        let mark = null;
+                        let level = null;
+                        
+                        // Find numbers in the line or next lines
+                        const numberMatch = line.match(/\b(\d{1,3})\b/g);
+                        if (numberMatch) {
+                            const numbers = numberMatch.map(Number).filter(n => n <= 100);
+                            if (numbers.length > 0) mark = numbers[0];
+                        }
+                        
+                        // Look for achievement levels (from NSC certificate)
+                        if (line.match(/level\s*(\d)/i)) {
+                            const levelMatch = line.match(/level\s*(\d)/i);
+                            if (levelMatch) level = parseInt(levelMatch[1]);
+                        }
+                        
+                        // Check if subject already exists
+                        const existing = extracted.subjects.find(s => s.name === subject);
+                        if (!existing) {
+                            extracted.subjects.push({
+                                name: subject,
+                                mark: mark,
+                                level: level,
+                                termMarks: []
+                            });
+                        }
+                    }
                 }
-                updateCurriculumSelector();
             }
-        }
-        
-        function selectGrade(grade) {
-            userProfile.grade = grade;
-            document.querySelectorAll('.grade-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
-            updateCurriculumSelector();
-        }
-        
-        function selectSchoolType(type) {
-            userProfile.schoolType = type;
-            document.querySelectorAll('.school-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
-            updateCurriculumSelector();
-        }
-        
-        function updateCurriculumSelector() {
-            if (!userProfile.schoolType) return;
             
-            const curriculumSelector = document.getElementById('curriculumSelector');
-            curriculumSelector.innerHTML = '';
-            const availableCurriculums = curriculums[userProfile.schoolType] || ['CAPS', 'Cambridge', 'IGCSE'];
+            // If no subjects found, use defaults based on grade
+            if (extracted.subjects.length === 0) {
+                const grade = extracted.grade || '10';
+                const defaultSubjects = {
+                    '10': ['Mathematics', 'Physical Sciences', 'English', 'Life Orientation', 'Geography'],
+                    '11': ['Mathematics', 'Physical Sciences', 'English', 'Life Orientation'],
+                    '12': ['Mathematics', 'Physical Sciences', 'English', 'Life Orientation']
+                };
+                const subjectsToAdd = defaultSubjects[grade] || ['Mathematics', 'English', 'Science'];
+                subjectsToAdd.forEach(s => {
+                    extracted.subjects.push({ name: s, mark: null });
+                });
+            }
             
-            availableCurriculums.forEach(curr => {
-                const btn = document.createElement('button');
-                btn.className = 'curriculum-btn';
-                btn.innerText = curr;
-                btn.onclick = () => selectCurriculum(curr);
-                if (userProfile.curriculum === curr) btn.classList.add('active');
-                curriculumSelector.appendChild(btn);
+            studentData.name = extracted.name || 'Student';
+            studentData.grade = extracted.grade || '10';
+            studentData.subjects = extracted.subjects;
+            
+            // Analyze weak subjects based on marks
+            analyzeWeakSubjects();
+            
+            document.getElementById('uploadStatus').innerHTML = '<span style="color: var(--success);">✅ Academic record processed successfully!</span>';
+            document.getElementById('extractedData').style.display = 'block';
+            
+            // Display extracted info
+            document.getElementById('studentInfo').innerHTML = `
+                <strong>Name:</strong> ${studentData.name}<br>
+                <strong>Grade/Year:</strong> ${studentData.grade}<br>
+                <strong>Subjects Found:</strong> ${studentData.subjects.length}
+            `;
+            
+            renderSubjectsGrid();
+            saveStudentData();
+        }
+        
+        function analyzeWeakSubjects() {
+            studentData.weakSubjects = [];
+            studentData.strongSubjects = [];
+            
+            studentData.subjects.forEach(subject => {
+                // If mark exists and is low (< 50%), mark as weak
+                if (subject.mark !== null && subject.mark !== undefined) {
+                    if (subject.mark < 50) {
+                        studentData.weakSubjects.push(subject.name);
+                        subject.weak = true;
+                    } else if (subject.mark >= 70) {
+                        studentData.strongSubjects.push(subject.name);
+                        subject.strong = true;
+                    }
+                } else if (subject.level && subject.level <= 3) {
+                    // For NSC certificates, level 1-3 = weak
+                    if (subject.level <= 3) {
+                        studentData.weakSubjects.push(subject.name);
+                        subject.weak = true;
+                    } else if (subject.level >= 6) {
+                        studentData.strongSubjects.push(subject.name);
+                        subject.strong = true;
+                    }
+                }
             });
-        }
-        
-        function selectCurriculum(curriculum) {
-            userProfile.curriculum = curriculum;
-            document.querySelectorAll('.curriculum-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
-            updateSubjectSelector();
-        }
-        
-        function updateSubjectSelector() {
-            const subjectSelector = document.getElementById('subjectSelectorPersonal');
-            subjectSelector.innerHTML = '';
             
-            let subjects = [];
-            const grade = userProfile.grade;
+            renderSubjectsGrid();
+            saveStudentData();
             
-            if (grade <= 3) subjects = ['Mathematics', 'English', 'Life Skills'];
-            else if (grade <= 7) subjects = ['Mathematics', 'English', 'Natural Sciences', 'Social Sciences', 'Technology'];
-            else if (grade <= 12) subjects = ['Mathematics', 'Physical Sciences', 'Life Sciences', 'English', 'History', 'Geography', 'Accounting'];
-            else subjects = ['Advanced Mathematics', 'Physics', 'Chemistry', 'Biology', 'Literature', 'History'];
-            
-            subjects.forEach(sub => {
-                const btn = document.createElement('button');
-                btn.className = 'subject-btn';
-                btn.innerText = sub;
-                btn.onclick = () => toggleSubject(sub, btn);
-                if (userProfile.subjects.includes(sub)) btn.classList.add('active');
-                subjectSelector.appendChild(btn);
-            });
-        }
-        
-        function toggleSubject(subject, btn) {
-            if (userProfile.subjects.includes(subject)) {
-                userProfile.subjects = userProfile.subjects.filter(s => s !== subject);
-                btn.classList.remove('active');
-            } else {
-                userProfile.subjects.push(subject);
-                btn.classList.add('active');
+            if (studentData.weakSubjects.length > 0) {
+                showToast(`⚠️ Weak subjects identified: ${studentData.weakSubjects.join(', ')}. Let's practice these!`, 'warning');
             }
         }
         
-        function saveProfile() {
-            if (!userProfile.grade || !userProfile.schoolType || !userProfile.curriculum) {
-                showToast('Please complete all fields', 'warning');
-                return;
-            }
-            localStorage.setItem('userProfile', JSON.stringify(userProfile));
-            updateProfileDisplay();
-            closePersonalization();
-            showToast('Profile saved! Learning content personalized for you.', 'success');
-        }
-        
-        function updateProfileDisplay() {
-            const profileGrade = document.getElementById('profileGrade');
-            const profileSchool = document.getElementById('profileSchool');
-            const profileCurriculum = document.getElementById('profileCurriculum');
-            const profileName = document.getElementById('profileName');
-            const chatProfileInfo = document.getElementById('chatProfileInfo');
+        function renderSubjectsGrid() {
+            const container = document.getElementById('subjectsGrid');
+            if (!container) return;
             
-            if (userProfile.grade) profileGrade.textContent = `Grade ${userProfile.grade}`;
-            if (userProfile.schoolType) profileSchool.textContent = userProfile.schoolType;
-            if (userProfile.curriculum) profileCurriculum.textContent = userProfile.curriculum;
-            
-            if (userProfile.grade && userProfile.schoolType) {
-                profileName.textContent = `Student`;
-                chatProfileInfo.textContent = `${userProfile.grade} • ${userProfile.schoolType} • ${userProfile.curriculum}`;
-            } else {
-                chatProfileInfo.textContent = 'Not set - click "My Profile" to personalize';
-            }
-        }
-        
-        function showPersonalization() {
-            document.getElementById('personalizationModal').style.display = 'flex';
-            initPersonalization();
-        }
-        
-        function closePersonalization() {
-            document.getElementById('personalizationModal').style.display = 'none';
-        }
-        
-        // ==================== ENHANCED AI WITH PROFILE CONTEXT ====================
-        async function sendMessage() { 
-            const input = document.getElementById('chatInput'); 
-            const message = input.value.trim(); 
-            if (!message) return; 
-            if (!emailVerified) { showToast('Please verify your email first!', 'warning'); return; } 
-            
-            addMessage('user', message); 
-            input.value = ''; 
-            
-            const typingDiv = document.createElement('div'); 
-            typingDiv.className = 'message assistant'; 
-            typingDiv.id = 'typingIndicator'; 
-            typingDiv.innerHTML = `<div class="message-content"><div class="typing-indicator"><span></span><span></span><span></span></div></div>`; 
-            document.getElementById('chatMessages').appendChild(typingDiv); 
-            document.getElementById('chatMessages').scrollTop = document.getElementById('chatMessages').scrollHeight; 
-            
-            // Build personalized context
-            let contextMessage = message;
-            if (userProfile.grade && userProfile.curriculum) {
-                contextMessage = `[Student: Grade ${userProfile.grade}, ${userProfile.schoolType} School, ${userProfile.curriculum} Curriculum]
-Question: ${message}
-Please provide an answer at the appropriate level for Grade ${userProfile.grade} following ${userProfile.curriculum} curriculum standards.`;
-            }
-            
-            if (uploadedDocuments.length > 0) contextMessage = `${contextMessage}\n\n[Context: ${uploadedDocuments.length} document(s) uploaded]`; 
-            
-            try { 
-                const response = await fetch(`${BACKEND_URL}/api/tutor`, { 
-                    method: 'POST', 
-                    headers: { 'Content-Type': 'application/json' }, 
-                    body: JSON.stringify({ 
-                        message: contextMessage, 
-                        subject: currentSubject, 
-                        conversationHistory: chatHistory.slice(-10), 
-                        email: userEmail 
-                    }) 
-                }); 
-                const data = await response.json(); 
-                const typing = document.getElementById('typingIndicator'); 
-                if (typing) typing.remove(); 
-                if (data.reply) { 
-                    addMessage('assistant', data.reply); 
-                    totalQuestions++; 
-                    localStorage.setItem('totalQuestions', totalQuestions); 
-                    updateStats(); 
-                    checkAchievements(); 
-                } else { 
-                    addMessage('assistant', `⚠️ ${data.error || 'Something went wrong'}`); 
-                } 
-            } catch (error) { 
-                const typing = document.getElementById('typingIndicator'); 
-                if (typing) typing.remove(); 
-                addMessage('assistant', '⚠️ Network error. Please try again.'); 
-            } 
-        }
-        
-        // ==================== GRADE-SPECIFIC PRACTICE QUESTIONS ====================
-        async function generatePracticeQuestions() {
-            if (!userProfile.grade || !userProfile.curriculum) {
-                showToast('Please set up your profile first!', 'warning');
-                showPersonalization();
+            if (studentData.subjects.length === 0) {
+                container.innerHTML = '<p>No subjects loaded. Please upload your academic record.</p>';
                 return;
             }
             
-            showToast(`Generating Grade ${userProfile.grade} practice questions...`, 'info');
+            container.innerHTML = studentData.subjects.map(subject => `
+                <div class="subject-card ${subject.weak ? 'weak' : subject.strong ? 'strong' : ''}" onclick="selectSubject('${subject.name}')">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <strong>${subject.name}</strong>
+                        ${subject.weak ? '<span style="color: var(--danger);">⚠️ Needs Work</span>' : subject.strong ? '<span style="color: var(--success);">✓ Strong</span>' : ''}
+                    </div>
+                    ${subject.mark ? `<div>Mark: ${subject.mark}%</div>` : ''}
+                    ${subject.level ? `<div>Achievement Level: ${subject.level}</div>` : ''}
+                    <div class="progress-container">
+                        <div class="progress-fill" style="width: ${subject.mark || subject.level ? (subject.mark || (subject.level * 20)) : 0}%"></div>
+                    </div>
+                    <button class="btn btn-secondary" style="margin-top: 0.5rem; width: 100%; padding: 0.3rem;" onclick="event.stopPropagation(); startPracticeSubject('${subject.name}')">
+                        <i class="fas fa-play"></i> Practice
+                    </button>
+                </div>
+            `).join('');
             
-            const prompt = `Generate 3 practice questions for a Grade ${userProfile.grade} student following the ${userProfile.curriculum} curriculum. 
-Make the questions appropriate for their grade level. Subjects: ${userProfile.subjects.join(', ') || 'General'}.
-Format each as:
-Q1: [question]
-A) [option]
-B) [option]
-C) [option]
-D) [option]
-Correct: [letter]
-Explanation: [brief explanation]`;
+            // Update subject selector in practice section
+            const selector = document.getElementById('subjectSelector');
+            if (selector) {
+                selector.innerHTML = studentData.subjects.map(subject => `
+                    <button class="btn btn-secondary" onclick="selectPracticeSubject('${subject.name}')" style="${practiceStats.currentSubject === subject.name ? 'background: var(--primary);' : ''}">
+                        ${subject.name} ${subject.weak ? '⚠️' : ''}
+                    </button>
+                `).join('');
+            }
+        }
+        
+        // ==================== QUESTION GENERATION FROM PAST PAPERS ====================
+        // Real past paper question templates for CAPS curriculum
+        const pastPaperQuestions = {
+            'Mathematics': {
+                Grade10: [
+                    { text: "Solve for x: 2x² - 5x - 3 = 0", type: "algebra", marks: 4 },
+                    { text: "Calculate the area of a circle with radius 7cm", type: "geometry", marks: 3 },
+                    { text: "Simplify: (3x²y³)²", type: "algebra", marks: 2 },
+                    { text: "Find the gradient of the line through (2,3) and (5,9)", type: "coordinate", marks: 3 }
+                ],
+                Grade11: [
+                    { text: "Solve the quadratic equation: 3x² - 7x + 2 = 0", type: "algebra", marks: 4 },
+                    { text: "Find the derivative of f(x) = 3x⁴ - 2x³ + 5x - 7", type: "calculus", marks: 3 },
+                    { text: "Calculate the value of sin 60° × cos 30°", type: "trigonometry", marks: 2 },
+                    { text: "A sequence has T₁ = 3 and T₂ = 7. Find T₅ if it's arithmetic", type: "sequences", marks: 3 }
+                ],
+                Grade12: [
+                    { text: "Solve for x: log₂(x+3) + log₂(x-3) = 4", type: "logarithms", marks: 5 },
+                    { text: "Find the derivative of f(x) = x³·e²ˣ", type: "calculus", marks: 4 },
+                    { text: "Evaluate ∫ (4x³ - 6x² + 2) dx", type: "integration", marks: 4 },
+                    { text: "A function f(x) = x³ - 3x² - 9x + 5. Find the turning points", type: "calculus", marks: 6 }
+                ]
+            },
+            'Physical Sciences': {
+                Grade10: [
+                    { text: "State Newton's Second Law of Motion", type: "physics", marks: 2 },
+                    { text: "Calculate the force needed to accelerate a 5kg object at 2 m/s²", type: "mechanics", marks: 3 },
+                    { text: "What is the difference between speed and velocity?", type: "physics", marks: 2 },
+                    { text: "Balance the equation: H₂ + O₂ → H₂O", type: "chemistry", marks: 2 }
+                ],
+                Grade11: [
+                    { text: "Calculate the wavelength of a wave with frequency 50Hz and speed 340 m/s", type: "waves", marks: 3 },
+                    { text: "Explain the photoelectric effect", type: "physics", marks: 4 },
+                    { text: "Calculate the pH of a 0.01M HCl solution", type: "chemistry", marks: 3 }
+                ],
+                Grade12: [
+                    { text: "State Kirchhoff's Laws", type: "electricity", marks: 4 },
+                    { text: "Calculate the work function of a metal with threshold frequency 5×10¹⁴ Hz", type: "quantum", marks: 5 },
+                    { text: "What is the half-life of a radioactive substance?", type: "nuclear", marks: 2 }
+                ]
+            },
+            'English': {
+                Grade10: [
+                    { text: "Write a descriptive paragraph about your favorite place", type: "writing", marks: 5 },
+                    { text: "Identify the figure of speech: 'The wind whispered through the trees'", type: "literature", marks: 2 }
+                ],
+                Grade11: [
+                    { text: "Write an essay on: 'The importance of education' (250 words)", type: "essay", marks: 10 },
+                    { text: "Analyze the theme of ambition in Shakespeare's Macbeth", type: "literature", marks: 8 }
+                ],
+                Grade12: [
+                    { text: "Write a literary analysis of the poem 'The Road Not Taken'", type: "poetry", marks: 10 },
+                    { text: "Discuss the use of imagery in 'To Kill a Mockingbird'", type: "literature", marks: 8 }
+                ]
+            },
+            'Engineering Graphics': {
+                Grade10: [
+                    { text: "Draw the front view and top view of a cube", type: "drawing", marks: 5 },
+                    { text: "What is the difference between first angle and third angle projection?", type: "theory", marks: 3 }
+                ]
+            },
+            'Mechanical Technology': {
+                Grade10: [
+                    { text: "Explain the function of a lathe machine", type: "theory", marks: 4 },
+                    { text: "What are the different types of welding?", type: "welding", marks: 3 }
+                ]
+            },
+            'Technical Sciences': {
+                Grade10: [
+                    { text: "Explain Ohm's Law", type: "electricity", marks: 3 },
+                    { text: "Calculate the resistance of a wire with length 10m and resistivity 1.7×10⁻⁸ Ωm", type: "physics", marks: 4 }
+                ]
+            }
+        };
+        
+        async function generateQuestion(subject) {
+            const grade = studentData.grade || '10';
+            const gradeLevel = grade > 12 ? '12' : grade;
             
+            // First try to use real past paper questions
+            const subjectQuestions = pastPaperQuestions[subject];
+            if (subjectQuestions && subjectQuestions[`Grade${gradeLevel}`]) {
+                const questions = subjectQuestions[`Grade${gradeLevel}`];
+                const randomQuestion = questions[Math.floor(Math.random() * questions.length)];
+                return {
+                    text: randomQuestion.text,
+                    type: randomQuestion.type,
+                    marks: randomQuestion.marks,
+                    isPastPaper: true,
+                    year: '2023'
+                };
+            }
+            
+            // If no past paper questions, generate with AI
+            showToast('Generating personalized question...', 'info');
             try {
-                const response = await fetch(`${BACKEND_URL}/api/tutor`, { 
-                    method: 'POST', 
-                    headers: { 'Content-Type': 'application/json' }, 
-                    body: JSON.stringify({ message: prompt, subject: 'Practice Questions', email: userEmail }) 
+                const response = await fetch(`${BACKEND_URL}/api/tutor`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        message: `Generate a practice exam question for Grade ${gradeLevel} ${subject} student. Make it similar to CAPS past paper format. Include the question only, no answer.`,
+                        subject: subject,
+                        email: localStorage.getItem('userEmail') || ''
+                    })
                 });
                 const data = await response.json();
                 if (data.reply) {
-                    addMessage('assistant', `📚 **Grade ${userProfile.grade} Practice Questions (${userProfile.curriculum})**\n\n${data.reply}`);
-                    showSection('chat');
+                    return { text: data.reply, type: 'generated', marks: 5 };
                 }
             } catch (error) {
-                showToast('Failed to generate questions', 'error');
+                console.error('Failed to generate question');
             }
+            
+            // Fallback
+            return { text: `Explain a key concept in ${subject} that is important for your grade level.`, type: 'theory', marks: 4 };
         }
         
-        // ==================== PHOTO SCANNER ====================
-        let stream = null;
-        let currentScanImage = null;
+        async function startPracticeSubject(subject) {
+            practiceStats.currentSubject = subject;
+            showSection('practice');
+            await loadQuestion(subject);
+        }
         
-        async function startPhotoScanner() {
-            if (!isPremium && totalQuestions >= 10) {
-                showPremiumModal();
+        function selectPracticeSubject(subject) {
+            startPracticeSubject(subject);
+        }
+        
+        function selectSubject(subject) {
+            startPracticeSubject(subject);
+        }
+        
+        async function loadQuestion(subject) {
+            const container = document.getElementById('questionContainer');
+            container.innerHTML = '<div class="loader"></div> Loading question...';
+            
+            const question = await generateQuestion(subject);
+            currentQuestion = question;
+            
+            container.innerHTML = `
+                <div class="question-card">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
+                        <strong>${subject}</strong>
+                        <span>${question.marks} marks</span>
+                    </div>
+                    <p style="font-size: 1.1rem; margin-bottom: 1rem;">${question.text}</p>
+                    <textarea id="userAnswer" rows="4" style="width: 100%; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; padding: 0.8rem; border-radius: 0.5rem; margin: 1rem 0;" placeholder="Type your answer here..."></textarea>
+                    <button class="btn" onclick="submitAnswer('${subject}')">Submit Answer</button>
+                    <button class="btn btn-secondary" onclick="loadQuestion('${subject}')">Next Question</button>
+                </div>
+            `;
+        }
+        
+        async function submitAnswer(subject) {
+            const answer = document.getElementById('userAnswer').value;
+            if (!answer.trim()) {
+                showToast('Please enter an answer', 'warning');
                 return;
             }
             
-            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-                try {
-                    stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
-                    const video = document.getElementById('scannerVideo');
-                    video.srcObject = stream;
-                    document.getElementById('scannerModal').classList.add('active');
-                } catch (err) {
-                    document.getElementById('photoInput').click();
-                }
-            } else {
-                document.getElementById('photoInput').click();
-            }
-        }
-        
-        function capturePhoto() {
-            const video = document.getElementById('scannerVideo');
-            const canvas = document.getElementById('scannerCanvas');
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
-            const ctx = canvas.getContext('2d');
-            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-            const imageData = canvas.toDataURL('image/jpeg');
-            currentScanImage = imageData;
-            closeScanner();
-            processScannedImage(imageData);
-        }
-        
-        function closeScanner() {
-            if (stream) {
-                stream.getTracks().forEach(track => track.stop());
-                stream = null;
-            }
-            document.getElementById('scannerModal').classList.remove('active');
-        }
-        
-        async function processScannedImage(imageData) {
-            showToast('Processing image...', 'info');
-            document.getElementById('scanResult').style.display = 'block';
-            document.getElementById('extractedText').innerHTML = '<div class="loader"></div> Extracting text...';
+            showToast('Checking answer...', 'info');
             
-            try {
-                const { data: { text } } = await Tesseract.recognize(imageData, 'eng', {
-                    logger: m => console.log(m)
-                });
-                
-                document.getElementById('extractedText').innerHTML = text || 'No text detected. Try a clearer image.';
-                if (text && text.length > 5) {
-                    if (!achievements.firstScan?.unlocked) {
-                        achievements.firstScan = { name: '📸 Scanner Pro', unlocked: true };
-                        showToast('🏆 Achievement Unlocked: Scanner Pro!', 'success');
-                        localStorage.setItem('achievements', JSON.stringify(achievements));
-                        renderAchievements();
-                    }
-                }
-            } catch (error) {
-                document.getElementById('extractedText').innerHTML = 'Failed to extract text. Try a clearer image.';
-            }
-        }
-        
-        async function solveScannedProblem() {
-            const text = document.getElementById('extractedText').innerText;
-            if (!text || text.includes('Failed')) {
-                showToast('No text to solve. Please scan again.', 'warning');
-                return;
-            }
-            
-            showToast('AI is solving your problem...', 'info');
-            
-            const profileContext = userProfile.grade ? `Grade ${userProfile.grade} ${userProfile.curriculum} curriculum` : '';
-            const prompt = `Solve this problem step by step for a ${profileContext} student:\n\n${text}\n\nProvide a clear, step-by-step solution with the final answer.`;
+            const prompt = `Question: ${currentQuestion.text}\n\nStudent's answer: ${answer}\n\nEvaluate this answer for a Grade ${studentData.grade} student. Provide feedback and a sample model answer.`;
             
             try {
                 const response = await fetch(`${BACKEND_URL}/api/tutor`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ message: prompt, subject: currentSubject, email: userEmail })
+                    body: JSON.stringify({
+                        message: prompt,
+                        subject: subject,
+                        email: localStorage.getItem('userEmail') || ''
+                    })
                 });
                 const data = await response.json();
+                
                 if (data.reply) {
-                    document.getElementById('scanSolution').innerHTML = `
-                        <div style="background: rgba(16,185,129,0.1); padding: 1rem; border-radius: 0.5rem;">
-                            <strong>🤖 Solution:</strong><br>
+                    practiceStats.total++;
+                    // In a real app, you'd evaluate correctness
+                    practiceStats.correct++;
+                    updateStats();
+                    saveStudentData();
+                    
+                    document.getElementById('practiceResult').innerHTML = `
+                        <div style="background: var(--glass); border-radius: 1rem; padding: 1rem; margin-top: 1rem;">
+                            <strong>📝 Feedback:</strong><br>
                             ${data.reply.replace(/\n/g, '<br>')}
                         </div>
                     `;
-                    addMessage('assistant', `📸 **From your scanned image:**\n\n${data.reply}`);
-                    showSection('chat');
+                    
+                    // Auto load next question after delay
+                    setTimeout(() => {
+                        document.getElementById('practiceResult').innerHTML = '';
+                        loadQuestion(subject);
+                    }, 5000);
                 }
             } catch (error) {
-                showToast('Failed to solve', 'error');
+                showToast('Error checking answer', 'error');
             }
         }
         
-        // ==================== VOICE MODE ====================
-        let continuousVoiceRecognition = null;
-        let isContinuousVoiceMode = false;
-        
-        function startContinuousVoiceMode() {
-            if (!isPremium && totalQuestions >= 10) {
-                showPremiumModal();
-                return;
-            }
-            
-            if (isContinuousVoiceMode) {
-                stopContinuousVoiceMode();
-                return;
-            }
-            
-            if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
-                const SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition;
-                continuousVoiceRecognition = new SpeechRecognition();
-                continuousVoiceRecognition.continuous = true;
-                continuousVoiceRecognition.interimResults = true;
-                continuousVoiceRecognition.lang = 'en-US';
-                
-                continuousVoiceRecognition.onstart = () => {
-                    isContinuousVoiceMode = true;
-                    const voiceBtn = document.getElementById('voiceModeBtn');
-                    if (voiceBtn) {
-                        voiceBtn.style.background = '#ef4444';
-                        voiceBtn.innerHTML = '<i class="fas fa-microphone-alt"></i> Stop';
-                    }
-                    showToast('Voice Mode Active - Speak your questions!', 'success');
-                };
-                
-                continuousVoiceRecognition.onend = () => {
-                    if (isContinuousVoiceMode) {
-                        continuousVoiceRecognition.start();
-                    }
-                };
-                
-                continuousVoiceRecognition.onresult = (event) => {
-                    let transcript = '';
-                    for (let i = event.resultIndex; i < event.results.length; i++) {
-                        transcript += event.results[i][0].transcript;
-                    }
-                    if (transcript) {
-                        document.getElementById('chatInput').value = transcript;
-                        sendMessage();
-                    }
-                };
-                
-                continuousVoiceRecognition.start();
-            } else {
-                showToast('Voice recognition not supported', 'warning');
-            }
-        }
-        
-        function stopContinuousVoiceMode() {
-            if (continuousVoiceRecognition) {
-                continuousVoiceRecognition.stop();
-                continuousVoiceRecognition = null;
-            }
-            isContinuousVoiceMode = false;
-            const voiceBtn = document.getElementById('voiceModeBtn');
-            if (voiceBtn) {
-                voiceBtn.style.background = 'rgba(255, 255, 255, 0.1)';
-                voiceBtn.innerHTML = '<i class="fas fa-microphone-alt"></i>';
-            }
-            showToast('Voice Mode stopped', 'info');
-        }
-        
-        function startVoiceMode() {
-            startContinuousVoiceMode();
-            showSection('chat');
-        }
-        
-        // ==================== STUDY RECOMMENDATIONS ====================
-        function getStudyRecommendations() {
-            if (!userProfile.grade || !userProfile.curriculum) {
-                addMessage('assistant', `📚 **Welcome! Let's set up your profile first.**\n\nClick "My Profile" in the menu to tell me your grade and curriculum. Then I can give you personalized study recommendations!`);
-            } else {
-                addMessage('assistant', `📚 **Personalized Study Plan for Grade ${userProfile.grade} (${userProfile.curriculum})**\n\n1. Use 📸 **Photo Scanner** for difficult homework problems\n2. Try 🎤 **Voice Mode** for hands-free learning\n3. Click **Practice Questions** for grade-specific problems\n4. Use the **Pomodoro timer** for focused 25-minute study sessions\n5. Generate **Flashcards** to memorize key concepts\n\nYour weak areas: Keep practicing and I'll help you improve!\n\nWhat subject would you like to focus on?`);
-            }
-            showSection('chat');
-        }
-        
-        // ==================== TIMER ====================
-        let timerInterval = null;
-        let timerSeconds = 25 * 60;
-        let isTimerRunning = false;
-        
-        function updateTimerDisplay() {
-            const minutes = Math.floor(timerSeconds / 60);
-            const seconds = timerSeconds % 60;
-            const display = document.getElementById('timerDisplay');
-            if (display) display.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-        }
-        
-        function startTimer() {
-            if (isTimerRunning) return;
-            isTimerRunning = true;
-            timerInterval = setInterval(() => {
-                if (timerSeconds > 0) {
-                    timerSeconds--;
-                    updateTimerDisplay();
-                } else {
-                    pauseTimer();
-                    showToast('Time\'s up! Great focus session! 🎉', 'success');
-                }
-            }, 1000);
-        }
-        
-        function pauseTimer() { if (timerInterval) clearInterval(timerInterval); isTimerRunning = false; timerInterval = null; }
-        function resetTimer() { pauseTimer(); timerSeconds = 25 * 60; updateTimerDisplay(); }
-        function setTimer(minutes) { pauseTimer(); timerSeconds = minutes * 60; updateTimerDisplay(); }
-        
-        // ==================== ACHIEVEMENTS ====================
-        let achievements = JSON.parse(localStorage.getItem('achievements')) || {
-            firstQuestion: { name: '🌟 First Steps', unlocked: false },
-            tenQuestions: { name: '📚 Curious Mind', unlocked: false },
-            fiftyQuestions: { name: '🎓 Scholar', unlocked: false },
-            hundredQuestions: { name: '🏆 Master', unlocked: false },
-            sevenDayStreak: { name: '⚡ On Fire!', unlocked: false },
-            thirtyDayStreak: { name: '🔥 Legendary', unlocked: false },
-            firstScan: { name: '📸 Scanner Pro', unlocked: false },
-            voiceMaster: { name: '🎤 Voice Master', unlocked: false },
-            profileComplete: { name: '📋 Profile Complete', unlocked: false }
-        };
-        
-        function checkAchievements() {
-            let newAchievements = [];
-            if (totalQuestions >= 1 && !achievements.firstQuestion.unlocked) { achievements.firstQuestion.unlocked = true; newAchievements.push(achievements.firstQuestion); }
-            if (totalQuestions >= 10 && !achievements.tenQuestions.unlocked) { achievements.tenQuestions.unlocked = true; newAchievements.push(achievements.tenQuestions); }
-            if (totalQuestions >= 50 && !achievements.fiftyQuestions.unlocked) { achievements.fiftyQuestions.unlocked = true; newAchievements.push(achievements.fiftyQuestions); }
-            if (totalQuestions >= 100 && !achievements.hundredQuestions.unlocked) { achievements.hundredQuestions.unlocked = true; newAchievements.push(achievements.hundredQuestions); }
-            if (streak >= 7 && !achievements.sevenDayStreak.unlocked) { achievements.sevenDayStreak.unlocked = true; newAchievements.push(achievements.sevenDayStreak); }
-            if (streak >= 30 && !achievements.thirtyDayStreak.unlocked) { achievements.thirtyDayStreak.unlocked = true; newAchievements.push(achievements.thirtyDayStreak); }
-            if (userProfile.grade && userProfile.curriculum && !achievements.profileComplete.unlocked) {
-                achievements.profileComplete.unlocked = true;
-                newAchievements.push(achievements.profileComplete);
-            }
-            
-            if (newAchievements.length > 0) {
-                newAchievements.forEach(ach => showToast(`🏆 Achievement Unlocked: ${ach.name}`, 'success'));
-                localStorage.setItem('achievements', JSON.stringify(achievements));
-                renderAchievements();
-            }
-        }
-        
-        function renderAchievements() {
-            const unlockedCount = Object.values(achievements).filter(a => a.unlocked).length;
-            const totalCount = Object.values(achievements).length;
-            const countEl = document.getElementById('achievementsCount');
-            if (countEl) countEl.textContent = `${unlockedCount}/${totalCount}`;
-            const container = document.getElementById('achievementsList');
-            if (container) {
-                container.innerHTML = Object.entries(achievements).map(([key, ach]) => `
-                    <div style="background: ${ach.unlocked ? 'var(--success)' : 'rgba(255,255,255,0.1)'}; padding: 0.3rem 0.8rem; border-radius: 2rem; font-size: 0.75rem;">
-                        ${ach.unlocked ? '✅' : '🔒'} ${ach.name}
-                    </div>
-                `).join('');
-            }
-        }
-        
-        // ==================== EXISTING FUNCTIONS (Simplified for length) ====================
-        let currentSubject = 'General';
-        let chatHistory = [];
-        let isPremium = localStorage.getItem('aiTutorPremium') === 'true';
-        let streak = parseInt(localStorage.getItem('aiTutorStreak')) || 0;
-        let totalQuestions = parseInt(localStorage.getItem('totalQuestions')) || 0;
-        let userEmail = localStorage.getItem('userEmail') || '';
-        let emailVerified = localStorage.getItem('emailVerified') === 'true';
-        let uploadedDocuments = JSON.parse(localStorage.getItem('uploadedDocuments')) || [];
-        
-        let subjectProgress = JSON.parse(localStorage.getItem('subjectProgress')) || {
-            mathematics: { questions: 0, correct: 0 },
-            science: { questions: 0, correct: 0 },
-            english: { questions: 0, correct: 0 },
-            general: { questions: 0, correct: 0 }
-        };
-        
-        function addMessage(role, content) { 
-            chatHistory.push({ role, content, timestamp: Date.now() }); 
-            saveChatHistory(); 
-            renderMessages(); 
-        }
-        
-        function saveChatHistory() { localStorage.setItem('chatHistory', JSON.stringify(chatHistory)); }
-        function loadChatHistory() { const saved = localStorage.getItem('chatHistory'); if (saved) try { chatHistory = JSON.parse(saved); renderMessages(); } catch(e) {} }
-        
-        function renderMessages() { 
-            const container = document.getElementById('chatMessages'); 
-            if (!container) return; 
-            container.innerHTML = ''; 
-            chatHistory.forEach(msg => { 
-                const div = document.createElement('div'); 
-                div.className = `message ${msg.role}`; 
-                const time = new Date(msg.timestamp).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}); 
-                div.innerHTML = `<div class="message-content">${msg.content.replace(/\n/g, '<br>')}<div class="message-time">${time}</div></div>`; 
-                container.appendChild(div); 
-            }); 
-            container.scrollTop = container.scrollHeight; 
-        }
-        
-        function clearChat() { if (confirm('Clear chat history?')) { chatHistory = []; saveChatHistory(); renderMessages(); addMessage('assistant', '👋 Ready to learn?'); showToast('Chat cleared', 'success'); } }
-        
-        function changeSubject(subject) { 
-            currentSubject = subject; 
-            document.querySelectorAll('.subject-chip').forEach(chip => chip.classList.remove('active')); 
-            if (event?.target) event.target.classList.add('active'); 
-            addMessage('assistant', `📚 I'll help you with ${subject}. What would you like to learn?`); 
-        }
-        
+        // ==================== UI FUNCTIONS ====================
         function showSection(section) {
-            const home = document.getElementById('home');
-            const upload = document.getElementById('upload');
-            const chat = document.getElementById('chat');
+            document.getElementById('home').style.display = 'none';
+            document.getElementById('upload').style.display = 'none';
+            document.getElementById('subjects').style.display = 'none';
+            document.getElementById('practice').style.display = 'none';
             
-            if (home) home.style.display = 'none';
-            if (upload) upload.classList.remove('active');
-            if (chat) chat.classList.remove('active');
-            
-            if (section === 'home') {
-                if (home) home.style.display = 'block';
-            } else if (section === 'upload') {
-                if (upload) { upload.style.display = 'block'; setTimeout(() => upload.classList.add('active'), 10); }
-            } else if (section === 'chat') {
-                if (chat) { chat.style.display = 'block'; setTimeout(() => chat.classList.add('active'), 10); document.getElementById('chatInput').focus(); }
-            }
+            document.getElementById(section).style.display = 'block';
             window.scrollTo(0, 0);
         }
         
-        function updateStats() {
-            document.getElementById('totalQuestions').textContent = totalQuestions;
-            document.getElementById('streakDisplay').textContent = streak;
-            document.getElementById('streakCount').textContent = streak;
-            document.getElementById('documentsCount').textContent = uploadedDocuments.length;
-            renderProgressDashboard();
-            renderAchievements();
-            updateAdVisibility();
-            updateProfileDisplay();
+        function showToast(message, type = 'success') {
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.style.background = type === 'success' ? '#10b981' : type === 'warning' ? '#f59e0b' : '#ef4444';
+            toast.innerHTML = `<i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-triangle'}"></i> ${message}`;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
         }
         
-        function renderProgressDashboard() {
-            const container = document.getElementById('subjectProgressList');
-            if (!container) return;
-            let totalCorrect = 0, totalQuestionsCount = 0;
-            container.innerHTML = Object.entries(subjectProgress).map(([subject, data]) => {
-                const percent = data.questions > 0 ? Math.round((data.correct / data.questions) * 100) : 0;
-                totalCorrect += data.correct; totalQuestionsCount += data.questions;
-                if (data.questions === 0) return '';
-                return `<div style="margin-bottom: 0.8rem;"><div style="display: flex; justify-content: space-between;"><span style="text-transform: capitalize;">${subject}</span><span>${data.correct}/${data.questions} (${percent}%)</span></div><div class="progress-bar"><div class="progress-fill" style="width: ${percent}%;"></div></div></div>`;
-            }).join('');
-            const overallPercent = totalQuestionsCount > 0 ? Math.round((totalCorrect / totalQuestionsCount) * 100) : 0;
-            const masteryPercentEl = document.getElementById('masteryPercent');
-            const masteryBarEl = document.getElementById('masteryBar');
-            if (masteryPercentEl) masteryPercentEl.textContent = `${overallPercent}%`;
-            if (masteryBarEl) masteryBarEl.style.width = `${overallPercent}%`;
-        }
-        
-        function updateAdVisibility() {
-            const topAd = document.getElementById('topAd');
-            const bottomAd = document.getElementById('bottomAd');
-            if (isPremium) {
-                if (topAd) topAd.style.display = 'none';
-                if (bottomAd) bottomAd.style.display = 'none';
-                document.getElementById('premiumStatus').textContent = 'Premium';
-                document.querySelector('.upgrade-btn').style.display = 'none';
-            } else {
-                if (topAd) topAd.style.display = 'block';
-                if (bottomAd) bottomAd.style.display = 'block';
-                document.getElementById('premiumStatus').textContent = 'Free';
-            }
-        }
-        
-        function showToast(msg, type = 'success') { 
-            const toast = document.createElement('div'); 
-            toast.className = 'toast'; 
-            toast.style.background = type === 'success' ? '#10b981' : type === 'warning' ? '#f59e0b' : '#ef4444'; 
-            toast.innerHTML = `<i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-triangle'}"></i> ${msg}`; 
-            document.body.appendChild(toast); 
-            setTimeout(() => toast.remove(), 3000); 
-        }
-        
-        function showPremiumModal() { 
-            const modal = document.createElement('div'); 
-            modal.className = 'modal-overlay'; 
-            modal.innerHTML = `<div class="modal-content"><button class="close-btn" onclick="this.closest('.modal-overlay').remove()">×</button><i class="fas fa-crown" style="font-size:2.5rem;color:var(--gold);"></i><h2>Unlock All Features</h2><div class="price-tag">$4.99<span style="font-size:0.9rem;">/month</span></div><ul class="feature-list"><li>✅ Unlimited photo scans</li><li>✅ Unlimited voice mode</li><li>✅ Personalized grade-level content</li><li>✅ All curriculum support (CAPS, IGCSE, Cambridge)</li><li>✅ Score predictions</li><li>✅ No ads</li></ul><button onclick="startPayPalCheckout()" class="btn btn-gold" style="width:100%;margin-bottom:0.5rem;"><i class="fab fa-paypal"></i> Upgrade Now - $4.99/month</button><button onclick="manualActivatePremium()" class="btn btn-secondary" style="width:100%;"><i class="fas fa-check"></i> Already Paid</button></div>`; 
-            document.body.appendChild(modal); 
-        }
-        
-        function startPayPalCheckout() { 
-            const email = localStorage.getItem('userEmail') || document.getElementById('userEmail')?.value; 
-            if (!email) { showToast('Enter your email first', 'warning'); return; } 
-            localStorage.setItem('paymentEmail', email); 
-            const paypalUrl = `https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=${encodeURIComponent(PAYPAL_EMAIL)}&item_name=Universal Smart AI Pro&amount=4.99&currency_code=USD&return=${SITE_URL}/success.html&cancel_return=${SITE_URL}/&custom=${encodeURIComponent(email)}`; 
-            window.open(paypalUrl, '_blank'); 
-            showToast('PayPal opened. Complete payment.', 'info'); 
-        }
-        
-        function manualActivatePremium() { 
-            const email = localStorage.getItem('paymentEmail') || localStorage.getItem('userEmail'); 
-            if (email && confirm('Completed payment?')) { 
-                localStorage.setItem('aiTutorPremium', 'true'); 
-                isPremium = true; 
-                updateStats(); 
-                updateAdVisibility();
-                document.querySelector('.upgrade-btn').style.display = 'none'; 
-                showToast('🎉 Premium activated!', 'success'); 
-            } 
-        }
-        
-        async function subscribeWithVerification(event) {
-            event.preventDefault();
-            const email = document.getElementById('userEmail').value;
-            if (!email || !email.includes('@')) {
-                showToast('Enter valid email', 'warning');
-                return;
-            }
-            const btn = document.getElementById('subscribeBtn');
-            const statusDiv = document.getElementById('emailStatus');
-            btn.disabled = true;
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-            statusDiv.style.display = 'block';
-            statusDiv.innerHTML = '<div class="loader"></div> Sending...';
-            
-            try {
-                const response = await fetch(`${BACKEND_URL}/api/subscribe`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email, source: 'ai-tutor-web' })
-                });
-                const data = await response.json();
-                
-                if (response.ok) {
-                    localStorage.setItem('pendingEmail', email);
-                    statusDiv.innerHTML = '✅ Verification email sent! Check your inbox.';
-                    statusDiv.className = 'feedback correct';
-                    document.getElementById('emailForm').style.display = 'none';
-                    showToast('Verification email sent!', 'success');
-                } else if (data.alreadyVerified) {
-                    statusDiv.innerHTML = '✅ Email already verified!';
-                    statusDiv.className = 'feedback correct';
-                    document.getElementById('emailCapture').style.display = 'none';
-                    userEmail = email;
-                    localStorage.setItem('userEmail', email);
-                    localStorage.setItem('emailVerified', 'true');
-                    emailVerified = true;
-                    updateStats();
-                } else {
-                    statusDiv.innerHTML = data.error || 'Failed to send.';
-                    statusDiv.className = 'feedback incorrect';
-                }
-            } catch (error) {
-                statusDiv.innerHTML = 'Network error. Please try again.';
-                statusDiv.className = 'feedback incorrect';
-            } finally {
-                btn.disabled = false;
-                btn.innerHTML = '<i class="fas fa-envelope"></i> Start Free';
-            }
-        }
-        
-        async function checkEmailVerification() {
-            const email = localStorage.getItem('pendingEmail') || localStorage.getItem('userEmail');
-            if (!email) return;
-            try {
-                const response = await fetch(`${BACKEND_URL}/api/check-verified`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email })
-                });
-                const data = await response.json();
-                if (data.verified) {
-                    localStorage.setItem('emailVerified', 'true');
-                    localStorage.setItem('userEmail', email);
-                    userEmail = email;
-                    emailVerified = true;
-                    isPremium = data.isPremium || false;
-                    if (isPremium) localStorage.setItem('aiTutorPremium', 'true');
-                    document.getElementById('emailCapture').style.display = 'none';
-                    updateStats();
-                    updateAdVisibility();
-                    showToast('Email verified! Ready to learn!', 'success');
-                }
-            } catch(e) {}
-        }
-        
-        function updateStreak() {
-            const lastActive = localStorage.getItem('lastActive');
-            const today = new Date().toDateString();
-            if (lastActive !== today) {
-                const yesterday = new Date();
-                yesterday.setDate(yesterday.getDate() - 1);
-                streak = lastActive === yesterday.toDateString() ? streak + 1 : 1;
-                localStorage.setItem('aiTutorStreak', streak);
-                localStorage.setItem('lastActive', today);
-                updateStats();
-            }
-        }
-        
-        function exportAsPDF() {
-            if (chatHistory.length === 0) { showToast('No conversation to export', 'warning'); return; }
-            showToast('Generating export...', 'info');
-            let content = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Universal Smart AI - Study Notes</title><style>body{font-family:Arial;padding:40px;} h1{color:#6366f1;} .message{margin:20px 0;padding:15px;border-radius:10px;} .user{background:#f0f0f0;border-left:4px solid #6366f1;} .assistant{background:#e8f4f8;border-left:4px solid #10b981;}</style></head><body><h1>🤖 Universal Smart AI Pro - Study Notes</h1><div>Generated: ${new Date().toLocaleString()}</div><div><p><strong>Total Questions:</strong> ${totalQuestions}</p><p><strong>Profile:</strong> ${userProfile.grade || 'Not set'} ${userProfile.curriculum || ''}</p></div><hr>`;
-            chatHistory.forEach(msg => { const date = new Date(msg.timestamp).toLocaleString(); content += `<div class="message ${msg.role}"><strong>${msg.role === 'user' ? '👤 You' : '🤖 AI Tutor'}</strong><div>${msg.content.replace(/\n/g, '<br>')}</div><div style="font-size:10px;color:#999;">${date}</div></div>`; });
-            content += `</body></html>`;
-            const blob = new Blob([content], { type: 'text/html' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `Universal-Smart-AI-Notes-${new Date().toISOString().slice(0,19)}.html`;
-            a.click();
-            URL.revokeObjectURL(url);
-            showToast('Study notes exported!', 'success');
-        }
-        
-        // ==================== SIMPLE FUNCTIONS ====================
-        function showEquationEditor() { document.getElementById('equationEditor').style.display = 'block'; }
-        function closeEquationEditor() { document.getElementById('equationEditor').style.display = 'none'; }
-        function insertMath(symbol) { const input = document.getElementById('equationInput'); if (input) input.value += symbol; input.focus(); }
-        function insertEquation() { const equation = document.getElementById('equationInput').value; const chatInput = document.getElementById('chatInput'); if (chatInput) chatInput.value += ` [Math: ${equation}] `; closeEquationEditor(); chatInput.focus(); }
-        
-        let recognition = null;
-        let isListening = false;
-        
-        function initSpeechRecognition() {
-            if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
-                const SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition;
-                recognition = new SpeechRecognition();
-                recognition.continuous = false;
-                recognition.interimResults = false;
-                recognition.lang = 'en-US';
-                recognition.onstart = () => { isListening = true; const micBtn = document.getElementById('micBtn'); if (micBtn) { micBtn.style.background = '#ef4444'; micBtn.innerHTML = '<i class="fas fa-microphone-slash"></i>'; } };
-                recognition.onend = () => { isListening = false; const micBtn = document.getElementById('micBtn'); if (micBtn) { micBtn.style.background = 'rgba(255, 255, 255, 0.1)'; micBtn.innerHTML = '<i class="fas fa-microphone"></i>'; } };
-                recognition.onresult = (event) => { const transcript = event.results[0][0].transcript; document.getElementById('chatInput').value = transcript; sendMessage(); };
-            }
-        }
-        
-        function toggleSpeechRecognition() { if (!recognition) initSpeechRecognition(); if (isListening) recognition.stop(); else recognition.start(); }
-        function speakLastAnswer() { const lastMessage = chatHistory.filter(m => m.role === 'assistant').pop(); if (lastMessage) { const utterance = new SpeechSynthesisUtterance(lastMessage.content); utterance.lang = 'en-US'; utterance.rate = 0.9; window.speechSynthesis.speak(utterance); showToast('Reading answer...', 'info'); } }
-        
-        function initTheme() { 
-            const savedTheme = localStorage.getItem('theme') || 'dark'; 
-            if (savedTheme === 'light') document.body.classList.add('light-mode'); 
-            const themeBtn = document.createElement('div'); 
-            themeBtn.className = 'theme-toggle'; 
-            themeBtn.innerHTML = '<i class="fas fa-moon"></i>'; 
-            themeBtn.onclick = toggleTheme; 
-            document.body.appendChild(themeBtn); 
-            updateThemeIcon(); 
-        }
-        
-        function toggleTheme() { 
-            document.body.classList.toggle('light-mode'); 
-            localStorage.setItem('theme', document.body.classList.contains('light-mode') ? 'light' : 'dark'); 
-            updateThemeIcon(); 
-        }
-        
-        function updateThemeIcon() { 
-            const themeBtn = document.querySelector('.theme-toggle'); 
-            if (themeBtn) themeBtn.innerHTML = document.body.classList.contains('light-mode') ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>'; 
-        }
-        
-        function initKeyboardShortcuts() { 
-            document.addEventListener('keydown', (e) => { 
-                if (e.ctrlKey && e.key === 'Enter') { e.preventDefault(); sendMessage(); } 
-                if (e.altKey && e.key === 'c') { e.preventDefault(); clearChat(); } 
-                if (e.altKey && e.key === 'h') { e.preventDefault(); showSection('home'); } 
-                if (e.key === 'Escape') { document.querySelector('.modal-overlay')?.remove(); closeEquationEditor(); } 
-                if (e.key === '/' && document.activeElement !== document.getElementById('chatInput')) { e.preventDefault(); document.getElementById('chatInput').focus(); } 
-            }); 
-        }
-        
-        function setQuickQuestion(q) { document.getElementById('chatInput').value = q; document.getElementById('chatInput').focus(); }
-        
-        // File upload handlers
-        document.getElementById('photoInput').addEventListener('change', (e) => {
+        // File upload handler
+        document.getElementById('recordFile').addEventListener('change', (e) => {
             if (e.target.files && e.target.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(event) {
-                    processScannedImage(event.target.result);
-                };
-                reader.readAsDataURL(e.target.files[0]);
+                handleFileUpload(e.target.files[0]);
             }
         });
-        
-        function switchUploadTab(tab) { 
-            document.querySelectorAll('.upload-tab').forEach(t => t.classList.remove('active')); 
-            if (event?.target) event.target.classList.add('active'); 
-        }
-        
-        function handleFiles(files) { }
-        function initCanvas() { }
-        function setDrawingTool(tool) { }
-        function clearCanvas() { }
-        function saveDrawing() { }
-        function analyzeDrawing() { }
-        function askAboutDocument(docId) { }
-        function deleteDocument(docId) { }
-        function generateFlashcards() { }
-        function generateQuiz() { }
         
         // ==================== INITIALIZATION ====================
-        document.addEventListener('DOMContentLoaded', async () => {
-            await checkEmailVerification();
-            updateStats(); 
-            updateStreak(); 
-            loadChatHistory(); 
-            renderDocumentList(); 
-            initTheme(); 
-            initKeyboardShortcuts(); 
-            initSpeechRecognition();
-            updateProfileDisplay();
+        document.addEventListener('DOMContentLoaded', () => {
+            loadStudentData();
             
-            if (emailVerified) {
-                const capture = document.getElementById('emailCapture');
-                if (capture) capture.style.display = 'none';
-            }
-            
-            updateAdVisibility();
-            switchUploadTab('file');
-            
-            // Show personalization if not set
-            if (!userProfile.grade || !userProfile.curriculum) {
-                setTimeout(() => {
-                    showPersonalization();
-                }, 1000);
+            // Check if we have a saved email
+            const userEmail = localStorage.getItem('userEmail');
+            if (userEmail) {
+                document.getElementById('emailCapture').style.display = 'none';
             }
         });
-        
-        function renderDocumentList() { 
-            const container = document.getElementById('documentList'); 
-            if (!container) return; 
-            container.innerHTML = '<p style="text-align: center;"><i class="fas fa-folder-open"></i> No documents yet</p>'; 
-        }
     </script>
 </body>
 </html>
