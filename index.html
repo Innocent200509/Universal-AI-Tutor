@@ -508,6 +508,28 @@
             border: 1px solid white;
         }
 
+        /* Floating Install Button */
+        .floating-install-btn {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            z-index: 1000;
+            display: none;
+        }
+
+        .floating-install-btn button {
+            background: linear-gradient(135deg, var(--secondary), #d35400);
+            border-radius: 50px;
+            padding: 12px 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
         /* Offline Indicator */
         .offline-indicator {
             position: fixed;
@@ -597,6 +619,14 @@
             .stats-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
+            .floating-install-btn {
+                bottom: 20px;
+                right: 20px;
+            }
+            .floating-install-btn button {
+                padding: 8px 16px;
+                font-size: 0.8rem;
+            }
         }
 
         @media (max-width: 480px) {
@@ -617,6 +647,13 @@
     <!-- Offline Indicator -->
     <div id="offlineIndicator" class="offline-indicator">
         <i class="fas fa-wifi"></i> You're offline. Answers will sync when online.
+    </div>
+
+    <!-- Floating Install Button -->
+    <div id="floatingInstallBtn" class="floating-install-btn">
+        <button class="btn">
+            <i class="fas fa-download"></i> Install App
+        </button>
     </div>
 
     <!-- Navigation -->
@@ -646,6 +683,9 @@
                 <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
                     <button class="btn" onclick="startPractice()">Start Practicing →</button>
                     <button class="btn btn-outline" onclick="showSection('subjects')">Browse Subjects</button>
+                    <button id="installAppBtn" class="btn btn-outline" style="display: none;">
+                        <i class="fas fa-download"></i> Install App
+                    </button>
                 </div>
             </div>
 
@@ -856,6 +896,58 @@
         let currentQuestion = null;
         let timerInterval = null;
         let timerSeconds = 0;
+        
+        // ==================== PWA INSTALL BUTTON ====================
+        let deferredPrompt;
+        
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            
+            const heroBtn = document.getElementById('installAppBtn');
+            const floatingBtn = document.getElementById('floatingInstallBtn');
+            
+            const showButtons = () => {
+                if (heroBtn) heroBtn.style.display = 'inline-flex';
+                if (floatingBtn) floatingBtn.style.display = 'block';
+            };
+            
+            const hideButtons = () => {
+                if (heroBtn) heroBtn.style.display = 'none';
+                if (floatingBtn) floatingBtn.style.display = 'none';
+            };
+            
+            const handleInstall = async () => {
+                if (deferredPrompt) {
+                    deferredPrompt.prompt();
+                    const { outcome } = await deferredPrompt.userChoice;
+                    if (outcome === 'accepted') {
+                        hideButtons();
+                        showToast('🎉 SmartExam installed! Find it on your home screen.', 'success');
+                    }
+                    deferredPrompt = null;
+                }
+            };
+            
+            showButtons();
+            
+            if (heroBtn) heroBtn.onclick = handleInstall;
+            if (floatingBtn) floatingBtn.onclick = handleInstall;
+        });
+        
+        window.addEventListener('appinstalled', () => {
+            const heroBtn = document.getElementById('installAppBtn');
+            const floatingBtn = document.getElementById('floatingInstallBtn');
+            if (heroBtn) heroBtn.style.display = 'none';
+            if (floatingBtn) floatingBtn.style.display = 'none';
+        });
+        
+        if (window.matchMedia('(display-mode: standalone)').matches) {
+            const heroBtn = document.getElementById('installAppBtn');
+            const floatingBtn = document.getElementById('floatingInstallBtn');
+            if (heroBtn) heroBtn.style.display = 'none';
+            if (floatingBtn) floatingBtn.style.display = 'none';
+        }
         
         // ==================== HELPER FUNCTIONS ====================
         function updateStreak() {
@@ -1353,40 +1445,6 @@
                 }
             } catch(e) {}
         }
-        
-        // PWA Functions
-        let deferredPrompt;
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            
-            const installBanner = document.createElement('div');
-            installBanner.className = 'install-banner';
-            installBanner.innerHTML = `
-                <div>
-                    <i class="fas fa-download"></i>
-                    <strong>Install SmartExam</strong>
-                    <small style="display: block;">Get offline access and daily reminders</small>
-                </div>
-                <div>
-                    <button id="installAppBtn">Install</button>
-                    <button id="dismissInstallBtn">Not now</button>
-                </div>
-            `;
-            document.body.appendChild(installBanner);
-            
-            document.getElementById('installAppBtn').onclick = async () => {
-                if (deferredPrompt) {
-                    deferredPrompt.prompt();
-                    const { outcome } = await deferredPrompt.userChoice;
-                    if (outcome === 'accepted') {
-                        installBanner.remove();
-                    }
-                    deferredPrompt = null;
-                }
-            };
-            document.getElementById('dismissInstallBtn').onclick = () => installBanner.remove();
-        });
         
         // Offline detection
         window.addEventListener('online', () => {
